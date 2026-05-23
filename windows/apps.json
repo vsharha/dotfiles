@@ -20,7 +20,9 @@
                 { "PackageIdentifier": "CrystalDewWorld.CrystalDiskInfo" },
                 { "PackageIdentifier": "Telegram.TelegramDesktop" },
                 { "PackageIdentifier": "CPUID.CPU-Z" },
-                { "PackageIdentifier": "HandBrake.HandBrake" }
+                { "PackageIdentifier": "HandBrake.HandBrake" },
+                { "PackageIdentifier": "Guru3D.RTSS" },
+                { "PackageIdentifier": "Mozilla.Firefox" }
             ],
             "SourceDetails": {
                 "Argument": "https://cdn.winget.microsoft.com/cache",
