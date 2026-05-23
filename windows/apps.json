@@ -22,7 +22,8 @@
                 { "PackageIdentifier": "CPUID.CPU-Z" },
                 { "PackageIdentifier": "HandBrake.HandBrake" },
                 { "PackageIdentifier": "Guru3D.RTSS" },
-                { "PackageIdentifier": "Mozilla.Firefox" }
+                { "PackageIdentifier": "Mozilla.Firefox" },
+                { "PackageIdentifier": "Bitwarden.Bitwarden" }
             ],
             "SourceDetails": {
                 "Argument": "https://cdn.winget.microsoft.com/cache",
