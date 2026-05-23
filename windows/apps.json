@@ -15,7 +15,9 @@
                 { "PackageIdentifier": "voidtools.Everything" },
                 { "PackageIdentifier": "Flow-Launcher.Flow-Launcher" },
                 { "PackageIdentifier": "lin-ycv.EverythingPowerToys" },
-                { "PackageIdentifier": "ImputNet.Helium" }
+                { "PackageIdentifier": "ImputNet.Helium" },
+                { "PackageIdentifier": "Guru3D.Afterburner" },
+                { "PackageIdentifier": "CrystalDewWorld.CrystalDiskInfo" }
             ],
             "SourceDetails": {
                 "Argument": "https://cdn.winget.microsoft.com/cache",
