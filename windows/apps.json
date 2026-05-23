@@ -8,7 +8,14 @@
                 { "PackageIdentifier": "Microsoft.VisualStudioCode" },
                 { "PackageIdentifier": "VideoLAN.VLC" },
                 { "PackageIdentifier": "7zip.7zip" },
-                { "PackageIdentifier": "Valve.Steam" }
+                { "PackageIdentifier": "Valve.Steam" },
+                { "PackageIdentifier": "qBittorrent.qBittorrent" },
+                { "PackageIdentifier": "AntibodySoftware.WizTree" },
+                { "PackageIdentifier": "Microsoft.PowerToys" },
+                { "PackageIdentifier": "voidtools.Everything" },
+                { "PackageIdentifier": "Flow-Launcher.Flow-Launcher" },
+                { "PackageIdentifier": "lin-ycv.EverythingPowerToys" },
+                { "PackageIdentifier": "ImputNet.Helium" }
             ],
             "SourceDetails": {
                 "Argument": "https://cdn.winget.microsoft.com/cache",
