@@ -1,38 +1,38 @@
 {
-    "$schema": "https://aka.ms/winget-packages.schema.2.0.json",
-    "CreationDate": "2026-05-23T00:00:00.000-00:00",
-    "Sources": [
-        {
-            "Packages": [
-                { "PackageIdentifier": "Discord.Discord" },
-                { "PackageIdentifier": "Microsoft.VisualStudioCode" },
-                { "PackageIdentifier": "VideoLAN.VLC" },
-                { "PackageIdentifier": "7zip.7zip" },
-                { "PackageIdentifier": "Valve.Steam" },
-                { "PackageIdentifier": "qBittorrent.qBittorrent" },
-                { "PackageIdentifier": "AntibodySoftware.WizTree" },
-                { "PackageIdentifier": "Microsoft.PowerToys" },
-                { "PackageIdentifier": "voidtools.Everything" },
-                { "PackageIdentifier": "Flow-Launcher.Flow-Launcher" },
-                { "PackageIdentifier": "lin-ycv.EverythingPowerToys" },
-                { "PackageIdentifier": "ImputNet.Helium" },
-                { "PackageIdentifier": "Guru3D.Afterburner" },
-                { "PackageIdentifier": "CrystalDewWorld.CrystalDiskInfo" },
-                { "PackageIdentifier": "Telegram.TelegramDesktop" },
-                { "PackageIdentifier": "CPUID.CPU-Z" },
-                { "PackageIdentifier": "HandBrake.HandBrake" },
-                { "PackageIdentifier": "Guru3D.RTSS" },
-                { "PackageIdentifier": "Mozilla.Firefox" },
-                { "PackageIdentifier": "Bitwarden.Bitwarden" },
-                { "PackageIdentifier": "WhirlwindFX.SignalRgb" }
-            ],
-            "SourceDetails": {
-                "Argument": "https://cdn.winget.microsoft.com/cache",
-                "Identifier": "Microsoft.Winget.Source_8wekyb3d8bbwe",
-                "Name": "winget",
-                "Type": "Microsoft.PreIndexed.Package"
-            }
-        }
-    ],
-    "WinGetVersion": "1.0.0"
+	"$schema": "https://aka.ms/winget-packages.schema.2.0.json",
+	"CreationDate": "2026-05-23T00:00:00.000-00:00",
+	"Sources": [
+		{
+			"Packages": [
+				{ "PackageIdentifier": "7zip.7zip" },
+				{ "PackageIdentifier": "qBittorrent.qBittorrent" },
+				{ "PackageIdentifier": "AntibodySoftware.WizTree" },
+				{ "PackageIdentifier": "Guru3D.Afterburner" },
+				{ "PackageIdentifier": "Guru3D.RTSS" },
+				{ "PackageIdentifier": "CrystalDewWorld.CrystalDiskInfo" },
+				{ "PackageIdentifier": "voidtools.Everything" },
+				{ "PackageIdentifier": "Flow-Launcher.Flow-Launcher" },
+				{ "PackageIdentifier": "Microsoft.PowerToys" },
+				{ "PackageIdentifier": "Microsoft.VisualStudioCode" },
+				{ "PackageIdentifier": "CPUID.CPU-Z" },
+				{ "PackageIdentifier": "CPUID.HWMonitor" },
+				{ "PackageIdentifier": "ImputNet.Helium" },
+				{ "PackageIdentifier": "Mozilla.Firefox" },
+				{ "PackageIdentifier": "Valve.Steam" },
+				{ "PackageIdentifier": "Discord.Discord" },
+				{ "PackageIdentifier": "Telegram.TelegramDesktop" },
+				{ "PackageIdentifier": "VideoLAN.VLC" },
+				{ "PackageIdentifier": "HandBrake.HandBrake" },
+				{ "PackageIdentifier": "Bitwarden.Bitwarden" },
+				{ "PackageIdentifier": "WhirlwindFX.SignalRgb" }
+			],
+			"SourceDetails": {
+				"Argument": "https://cdn.winget.microsoft.com/cache",
+				"Identifier": "Microsoft.Winget.Source_8wekyb3d8bbwe",
+				"Name": "winget",
+				"Type": "Microsoft.PreIndexed.Package"
+			}
+		}
+	],
+	"WinGetVersion": "1.0.0"
 }
