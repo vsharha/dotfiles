@@ -24,7 +24,9 @@
 				{ "PackageIdentifier": "VideoLAN.VLC" },
 				{ "PackageIdentifier": "HandBrake.HandBrake" },
 				{ "PackageIdentifier": "Bitwarden.Bitwarden" },
-				{ "PackageIdentifier": "WhirlwindFX.SignalRgb" }
+				{ "PackageIdentifier": "WhirlwindFX.SignalRgb" },
+				{ "PackageIdentifier": "LocalSend.LocalSend" },
+				{ "PackageIdentifier": "Ventoy.Ventoy" }
 			],
 			"SourceDetails": {
 				"Argument": "https://cdn.winget.microsoft.com/cache",
