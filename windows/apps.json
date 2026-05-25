@@ -23,7 +23,8 @@
                 { "PackageIdentifier": "HandBrake.HandBrake" },
                 { "PackageIdentifier": "Guru3D.RTSS" },
                 { "PackageIdentifier": "Mozilla.Firefox" },
-                { "PackageIdentifier": "Bitwarden.Bitwarden" }
+                { "PackageIdentifier": "Bitwarden.Bitwarden" },
+                { "PackageIdentifier": "WhirlwindFX.SignalRgb" }
             ],
             "SourceDetails": {
                 "Argument": "https://cdn.winget.microsoft.com/cache",
