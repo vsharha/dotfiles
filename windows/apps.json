@@ -27,7 +27,8 @@
 				{ "PackageIdentifier": "WhirlwindFX.SignalRgb" },
 				{ "PackageIdentifier": "LocalSend.LocalSend" },
 				{ "PackageIdentifier": "Ventoy.Ventoy" },
-				{ "PackageIdentifier": "Mozilla.Thunderbird" }
+				{ "PackageIdentifier": "Mozilla.Thunderbird" },
+				{ "PackageIdentifier": "xanderfrangos.twinkletray" }
 			],
 			"SourceDetails": {
 				"Argument": "https://cdn.winget.microsoft.com/cache",
