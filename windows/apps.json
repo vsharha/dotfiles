@@ -26,7 +26,8 @@
 				{ "PackageIdentifier": "Bitwarden.Bitwarden" },
 				{ "PackageIdentifier": "WhirlwindFX.SignalRgb" },
 				{ "PackageIdentifier": "LocalSend.LocalSend" },
-				{ "PackageIdentifier": "Ventoy.Ventoy" }
+				{ "PackageIdentifier": "Ventoy.Ventoy" },
+				{ "PackageIdentifier": "Mozilla.Thunderbird" }
 			],
 			"SourceDetails": {
 				"Argument": "https://cdn.winget.microsoft.com/cache",
