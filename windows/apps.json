@@ -29,7 +29,7 @@
 				{ "PackageIdentifier": "Ventoy.Ventoy" },
 				{ "PackageIdentifier": "Mozilla.Thunderbird" },
 				{ "PackageIdentifier": "xanderfrangos.twinkletray" },
-{ "PackageIdentifier": "Stremio.Stremio" }
+				{ "PackageIdentifier": "Stremio.Stremio" }
 			],
 			"SourceDetails": {
 				"Argument": "https://cdn.winget.microsoft.com/cache",
