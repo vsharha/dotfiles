@@ -29,7 +29,7 @@
 				{ "PackageIdentifier": "Ventoy.Ventoy" },
 				{ "PackageIdentifier": "Mozilla.Thunderbird" },
 				{ "PackageIdentifier": "xanderfrangos.twinkletray" },
-				{ "PackageIdentifier": "Logitech.LogiOptionsPlus" },
+				{ "PackageIdentifier": "Logitech.OptionsPlus" },
 				{ "PackageIdentifier": "Stremio.Stremio" }
 			],
 			"SourceDetails": {
