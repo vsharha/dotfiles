@@ -11,6 +11,6 @@ $appsJson = (Invoke-WebRequest -Uri $appsUrl -UseBasicParsing).Content
 $tmpFile = "$env:TEMP\apps.json"
 $appsJson | Out-File -FilePath $tmpFile -Encoding utf8
 
-winget import --import-file $tmpFile --ignore-unavailable --no-upgrade
+winget import --import-file $tmpFile --ignore-unavailable --no-upgrade --silent
 
 Write-Host "Done."
