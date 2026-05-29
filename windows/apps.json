@@ -5,6 +5,7 @@
 		{
 			"Packages": [
 				{ "PackageIdentifier": "7zip.7zip" },
+				{ "PackageIdentifier": "RARLab.WinRAR" },
 				{ "PackageIdentifier": "qBittorrent.qBittorrent" },
 				{ "PackageIdentifier": "AntibodySoftware.WizTree" },
 				{ "PackageIdentifier": "Guru3D.Afterburner" },
