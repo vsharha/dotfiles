@@ -22,3 +22,7 @@ brew bundle install --file="$BREWFILE"
 rm -f "$BREWFILE"
 
 echo "Done."
+
+# Remind about apps that must be installed by hand
+echo
+curl -fsSL "https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/MANUAL.md" 2>/dev/null || true
