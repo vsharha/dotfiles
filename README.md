@@ -2,10 +2,16 @@
 
 ## macOS
 
-Run this in Terminal to set up a new Mac:
+Install apps (Homebrew + App Store):
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/bootstrap.sh)"
+```
+
+Then clone the repo and link configs into `~/.config`:
+
+```bash
+git clone https://github.com/vsharha/dotfiles.git ~/dotfiles && ~/dotfiles/macos/symlinks.sh
 ```
 
 ## Windows
