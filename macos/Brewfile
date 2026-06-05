@@ -1,0 +1,140 @@
+# Restore on a new Mac:
+#   brew bundle install --file=macos/Brewfile
+# Update this file from the current machine:
+#   brew bundle dump --file=macos/Brewfile --force
+
+# === Taps ===
+tap "ddev/ddev"
+tap "oven-sh/bun"
+
+# === Formulae (CLI tools — only what was installed on request) ===
+brew "act"
+brew "cloudflare-wrangler"
+brew "cloudflared"
+brew "composer"
+brew "ddev/ddev/ddev"
+brew "ffmpeg"
+brew "gh"
+brew "glab"
+brew "go"
+brew "graphviz"
+brew "imagemagick"
+brew "latexindent"
+brew "llama.cpp"
+brew "neovim"
+brew "nginx"
+brew "ollama"
+brew "opencode"
+brew "openjdk"
+brew "pandoc"
+brew "pipx"
+brew "pnpm"
+brew "poppler"
+brew "rust"
+brew "rustup"
+brew "tree"
+brew "typst"
+brew "uv"
+brew "yt-dlp"
+
+# === Casks: AI ===
+cask "chatgpt"
+cask "claude"
+cask "codex-app"
+cask "lm-studio"
+
+# === Casks: Browsers ===
+cask "google-chrome"
+cask "helium"
+cask "zen"
+
+# === Casks: Development ===
+cask "docker-desktop"
+cask "ghostty"
+cask "github"
+cask "jetbrains-toolbox"
+cask "ngrok"
+cask "visual-studio-code"
+
+# === Casks: Communication ===
+cask "discord"
+cask "telegram"
+cask "viber"
+cask "whatsapp"
+
+# === Casks: Productivity ===
+cask "latest"
+cask "maccy"
+cask "netnewswire"
+cask "obsidian"
+cask "raycast"
+cask "readest"
+cask "shottr"
+cask "ticktick"
+
+# === Casks: Media ===
+cask "background-music"
+cask "handbrake"
+cask "iina"
+cask "kodi"
+cask "stremio"
+
+# === Casks: System / window management ===
+cask "betterdisplay"
+cask "hiddenbar"
+cask "karabiner-elements"
+cask "keka"
+cask "linearmouse"
+cask "middleclick"
+cask "monitorcontrol"
+cask "mos"
+cask "notunes"
+cask "rectangle"
+
+# === Casks: Cloud / sync ===
+cask "google-drive"
+cask "localsend"
+cask "onedrive"
+cask "syncthing-app"
+
+# === Casks: VPN ===
+cask "clearvpn"
+cask "protonvpn"
+
+# === Casks: Creative ===
+cask "blip"
+cask "canva"
+cask "inkscape"
+cask "paintbrush"
+
+# === Casks: Gaming ===
+cask "modrinth"
+cask "prismlauncher"
+cask "roblox"
+cask "steam"
+
+# === Casks: LaTeX ===
+cask "mactex-no-gui"
+
+# === Mac App Store (requires `mas`; sign into the App Store first) ===
+# Either App Store-only (no cask), or where the App Store build differs from the cask.
+brew "mas"
+mas "Bitwarden",                     id: 1352778147  # App Store build differs from cask
+mas "AdGuard Mini",                  id: 1440147259
+mas "Color Picker",                  id: 1545870783
+mas "Focus for YouTube",             id: 1514703160
+mas "HP Smart",                      id: 1474276998
+mas "Compressor Creator Studio",     id: 6746516157
+mas "Final Cut Pro Creator Studio",  id: 1631624924
+mas "Pixelmator Pro Creator Studio", id: 6746662575
+
+# === Verify before enabling ===
+# Office: these casks install Microsoft's direct .pkg. Yours are App Store builds,
+# so either add them as `mas` entries below or uncomment these casks — not both.
+# cask "microsoft-excel"
+# cask "microsoft-word"
+# cask "microsoft-outlook"
+# cask "microsoft-powerpoint"
+
+# === No Homebrew cask and not App Store — install manually ===
+# Google Docs/Sheets/Slides (Chrome PWAs), Grab2Text

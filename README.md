@@ -1,5 +1,13 @@
 # dotfiles
 
+## macOS
+
+Run this in Terminal to set up a new Mac:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/bootstrap.sh)"
+```
+
 ## Windows
 
 Run this in PowerShell to set up a new PC:
