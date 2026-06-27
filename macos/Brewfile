@@ -6,6 +6,7 @@
 # === Taps ===
 tap "ddev/ddev"
 tap "oven-sh/bun"
+tap "pantheon-systems/external"
 
 # === Formulae (CLI tools — only what was installed on request) ===
 brew "act"
@@ -27,15 +28,25 @@ brew "ollama"
 brew "opencode"
 brew "openjdk"
 brew "pandoc"
+brew "pantheon-systems/external/terminus"
 brew "pipx"
 brew "pnpm"
 brew "poppler"
 brew "rust"
 brew "rustup"
 brew "tree"
+brew "typescript"
 brew "typst"
 brew "uv"
 brew "yt-dlp"
+
+# === Formulae (shell — zsh plugins, prompt, fuzzy finder) ===
+brew "fzf"
+brew "powerlevel10k"
+brew "zsh-autosuggestions"
+brew "zsh-completions"
+brew "zsh-history-substring-search"
+brew "zsh-syntax-highlighting"
 
 # === Casks: AI ===
 cask "chatgpt"
@@ -76,8 +87,10 @@ cask "ticktick"
 cask "background-music"
 cask "handbrake"
 cask "iina"
+cask "jdownloader"
 cask "kodi"
 cask "stremio"
+cask "yacreader"
 
 # === Casks: System / window management ===
 cask "betterdisplay"
@@ -115,6 +128,9 @@ cask "steam"
 
 # === Casks: LaTeX ===
 cask "mactex-no-gui"
+
+# === Casks: Fonts ===
+cask "font-meslo-lg-nerd-font"  # used by powerlevel10k
 
 # === Mac App Store (requires `mas`; sign into the App Store first) ===
 # Either App Store-only (no cask), or where the App Store build differs from the cask.
