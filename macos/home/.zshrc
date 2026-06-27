@@ -54,6 +54,10 @@ zstyle ':fzf-tab:*' switch-group '<' '>'           # < / > to switch groups
 source /opt/homebrew/share/fzf-tab/fzf-tab.zsh
 
 # === autosuggestions (grey history hints, → to accept) ============
+# Prefer the completion system over raw history so suggestions for cd (and any
+# path argument) are validated against the current directory -- the history
+# strategy alone happily suggests paths that don't exist from where you are.
+ZSH_AUTOSUGGEST_STRATEGY=(completion history)
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # === history substring search (↑/↓ filters by substring) ==========
