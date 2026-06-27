@@ -4,7 +4,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # === completions (must come before compinit) ===
-fpath=(/opt/homebrew/share/zsh-completions $fpath)
+# ~/.zfunc must precede the Homebrew/system dirs so its overrides (e.g. _pnpm) win.
+fpath=(~/.zfunc /opt/homebrew/share/zsh-completions $fpath)
 autoload -Uz compinit && compinit
 
 # === powerlevel10k theme ===
@@ -31,8 +32,8 @@ esac
 export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
@@ -54,9 +55,8 @@ zstyle ':fzf-tab:*' switch-group '<' '>'           # < / > to switch groups
 source /opt/homebrew/share/fzf-tab/fzf-tab.zsh
 
 # === autosuggestions (grey history hints, → to accept) ============
-# Prefer the completion system over raw history so suggestions for cd (and any
-# path argument) are validated against the current directory -- the history
-# strategy alone happily suggests paths that don't exist from where you are.
+# completion before history so path args (cd) are validated against the real
+# cwd; raw history alone suggests stale paths that don't exist from here.
 ZSH_AUTOSUGGEST_STRATEGY=(completion history)
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -66,26 +66,41 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # === Tab / Shift-Tab behaviour ====================================
-# Tab: accept the grey autosuggestion if showing, else open the fzf-tab picker.
-# Shift-Tab: always open the fzf-tab picker (type to filter, arrows to move,
-#            Enter to select, Esc to cancel).
-#
-# zsh-autosuggestions wraps every widget as a "modify" widget, which blanks
-# $POSTDISPLAY before the widget body runs -- so smart-tab could never see the
-# suggestion. Listing it in ZSH_AUTOSUGGEST_IGNORE_WIDGETS leaves it unwrapped.
+# zsh-autosuggestions wraps every widget to blank $POSTDISPLAY before it runs, so
+# smart-tab could never see the suggestion; IGNORE_WIDGETS leaves it unwrapped.
 typeset -ga ZSH_AUTOSUGGEST_IGNORE_WIDGETS
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(smart-tab)
 
+# Tab: accept the grey suggestion if showing, else open the fzf-tab picker.
 smart-tab() {
   if [[ -n "$POSTDISPLAY" ]]; then
-    zle autosuggest-accept                       # grey suggestion -> accept it
+    zle autosuggest-accept
   else
-    zle fzf-tab-complete                         # else open the fzf picker
+    zle fzf-tab-complete
   fi
 }
 zle -N smart-tab
 bindkey '^I'   smart-tab                          # Tab
-bindkey '^[[Z' fzf-tab-complete                   # Shift-Tab -> fzf picker
+
+# Shift-Tab: list on the FIRST press. Otherwise fzf-tab inserts the longest
+# common prefix (e.g. `drive:`) and only opens the picker on the second press --
+# it does that whenever $compstate[insert] ends in "unambiguous". Blanking that
+# (only while our guard is set) defeats the early-return so the picker opens at
+# once. $compstate[unambiguous] is read-only, hence patching insert instead.
+functions[_ftb__main_complete_orig]=$functions[_ftb__main_complete]
+_ftb__main_complete() {
+  _ftb__main_complete_orig "$@"
+  local ret=$?
+  (( ${+_ftb_force_list} )) && compstate[insert]=
+  return ret
+}
+fzf-tab-list() {
+  typeset -g _ftb_force_list=1
+  zle fzf-tab-complete
+  unset _ftb_force_list
+}
+zle -N fzf-tab-list
+bindkey '^[[Z' fzf-tab-list                       # Shift-Tab
 
 # === syntax highlighting (MUST be last of the plugin sources) =====
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

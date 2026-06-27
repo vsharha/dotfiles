@@ -1,0 +1,22 @@
+#compdef pnpm
+
+# Stock pnpm completion only offers package.json scripts after `pnpm run`; this
+# also offers them at the bare subcommand position, since `pnpm <script>` is
+# shorthand for `pnpm run <script>`. Everything else defers to pnpm's own
+# completion server below, so it tracks the installed pnpm version.
+
+# Colons in keys are escaped so namespaced names (build:prod) stay one entry.
+if (( CURRENT == 2 )) && [[ -f package.json ]]; then
+  local -a _pnpm_scripts
+  _pnpm_scripts=( ${(f)"$(jq -r '(.scripts // {}) | to_entries[] | "\(.key | gsub(":";"\\:")):\(.value)"' package.json 2>/dev/null)"} )
+  (( ${#_pnpm_scripts} )) && _describe -t scripts 'script' _pnpm_scripts
+fi
+
+local reply si=$IFS
+IFS=$'\n' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" SHELL=zsh pnpm completion-server -- "${words[@]}"))
+IFS=$si
+if [[ "$reply" = "__tabtab_complete_files__" ]]; then
+  _files
+else
+  _describe 'pnpm' reply
+fi
