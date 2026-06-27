@@ -54,6 +54,33 @@ source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-se
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
+# === Tab / Shift-Tab behaviour ====================================
+# Tab: accept the grey autosuggestion if showing, else insert ONE completion
+#      match (press Tab again to cycle to the next).
+# Shift-Tab: list ALL completion possibilities without altering the line.
+#
+# IMPORTANT: zsh-autosuggestions wraps every widget as a "modify" widget,
+# which blanks $POSTDISPLAY before the widget body runs. We list our widgets
+# in ZSH_AUTOSUGGEST_IGNORE_WIDGETS so they are left unwrapped and can read
+# the live suggestion from $POSTDISPLAY.
+zmodload zsh/complist
+typeset -ga ZSH_AUTOSUGGEST_IGNORE_WIDGETS
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(smart-tab shift-tab)
+
+smart-tab() {
+  if [[ -n "$POSTDISPLAY" ]]; then
+    zle autosuggest-accept                       # grey suggestion -> accept it
+  else
+    zle menu-complete                            # else insert one match, cycle
+  fi
+}
+zle -N smart-tab
+bindkey '^I' smart-tab                            # Tab
+
+shift-tab() { zle list-choices; }                 # show all, don't touch the line
+zle -N shift-tab
+bindkey '^[[Z' shift-tab                           # Shift-Tab
+
 # === syntax highlighting (MUST be last of the plugin sources) =====
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
