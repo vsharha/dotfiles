@@ -31,7 +31,9 @@
 				{ "PackageIdentifier": "Betterbird.Betterbird" },
 				{ "PackageIdentifier": "xanderfrangos.twinkletray" },
 				{ "PackageIdentifier": "Stremio.Stremio" },
-				{ "PackageIdentifier": "Obsidian.Obsidian" }
+				{ "PackageIdentifier": "Obsidian.Obsidian" },
+				{ "PackageIdentifier": "mtkennerly.ludusavi" },
+				{ "PackageIdentifier": "Playnite.Playnite" }
 			],
 			"SourceDetails": {
 				"Argument": "https://cdn.winget.microsoft.com/cache",
