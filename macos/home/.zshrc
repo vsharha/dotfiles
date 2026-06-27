@@ -46,6 +46,13 @@ alias cc="claude --dangerously-skip-permissions"
 # === fzf (fuzzy Ctrl-R history, Ctrl-T files, Alt-C cd) ===========
 source <(fzf --zsh)
 
+# === fzf-tab (replaces the completion menu with an fzf picker) =====
+# Must load after compinit/fzf and BEFORE autosuggestions & syntax-highlighting.
+zstyle ':completion:*' menu no                     # let fzf-tab own the menu
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':fzf-tab:*' switch-group '<' '>'           # < / > to switch groups
+source /opt/homebrew/share/fzf-tab/fzf-tab.zsh
+
 # === autosuggestions (grey history hints, → to accept) ============
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -55,31 +62,26 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # === Tab / Shift-Tab behaviour ====================================
-# Tab: accept the grey autosuggestion if showing, else insert ONE completion
-#      match (press Tab again to cycle to the next).
-# Shift-Tab: list ALL completion possibilities without altering the line.
+# Tab: accept the grey autosuggestion if showing, else open the fzf-tab picker.
+# Shift-Tab: always open the fzf-tab picker (type to filter, arrows to move,
+#            Enter to select, Esc to cancel).
 #
-# IMPORTANT: zsh-autosuggestions wraps every widget as a "modify" widget,
-# which blanks $POSTDISPLAY before the widget body runs. We list our widgets
-# in ZSH_AUTOSUGGEST_IGNORE_WIDGETS so they are left unwrapped and can read
-# the live suggestion from $POSTDISPLAY.
-zmodload zsh/complist
+# zsh-autosuggestions wraps every widget as a "modify" widget, which blanks
+# $POSTDISPLAY before the widget body runs -- so smart-tab could never see the
+# suggestion. Listing it in ZSH_AUTOSUGGEST_IGNORE_WIDGETS leaves it unwrapped.
 typeset -ga ZSH_AUTOSUGGEST_IGNORE_WIDGETS
-ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(smart-tab shift-tab)
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(smart-tab)
 
 smart-tab() {
   if [[ -n "$POSTDISPLAY" ]]; then
     zle autosuggest-accept                       # grey suggestion -> accept it
   else
-    zle menu-complete                            # else insert one match, cycle
+    zle fzf-tab-complete                         # else open the fzf picker
   fi
 }
 zle -N smart-tab
-bindkey '^I' smart-tab                            # Tab
-
-shift-tab() { zle list-choices; }                 # show all, don't touch the line
-zle -N shift-tab
-bindkey '^[[Z' shift-tab                           # Shift-Tab
+bindkey '^I'   smart-tab                          # Tab
+bindkey '^[[Z' fzf-tab-complete                   # Shift-Tab -> fzf picker
 
 # === syntax highlighting (MUST be last of the plugin sources) =====
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

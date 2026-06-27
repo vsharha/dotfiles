@@ -42,6 +42,7 @@ brew "yt-dlp"
 
 # === Formulae (shell — zsh plugins, prompt, fuzzy finder) ===
 brew "fzf"
+brew "fzf-tab"
 brew "powerlevel10k"
 brew "zsh-autosuggestions"
 brew "zsh-completions"
