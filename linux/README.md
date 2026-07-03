@@ -11,6 +11,13 @@ Run the general bootstrap from the repo root:
 ./linux/bootstrap.sh
 ```
 
+After bootstrap installs `just`, the same Linux setup flow is available from the
+repo root:
+
+```bash
+just linux
+```
+
 On CachyOS this installs packages from:
 
 - `linux/cachyos/packages.txt` with `pacman`
@@ -25,10 +32,22 @@ Apply Linux dotfiles:
 ./linux/apply.sh
 ```
 
+Or with `just`:
+
+```bash
+just linux-apply
+```
+
 Preview changes before applying:
 
 ```bash
 ./linux/apply.sh --dry-run --verbose
+```
+
+Or with `just`:
+
+```bash
+just linux-dry
 ```
 
 `linux/symlinks.sh` is deprecated and remains only as a compatibility wrapper

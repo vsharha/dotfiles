@@ -9,6 +9,7 @@ obsidian
 
 # Terminal and shell
 chezmoi
+just
 ghostty
 ghostty-nautilus
 starship

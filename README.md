@@ -32,6 +32,13 @@ git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
 ~/dotfiles/linux/apply.sh
 ```
 
+After the first bootstrap installs `just`, Linux setup can also be run from the
+repo root with:
+
+```bash
+just linux
+```
+
 The Linux bootstrap currently supports CachyOS and installs `chezmoi` from
 `linux/cachyos/packages.txt`.
 
