@@ -1,0 +1,5 @@
+visual-studio-code-bin
+ludusavi
+steam-boilr-gui
+stremio
+vulkan-low-latency-layer

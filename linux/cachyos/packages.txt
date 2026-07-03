@@ -1,0 +1,25 @@
+# Apps
+helium-browser-bin
+prismlauncher
+telegram-desktop
+discord
+qbittorrent
+proton-vpn-gtk-app
+obsidian
+
+# Terminal and shell
+ghostty
+ghostty-nautilus
+starship
+gamemode
+lact
+
+# Gaming
+cachyos-gaming-applications
+protonup-qt
+
+# System
+snap-pac
+bazaar
+syncthing
+jq
