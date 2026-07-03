@@ -3,6 +3,8 @@
 Shared Linux setup lives here. Distro-specific setup should stay in a
 subdirectory such as `cachyos/`.
 
+Dotfiles are managed by chezmoi from `linux/chezmoi`.
+
 Run the general bootstrap from the repo root:
 
 ```bash
@@ -15,13 +17,22 @@ On CachyOS this installs packages from:
 - `linux/cachyos/aur-packages.txt` with `paru`
 
 It also applies shared KDE keyboard preferences when `kwriteconfig6` is
-available. Symlinks are intentionally separate.
+available. Chezmoi-managed dotfiles are intentionally separate.
 
-Link Linux configs and home files:
+Apply Linux dotfiles:
 
 ```bash
-./linux/symlinks.sh
+./linux/apply.sh
 ```
+
+Preview changes before applying:
+
+```bash
+./linux/apply.sh --dry-run --verbose
+```
+
+`linux/symlinks.sh` is deprecated and remains only as a compatibility wrapper
+around `linux/apply.sh`.
 
 Optional machine-specific setup:
 

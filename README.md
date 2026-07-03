@@ -1,32 +1,59 @@
 # dotfiles
 
+Platform setup scripts install apps and tools. Dotfiles are managed with
+platform-specific chezmoi source directories:
+
+- `macos/chezmoi`
+- `linux/chezmoi`
+
 ## macOS
 
-Install apps (Homebrew + App Store):
+Install apps and CLI tools with Homebrew:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/bootstrap.sh)"
 ```
 
-Then clone the repo and link configs into `~/.config`:
+Then clone the repo and apply the macOS dotfiles:
 
 ```bash
-git clone https://github.com/vsharha/dotfiles.git ~/dotfiles && ~/dotfiles/macos/symlinks.sh
+git clone https://github.com/vsharha/dotfiles.git ~/dotfiles && ~/dotfiles/macos/apply.sh
 ```
+
+The macOS bootstrap installs `chezmoi` from `macos/Brewfile`.
 
 ## Linux
 
-Clone the repo, then run the Linux bootstrap:
+Clone the repo, then run the Linux bootstrap and apply dotfiles:
 
 ```bash
-git clone https://github.com/vsharha/dotfiles.git ~/dotfiles && ~/dotfiles/linux/bootstrap.sh
+git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
+~/dotfiles/linux/bootstrap.sh
+~/dotfiles/linux/apply.sh
 ```
 
-Link Linux configs and home files:
+The Linux bootstrap currently supports CachyOS and installs `chezmoi` from
+`linux/cachyos/packages.txt`.
+
+## Chezmoi
+
+Use the platform apply wrappers instead of running `chezmoi` directly:
 
 ```bash
-~/dotfiles/linux/symlinks.sh
+~/dotfiles/macos/apply.sh
+~/dotfiles/linux/apply.sh
 ```
+
+Both wrappers pass extra arguments through to `chezmoi apply`, so previewing is
+available with:
+
+```bash
+~/dotfiles/macos/apply.sh --dry-run --verbose
+~/dotfiles/linux/apply.sh --dry-run --verbose
+```
+
+The old `symlinks.sh` scripts are kept as compatibility wrappers and now call
+the matching `apply.sh`.
 
 ## Windows
 

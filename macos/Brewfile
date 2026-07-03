@@ -10,6 +10,7 @@ tap "pantheon-systems/external"
 
 # === Formulae (CLI tools — only what was installed on request) ===
 brew "act"
+brew "chezmoi"
 brew "cloudflare-wrangler"
 brew "cloudflared"
 brew "composer"

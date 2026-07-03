@@ -8,6 +8,7 @@ proton-vpn-gtk-app
 obsidian
 
 # Terminal and shell
+chezmoi
 ghostty
 ghostty-nautilus
 starship
