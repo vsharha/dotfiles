@@ -7,6 +7,18 @@ INCLUDE_LINE="include themes/$THEME_NAME/theme.conf"
 LEGACY_INCLUDE_LINE="include themes/regular-theme/theme.conf"
 INCLUDE_COMMENT="# Load rEFInd theme Regular"
 
+path_is_dir() {
+  local path="$1"
+
+  [ -d "$path" ] || sudo test -d "$path"
+}
+
+path_is_file() {
+  local path="$1"
+
+  [ -f "$path" ] || sudo test -f "$path"
+}
+
 find_refind_dir() {
   local candidate
 
@@ -16,7 +28,7 @@ find_refind_dir() {
   fi
 
   for candidate in /boot/efi/EFI/refind /boot/EFI/refind /efi/EFI/refind; do
-    if [ -d "$candidate" ]; then
+    if path_is_dir "$candidate"; then
       printf '%s\n' "$candidate"
       return 0
     fi
@@ -35,7 +47,7 @@ REFIND_DIR="$(find_refind_dir)" || {
   exit 1
 }
 
-if [ ! -f "$REFIND_DIR/refind.conf" ]; then
+if ! path_is_file "$REFIND_DIR/refind.conf"; then
   echo "refind.conf not found under $REFIND_DIR." >&2
   exit 1
 fi

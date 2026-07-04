@@ -17,4 +17,6 @@ kwriteconfig6 \
   --key "Switch to Next Keyboard Layout" \
   "Alt+Shift,Meta+Alt+K,Switch to Next Keyboard Layout"
 
-echo "KDE keyboard config applied."
+kwriteconfig6 --file ksmserverrc --group General --key loginMode restoreSavedSession
+
+echo "KDE config applied."

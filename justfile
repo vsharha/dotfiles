@@ -11,9 +11,6 @@ linux-bootstrap:
 linux-apply *args:
     ./linux/apply.sh {{args}}
 
-linux-dry:
-    ./linux/apply.sh --dry-run --verbose
-
 linux-kde:
     ./linux/kde.sh
 
