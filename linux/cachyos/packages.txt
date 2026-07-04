@@ -13,6 +13,7 @@ just
 ghostty
 ghostty-nautilus
 starship
+paru
 gamemode
 lact
 
