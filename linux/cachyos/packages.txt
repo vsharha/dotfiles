@@ -25,6 +25,7 @@ zsh-syntax-highlighting
 zsh-history-substring-search
 zsh-theme-powerlevel10k  # from the CachyOS repo
 fzf
+wl-clipboard  # wl-copy, used by the zshrc Ctrl-X copy widget
 ttf-meslo-nerd  # p10k font
 
 # Gaming

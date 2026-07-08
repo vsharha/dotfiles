@@ -79,14 +79,40 @@ bindkey '^[[4~'   end-of-line
 bindkey '^[OF'    end-of-line
 bindkey '^[[1;5D' backward-word            # Ctrl-Left
 bindkey '^[[1;5C' forward-word             # Ctrl-Right
+bindkey '^[[1;3D' backward-word            # Alt-Left
+bindkey '^[[1;3C' forward-word             # Alt-Right
+bindkey '^[[1;5H' beginning-of-buffer-or-history   # Ctrl-Home
+bindkey '^[[1;5F' end-of-buffer-or-history         # Ctrl-End
 bindkey '^[[3~'   delete-char              # Delete
 bindkey '^H'      backward-kill-word       # Ctrl-Backspace
 bindkey '^[[3;5~' kill-word                # Ctrl-Delete
+
+# GUI-style word boundaries: jumps and word-deletes stop at / . - _ instead
+# of swallowing whole paths (affects Ctrl/Alt+arrows, Ctrl+Backspace/Delete).
+autoload -U select-word-style
+select-word-style bash
 
 # Shift+arrows selection, GUI-editor style (vendored plugin; not packaged
 # for Arch). Shift+Home/End and Ctrl+Shift+arrows select too; typing or
 # Backspace replaces/deletes the selection.
 source ~/.config/zsh/zsh-shift-select.zsh
+
+# Ctrl-X: copy the selection (or the whole line if none) to the system
+# clipboard, fish-style. Must be bound in the plugin's shift-select keymap
+# too — during a selection, keys unbound there deselect before re-running.
+copy-selection() {
+  if (( REGION_ACTIVE )); then
+    zle copy-region-as-kill
+    print -rn -- "$CUTBUFFER" | wl-copy 2>/dev/null
+    zle deactivate-region
+    zle -K main
+  else
+    print -rn -- "$BUFFER" | wl-copy 2>/dev/null
+  fi
+}
+zle -N copy-selection
+bindkey '^X' copy-selection
+bindkey -M shift-select '^X' copy-selection
 
 {{ end -}}
 
