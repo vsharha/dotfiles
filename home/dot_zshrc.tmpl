@@ -117,7 +117,22 @@ TRAPINT() {
   return $(( 128 + $1 ))
 }
 
+{{ if eq .chezmoi.os "darwin" -}}
+# Cmd+C: ghostty re-encodes it as CSI-u \e[99;9u (macOS never sends Cmd
+# chords to the pty). GUI-editor behaviour: copy the selection and keep it
+# active; do nothing when nothing is selected — mouse selections are
+# already on the clipboard via ghostty's copy-on-select.
+copy-selection() {
+  (( REGION_ACTIVE )) || return 0
+  local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
+  local _to=$(( MARK > CURSOR ? MARK : CURSOR ))
+  print -rn -- "${BUFFER[_from,_to]}" | pbcopy
+}
+zle -N copy-selection
+bindkey '^[[99;9u' copy-selection
+bindkey -M shift-select '^[[99;9u' copy-selection
 
+{{ end -}}
 # === Tab / Shift-Tab behaviour ====================================
 # zsh-autosuggestions wraps every widget to blank $POSTDISPLAY before it runs, so
 # smart-tab could never see the suggestion; IGNORE_WIDGETS leaves it unwrapped.
