@@ -3,3 +3,7 @@ ludusavi
 steam-boilr-gui
 stremio
 vulkan-low-latency-layer
+
+# Zsh
+fzf-tab
+zsh-theme-powerlevel10k-git

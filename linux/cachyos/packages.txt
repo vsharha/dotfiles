@@ -12,11 +12,19 @@ chezmoi
 just
 ghostty
 ghostty-nautilus
-starship
 paru
 go
 gamemode
 lact
+
+# Zsh (login shell; plugins match the macOS Homebrew set)
+zsh
+zsh-completions
+zsh-autosuggestions
+zsh-syntax-highlighting
+zsh-history-substring-search
+fzf
+ttf-meslo-nerd  # p10k font
 
 # Gaming
 cachyos-gaming-applications

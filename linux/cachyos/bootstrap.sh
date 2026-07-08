@@ -2,56 +2,27 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACMAN_PACKAGES_FILE="$SCRIPT_DIR/packages.txt"
-AUR_PACKAGES_FILE="$SCRIPT_DIR/aur-packages.txt"
 AUR_HELPER="${AUR_HELPER:-paru}"
 
-load_packages() {
-  local file="$1"
-  local -n out="$2"
-  local line
-
-  [ -f "$file" ] || return 0
-
-  while IFS= read -r line || [ -n "$line" ]; do
-    line="${line%%#*}"
-    line="${line#"${line%%[![:space:]]*}"}"
-    line="${line%"${line##*[![:space:]]}"}"
-    [ -n "$line" ] && out+=("$line")
-  done < "$file"
-}
-
 install_pacman_packages() {
-  local packages=()
-  load_packages "$PACMAN_PACKAGES_FILE" packages
-
-  if [ "${#packages[@]}" -eq 0 ]; then
-    echo "No pacman packages listed."
-    return 0
-  fi
-
-  sudo pacman -S --needed --noconfirm "${packages[@]}"
-}
-
-upgrade_system() {
-  sudo pacman -Syu --noconfirm
+  sed 's/#.*//' "$SCRIPT_DIR/packages.txt" | xargs -r sudo pacman -S --needed --noconfirm
 }
 
 install_aur_packages() {
-  local packages=()
-  load_packages "$AUR_PACKAGES_FILE" packages
-
-  if [ "${#packages[@]}" -eq 0 ]; then
-    echo "No AUR packages listed."
-    return 0
-  fi
-
   if ! command -v "$AUR_HELPER" >/dev/null 2>&1; then
     echo "AUR helper '$AUR_HELPER' not found. Install paru or set AUR_HELPER." >&2
     return 1
   fi
 
-  "$AUR_HELPER" -S --needed --noconfirm "${packages[@]}"
+  sed 's/#.*//' "$SCRIPT_DIR/aur-packages.txt" | xargs -r "$AUR_HELPER" -S --needed --noconfirm
+}
+
+set_login_shell() {
+  local zsh_path=/usr/bin/zsh
+
+  if [ -x "$zsh_path" ] && [ "$(getent passwd "$USER" | cut -d: -f7)" != "$zsh_path" ]; then
+    sudo chsh -s "$zsh_path" "$USER"
+  fi
 }
 
 configure_snapper() {
@@ -83,9 +54,10 @@ if ! command -v pacman >/dev/null 2>&1; then
   exit 1
 fi
 
-upgrade_system
+sudo pacman -Syu --noconfirm
 install_pacman_packages
 install_aur_packages
+set_login_shell
 configure_snapper
 enable_user_services
 
