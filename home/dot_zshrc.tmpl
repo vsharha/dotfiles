@@ -63,6 +63,9 @@ ZSH_AUTOSUGGEST_STRATEGY=(completion history)
 source "$_plugin_dir/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # === history substring search (↑/↓ filters by substring) ==========
+# No highlight on the matched substring — a trailing-space match renders as
+# an ugly solid colour block otherwise.
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
 source "$_plugin_dir/zsh-history-substring-search/zsh-history-substring-search.zsh"
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
