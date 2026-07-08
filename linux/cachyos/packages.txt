@@ -30,6 +30,10 @@ ttf-meslo-nerd  # p10k font
 cachyos-gaming-applications
 protonup-qt
 
+# AI
+claude-code
+openai-codex
+
 # System
 snap-pac
 bazaar
