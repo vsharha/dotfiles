@@ -28,4 +28,8 @@ keybind = ctrl+w=close_surface
 # instead of switching tabs (ghostty's default binding).
 keybind = ctrl+shift+arrow_left=unbind
 keybind = ctrl+shift+arrow_right=unbind
+# Ctrl+Shift+C: forward to zsh (as CSI-u ctrl+shift+c) to copy the keyboard
+# selection, instead of ghostty's default mouse-selection copy — unused here,
+# and plain Ctrl-C can't do this (see dot_zshrc.tmpl for why).
+keybind = ctrl+shift+c=text:\x1b[99;6u
 {{ end -}}

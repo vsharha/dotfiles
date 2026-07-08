@@ -108,29 +108,15 @@ bindkey '^U' backward-kill-line
 # or Backspace replaces/deletes the selection.
 source ~/.config/zsh/zsh-shift-select.zsh
 
-# Ctrl-C: GUI-editor behaviour — if a selection is active, copy it to the
-# system clipboard and keep editing; otherwise the usual interrupt. Only
-# fires at the prompt: a running foreground program is in its own process
-# group and receives SIGINT directly, never through this trap. Reads zle
-# state as plain parameters instead of calling widgets — widget calls from
-# a signal handler can intermittently crash zsh.
-TRAPINT() {
-  if zle && (( REGION_ACTIVE )); then
-    local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
-    local _to=$(( MARK > CURSOR ? MARK : CURSOR ))
-    print -rn -- "${BUFFER[_from,_to]}" | {{ if eq .chezmoi.os "darwin" }}pbcopy{{ else }}wl-copy 2>/dev/null{{ end }}
-    REGION_ACTIVE=0
-    zle -R
-    return 0
-  fi
-  return $(( 128 + $1 ))
-}
-
+# Ctrl-C is left as a plain interrupt — it can't be repurposed here. The tty
+# delivers it as a real SIGINT before zle ever sees a byte, so intercepting
+# it needs TRAPINT; Powerlevel10k's precmd hook unconditionally reclaims the
+# INT trap every prompt cycle for its own async worker, silently overwriting
+# any TRAPINT we define. Copying the keyboard selection instead lives on
+# Cmd+C (macOS) / Ctrl+Shift+C (Linux), which ghostty re-encodes as a CSI-u
+# escape sequence bound to a normal zle keybinding below — no signal/trap
+# involved, so it can't be clobbered.
 {{ if eq .chezmoi.os "darwin" -}}
-# Cmd+C: ghostty re-encodes it as CSI-u \e[99;9u (macOS never sends Cmd
-# chords to the pty). GUI-editor behaviour: copy the selection and keep it
-# active; do nothing when nothing is selected — mouse selections are
-# already on the clipboard via ghostty's copy-on-select.
 copy-selection() {
   (( REGION_ACTIVE )) || return 0
   local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
@@ -140,8 +126,18 @@ copy-selection() {
 zle -N copy-selection
 bindkey '^[[99;9u' copy-selection
 bindkey -M shift-select '^[[99;9u' copy-selection
-
+{{ else -}}
+copy-selection() {
+  (( REGION_ACTIVE )) || return 0
+  local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
+  local _to=$(( MARK > CURSOR ? MARK : CURSOR ))
+  print -rn -- "${BUFFER[_from,_to]}" | wl-copy 2>/dev/null
+}
+zle -N copy-selection
+bindkey '^[[99;6u' copy-selection
+bindkey -M shift-select '^[[99;6u' copy-selection
 {{ end -}}
+
 # === Tab / Shift-Tab behaviour ====================================
 # zsh-autosuggestions wraps every widget to blank $POSTDISPLAY before it runs, so
 # smart-tab could never see the suggestion; IGNORE_WIDGETS leaves it unwrapped.
