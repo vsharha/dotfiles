@@ -9,3 +9,13 @@ if ! command -v chezmoi >/dev/null 2>&1; then
 fi
 
 chezmoi --source "$SCRIPT_DIR/home" apply "$@"
+
+case "$(uname -s)" in
+  Darwin) os_source="$SCRIPT_DIR/macos/home" ;;
+  Linux)  os_source="$SCRIPT_DIR/linux/home" ;;
+  *)      os_source="" ;;
+esac
+
+if [ -n "$os_source" ] && [ -d "$os_source" ]; then
+  chezmoi --source "$os_source" apply "$@"
+fi
