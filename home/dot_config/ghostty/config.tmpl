@@ -10,6 +10,11 @@ background-blur-radius = 80
 # terminal's scrollback selection.
 keybind = shift+home=unbind
 keybind = shift+end=unbind
+# Cmd+Shift+Left/Right: select to start/end of line. Unbound in ghostty by
+# default; send the Shift+Home/End sequences (terminfo kHOM/kEND) that the
+# zsh shift-select plugin already handles.
+keybind = super+shift+arrow_left=text:\x1b[1;2H
+keybind = super+shift+arrow_right=text:\x1b[1;2F
 {{ else -}}
 keybind = performable:ctrl+c=copy_to_clipboard
 keybind = ctrl+v=paste_from_clipboard
