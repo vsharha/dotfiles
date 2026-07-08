@@ -23,6 +23,7 @@ zsh-completions
 zsh-autosuggestions
 zsh-syntax-highlighting
 zsh-history-substring-search
+zsh-theme-powerlevel10k  # from the CachyOS repo
 fzf
 ttf-meslo-nerd  # p10k font
 
