@@ -2,5 +2,8 @@
 .config/linearmouse
 {{ end -}}
 {{ if ne .chezmoi.os "linux" -}}
+.config/zsh
+{{ end -}}
+{{ if ne .chezmoi.os "linux" -}}
 .config/helium-browser-flags.conf
 {{ end -}}

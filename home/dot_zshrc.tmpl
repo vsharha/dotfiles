@@ -80,6 +80,13 @@ bindkey '^[OF'    end-of-line
 bindkey '^[[1;5D' backward-word            # Ctrl-Left
 bindkey '^[[1;5C' forward-word             # Ctrl-Right
 bindkey '^[[3~'   delete-char              # Delete
+bindkey '^H'      backward-kill-word       # Ctrl-Backspace
+bindkey '^[[3;5~' kill-word                # Ctrl-Delete
+
+# Shift+arrows selection, GUI-editor style (vendored plugin; not packaged
+# for Arch). Shift+Home/End and Ctrl+Shift+arrows select too; typing or
+# Backspace replaces/deletes the selection.
+source ~/.config/zsh/zsh-shift-select.zsh
 
 {{ end -}}
 
