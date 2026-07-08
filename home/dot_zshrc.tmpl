@@ -3,39 +3,41 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# === per-OS locations (rendered by chezmoi) =======================
+{{ if eq .chezmoi.os "darwin" -}}
+_plugin_dir=/opt/homebrew/share
+_p10k_theme=$_plugin_dir/powerlevel10k/powerlevel10k.zsh-theme
+export PNPM_HOME="$HOME/Library/pnpm"
+{{ else -}}
+_plugin_dir=/usr/share/zsh/plugins
+_p10k_theme=/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
+export PNPM_HOME="$HOME/.local/share/pnpm"
+{{ end -}}
+
 # === completions (must come before compinit) ===
-# ~/.zfunc must precede the Homebrew/system dirs so its overrides (e.g. _pnpm) win.
+# ~/.zfunc must precede the system dirs so its overrides (e.g. _pnpm) win.
+{{ if eq .chezmoi.os "darwin" -}}
 fpath=(~/.zfunc /opt/homebrew/share/zsh-completions $fpath)
+{{ else -}}
+fpath=(~/.zfunc $fpath)  # zsh-completions installs into site-functions, already in fpath
+{{ end -}}
 autoload -Uz compinit && compinit
 
 # === powerlevel10k theme ===
-source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+source "$_p10k_theme"
 
 # === PATH / environment ===========================================
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/vsharha/.lmstudio/bin"
-# End of LM Studio CLI section
-
-export PATH="$HOME/go/bin:$PATH"
-
-# Added by Antigravity
-export PATH="/Users/vsharha/.antigravity/antigravity/bin:$PATH"
-
-# pnpm
-export PNPM_HOME="/Users/vsharha/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+typeset -U path
+path=("$PNPM_HOME" "$HOME/go/bin" $path)
+{{ if eq .chezmoi.os "darwin" -}}
+path=(
+  /opt/homebrew/opt/openjdk/bin
+  "$HOME/.antigravity/antigravity/bin"
+  "$HOME/.local/share/solana/install/active_release/bin"
+  $path
+  "$HOME/.lmstudio/bin"
+)
+{{ end -}}
 
 # === aliases ======================================================
 alias python=python3
@@ -52,16 +54,16 @@ source <(fzf --zsh)
 zstyle ':completion:*' menu no                     # let fzf-tab own the menu
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':fzf-tab:*' switch-group '<' '>'           # < / > to switch groups
-source /opt/homebrew/share/fzf-tab/fzf-tab.zsh
+source "$_plugin_dir/fzf-tab/fzf-tab.zsh"
 
 # === autosuggestions (grey history hints, → to accept) ============
 # completion before history so path args (cd) are validated against the real
 # cwd; raw history alone suggests stale paths that don't exist from here.
 ZSH_AUTOSUGGEST_STRATEGY=(completion history)
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source "$_plugin_dir/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
 # === history substring search (↑/↓ filters by substring) ==========
-source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+source "$_plugin_dir/zsh-history-substring-search/zsh-history-substring-search.zsh"
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
@@ -82,28 +84,27 @@ smart-tab() {
 zle -N smart-tab
 bindkey '^I'   smart-tab                          # Tab
 
-# Shift-Tab: list on the FIRST press. Otherwise fzf-tab inserts the longest
-# common prefix (e.g. `drive:`) and only opens the picker on the second press --
-# it does that whenever $compstate[insert] ends in "unambiguous". Blanking that
-# (only while our guard is set) defeats the early-return so the picker opens at
-# once. $compstate[unambiguous] is read-only, hence patching insert instead.
-functions[_ftb__main_complete_orig]=$functions[_ftb__main_complete]
-_ftb__main_complete() {
-  _ftb__main_complete_orig "$@"
-  local ret=$?
-  (( ${+_ftb_force_list} )) && compstate[insert]=
-  return ret
-}
+# Shift-Tab: open the picker on the FIRST press. With `menu no`, fzf-tab
+# inserts the longest common prefix (e.g. `drive:`) and only lists on the
+# second press — it does that whenever $compstate[insert] ends in
+# "unambiguous". The `menu` style is what zsh uses to set that value, so
+# switching it to yes for one call makes compstate[insert]=menu and the
+# picker opens at once. Public zstyle only; no fzf-tab internals.
 fzf-tab-list() {
-  typeset -g _ftb_force_list=1
-  zle fzf-tab-complete
-  unset _ftb_force_list
+  {
+    zstyle ':completion:*' menu yes
+    zle fzf-tab-complete
+  } always {
+    zstyle ':completion:*' menu no
+  }
 }
 zle -N fzf-tab-list
 bindkey '^[[Z' fzf-tab-list                       # Shift-Tab
 
 # === syntax highlighting (MUST be last of the plugin sources) =====
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source "$_plugin_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+unset _plugin_dir _p10k_theme
 
 # === p10k prompt config — keep at the very BOTTOM =================
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
