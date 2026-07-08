@@ -1,10 +1,27 @@
 # dotfiles
 
-Platform setup scripts install apps and tools. Dotfiles are managed with
-platform-specific chezmoi source directories:
+Platform setup scripts install apps and tools. Dotfiles are managed by chezmoi
+from a single shared source directory, `home/`, which uses templates to handle
+per-OS differences (plugin paths, ghostty settings) and `.chezmoiignore` to
+skip files that don't apply to the current OS.
 
-- `macos/chezmoi`
-- `linux/chezmoi`
+Apply dotfiles on any platform:
+
+```bash
+./apply.sh
+```
+
+Preview changes first:
+
+```bash
+./apply.sh --dry-run --verbose
+```
+
+Extra arguments are passed through to `chezmoi apply`. With `just`:
+
+```bash
+just apply
+```
 
 ## macOS
 
@@ -14,10 +31,10 @@ Install apps and CLI tools with Homebrew:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/bootstrap.sh)"
 ```
 
-Then clone the repo and apply the macOS dotfiles:
+Then clone the repo and apply the dotfiles:
 
 ```bash
-git clone https://github.com/vsharha/dotfiles.git ~/dotfiles && ~/dotfiles/macos/apply.sh
+git clone https://github.com/vsharha/dotfiles.git ~/dotfiles && ~/dotfiles/apply.sh
 ```
 
 The macOS bootstrap installs `chezmoi` from `macos/Brewfile`.
@@ -29,38 +46,23 @@ Clone the repo, then run the Linux bootstrap and apply dotfiles:
 ```bash
 git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
 ~/dotfiles/linux/bootstrap.sh
-~/dotfiles/linux/apply.sh
+~/dotfiles/apply.sh
 ```
 
-After the first bootstrap installs `just`, Linux setup can also be run from the
-repo root with:
+After the first bootstrap installs `just`, the full setup flow (bootstrap +
+apply) is available from the repo root with:
 
 ```bash
-just linux
+just setup
 ```
 
-The Linux bootstrap currently supports CachyOS and installs `chezmoi` from
-`linux/cachyos/packages.txt`.
+Recipes are OS-aware: `just --list` only shows the ones relevant to the
+current OS, and `just bootstrap`/`just setup` run the right platform variant.
 
-## Chezmoi
-
-Use the platform apply wrappers instead of running `chezmoi` directly:
-
-```bash
-~/dotfiles/macos/apply.sh
-~/dotfiles/linux/apply.sh
-```
-
-Both wrappers pass extra arguments through to `chezmoi apply`, so previewing is
-available with:
-
-```bash
-~/dotfiles/macos/apply.sh --dry-run --verbose
-~/dotfiles/linux/apply.sh --dry-run --verbose
-```
-
-The old `symlinks.sh` scripts are kept as compatibility wrappers and now call
-the matching `apply.sh`.
+The Linux bootstrap currently supports CachyOS. It installs packages (including
+`chezmoi`, zsh, and the same zsh plugins used on macOS) from
+`linux/cachyos/packages.txt` and `linux/cachyos/aur-packages.txt`, and sets zsh
+as the login shell so both systems share the same `.zshrc` and p10k config.
 
 ## Windows
 
@@ -69,3 +71,8 @@ Run this in PowerShell to set up a new PC:
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; irm https://raw.githubusercontent.com/vsharha/dotfiles/main/windows/bootstrap.ps1 | iex
 ```
+
+## Browser
+
+`browser/sponsorblock/config.json` is a manual backup of SponsorBlock settings;
+nothing applies it automatically — import it through the extension's UI.
