@@ -93,6 +93,12 @@ autoload -U select-word-style
 select-word-style bash
 
 {{ end -}}
+
+# zsh defaults ^U to kill-whole-line; standard bash uses it to clear
+# to the beginning of the line. We match bash so Cmd+Backspace (which
+# Ghostty maps to ^U on macOS) clears only behind the cursor.
+bindkey '^U' backward-kill-line
+
 # === Shift+arrows selection (GUI-editor style) ====================
 # Vendored plugin (not packaged for Arch or Homebrew). Shift+Home/End and
 # Shift+Ctrl (Linux) / Shift+Option (macOS) +arrows select by word; typing
