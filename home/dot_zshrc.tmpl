@@ -67,8 +67,10 @@ source "$_plugin_dir/zsh-history-substring-search/zsh-history-substring-search.z
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
+{{ if eq .chezmoi.os "linux" -}}
 # === line navigation ==============================================
 # zsh's emacs keymap doesn't bind these; both CSI variants covered.
+# macOS doesn't need this — Cmd/Option arrows are handled by the terminal.
 bindkey '^[[H'    beginning-of-line        # Home
 bindkey '^[[1~'   beginning-of-line
 bindkey '^[OH'    beginning-of-line
@@ -77,9 +79,9 @@ bindkey '^[[4~'   end-of-line
 bindkey '^[OF'    end-of-line
 bindkey '^[[1;5D' backward-word            # Ctrl-Left
 bindkey '^[[1;5C' forward-word             # Ctrl-Right
-bindkey '^[[1;6D' backward-word            # Ctrl-Shift-Left
-bindkey '^[[1;6C' forward-word             # Ctrl-Shift-Right
 bindkey '^[[3~'   delete-char              # Delete
+
+{{ end -}}
 
 # === Tab / Shift-Tab behaviour ====================================
 # zsh-autosuggestions wraps every widget to blank $POSTDISPLAY before it runs, so
