@@ -6,6 +6,10 @@ theme = "Apple System Colors"
 font-feature = -liga
 background-opacity = 0.95
 background-blur-radius = 80
+# Let Shift+Home/End reach zsh for shift-select instead of adjusting the
+# terminal's scrollback selection.
+keybind = shift+home=unbind
+keybind = shift+end=unbind
 {{ else -}}
 keybind = performable:ctrl+c=copy_to_clipboard
 keybind = ctrl+v=paste_from_clipboard

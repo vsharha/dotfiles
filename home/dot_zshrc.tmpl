@@ -92,9 +92,11 @@ bindkey '^[[3;5~' kill-word                # Ctrl-Delete
 autoload -U select-word-style
 select-word-style bash
 
-# Shift+arrows selection, GUI-editor style (vendored plugin; not packaged
-# for Arch). Shift+Home/End and Ctrl+Shift+arrows select too; typing or
-# Backspace replaces/deletes the selection.
+{{ end -}}
+# === Shift+arrows selection (GUI-editor style) ====================
+# Vendored plugin (not packaged for Arch or Homebrew). Shift+Home/End and
+# Shift+Ctrl (Linux) / Shift+Option (macOS) +arrows select by word; typing
+# or Backspace replaces/deletes the selection.
 source ~/.config/zsh/zsh-shift-select.zsh
 
 # Ctrl-X: copy the selection (or the whole line if none) to the system
@@ -103,18 +105,17 @@ source ~/.config/zsh/zsh-shift-select.zsh
 copy-selection() {
   if (( REGION_ACTIVE )); then
     zle copy-region-as-kill
-    print -rn -- "$CUTBUFFER" | wl-copy 2>/dev/null
+    print -rn -- "$CUTBUFFER" | {{ if eq .chezmoi.os "darwin" }}pbcopy{{ else }}wl-copy 2>/dev/null{{ end }}
     zle deactivate-region
     zle -K main
   else
-    print -rn -- "$BUFFER" | wl-copy 2>/dev/null
+    print -rn -- "$BUFFER" | {{ if eq .chezmoi.os "darwin" }}pbcopy{{ else }}wl-copy 2>/dev/null{{ end }}
   fi
 }
 zle -N copy-selection
 bindkey '^X' copy-selection
 bindkey -M shift-select '^X' copy-selection
 
-{{ end -}}
 
 # === Tab / Shift-Tab behaviour ====================================
 # zsh-autosuggestions wraps every widget to blank $POSTDISPLAY before it runs, so
