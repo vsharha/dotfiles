@@ -99,22 +99,23 @@ select-word-style bash
 # or Backspace replaces/deletes the selection.
 source ~/.config/zsh/zsh-shift-select.zsh
 
-# Ctrl-X: copy the selection (or the whole line if none) to the system
-# clipboard, fish-style. Must be bound in the plugin's shift-select keymap
-# too — during a selection, keys unbound there deselect before re-running.
-copy-selection() {
-  if (( REGION_ACTIVE )); then
-    zle copy-region-as-kill
-    print -rn -- "$CUTBUFFER" | {{ if eq .chezmoi.os "darwin" }}pbcopy{{ else }}wl-copy 2>/dev/null{{ end }}
-    zle deactivate-region
-    zle -K main
-  else
-    print -rn -- "$BUFFER" | {{ if eq .chezmoi.os "darwin" }}pbcopy{{ else }}wl-copy 2>/dev/null{{ end }}
+# Ctrl-C: GUI-editor behaviour — if a selection is active, copy it to the
+# system clipboard and keep editing; otherwise the usual interrupt. Only
+# fires at the prompt: a running foreground program is in its own process
+# group and receives SIGINT directly, never through this trap. Reads zle
+# state as plain parameters instead of calling widgets — widget calls from
+# a signal handler can intermittently crash zsh.
+TRAPINT() {
+  if zle && (( REGION_ACTIVE )); then
+    local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
+    local _to=$(( MARK > CURSOR ? MARK : CURSOR ))
+    print -rn -- "${BUFFER[_from,_to]}" | {{ if eq .chezmoi.os "darwin" }}pbcopy{{ else }}wl-copy 2>/dev/null{{ end }}
+    REGION_ACTIVE=0
+    zle -R
+    return 0
   fi
+  return $(( 128 + $1 ))
 }
-zle -N copy-selection
-bindkey '^X' copy-selection
-bindkey -M shift-select '^X' copy-selection
 
 
 # === Tab / Shift-Tab behaviour ====================================
