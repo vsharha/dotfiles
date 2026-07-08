@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 THEME_REPO="https://github.com/bobafetthotmail/refind-theme-regular.git"
 THEME_NAME="refind-theme-regular"
 INCLUDE_LINE="include themes/$THEME_NAME/theme.conf"
@@ -57,15 +58,7 @@ rm -rf "$WORK_DIR"
 git clone "$THEME_REPO" "$WORK_DIR"
 
 cd "$WORK_DIR"
-cp src/theme.conf theme.conf
-sed -i \
-  -e "s/#icons_dir themes\/$THEME_NAME\/icons\/256-96/icons_dir themes\/$THEME_NAME\/icons\/256-96/" \
-  -e "s/#big_icon_size 256/big_icon_size 256/" \
-  -e "s/#small_icon_size 96/small_icon_size 96/" \
-  -e "s/#banner themes\/$THEME_NAME\/icons\/256-96\/bg_dark.png/banner themes\/$THEME_NAME\/icons\/256-96\/bg_dark.png/" \
-  -e "s/#selection_big themes\/$THEME_NAME\/icons\/256-96\/selection_dark-big.png/selection_big themes\/$THEME_NAME\/icons\/256-96\/selection_dark-big.png/" \
-  -e "s/#selection_small themes\/$THEME_NAME\/icons\/256-96\/selection_dark-small.png/selection_small themes\/$THEME_NAME\/icons\/256-96\/selection_dark-small.png/" \
-  theme.conf
+cp "$SCRIPT_DIR/refind-theme-regular.conf" theme.conf
 
 rm -rf src .git .devcontainer install.sh .gitignore
 
