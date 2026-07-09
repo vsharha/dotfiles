@@ -15,10 +15,10 @@ keybind = shift+end=unbind
 # zsh shift-select plugin already handles.
 keybind = super+shift+arrow_left=text:\x1b[1;2H
 keybind = super+shift+arrow_right=text:\x1b[1;2F
-# Cmd+C: forward to zsh (as CSI-u super+c) to copy the keyboard selection.
-# Loses nothing for mouse selections — copy-on-select already puts those on
-# the clipboard on macOS.
-keybind = super+c=text:\x1b[99;9u
+# Cmd+C: copy Ghostty's mouse selection when present.
+keybind = performable:super+c=copy_to_clipboard
+# Cmd+Shift+C: forward to zsh to copy the keyboard selection.
+keybind = super+shift+c=text:\x1b[99;9u
 {{ else -}}
 theme = "Apple System Colors"
 background-opacity = 0.98

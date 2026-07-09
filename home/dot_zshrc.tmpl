@@ -135,7 +135,7 @@ source ~/.config/zsh/zsh-shift-select.zsh
 # it needs TRAPINT; Powerlevel10k's precmd hook unconditionally reclaims the
 # INT trap every prompt cycle for its own async worker, silently overwriting
 # any TRAPINT we define. Copying the keyboard selection instead lives on
-# Cmd+C (macOS) / Ctrl+Shift+C (Linux), which ghostty re-encodes as a CSI-u
+# Cmd+Shift+C (macOS) / Ctrl+Shift+C (Linux), which ghostty re-encodes as a CSI-u
 # escape sequence bound to a normal zle keybinding below — no signal/trap
 # involved, so it can't be clobbered.
 {{ if eq .chezmoi.os "darwin" -}}
