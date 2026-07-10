@@ -39,6 +39,18 @@ path=(
 )
 {{ end -}}
 
+# === history ======================================================
+# Explicit config so every OS behaves the same — macOS caps SAVEHIST at
+# 1000 in /etc/zshrc and Linux distros vary. Large limits keep fzf Ctrl-R
+# and the history-based autosuggestions useful long-term.
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt inc_append_history     # write each command as it runs, not on exit
+setopt hist_ignore_all_dups   # drop older duplicates so Ctrl-R shows unique lines
+setopt hist_ignore_space      # leading space keeps a command out of history
+setopt hist_reduce_blanks     # normalise whitespace before saving
+
 # === aliases ======================================================
 alias python=python3
 alias pip='pip3'
