@@ -1,9 +1,10 @@
 # dotfiles
 
 Platform setup scripts install apps and tools. Dotfiles are managed by chezmoi
-from a single shared source directory, `home/`, which uses templates to handle
-per-OS differences (plugin paths, ghostty settings) and `.chezmoiignore` to
-skip files that don't apply to the current OS.
+from two source layers: a shared `home/` directory, which uses templates to
+handle per-OS differences (plugin paths, ghostty settings), plus a per-OS
+overlay (`macos/home/` or `linux/home/`) for files that only exist on one OS.
+`apply.sh` applies both in turn.
 
 Apply dotfiles on any platform:
 
