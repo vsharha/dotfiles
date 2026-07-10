@@ -14,15 +14,29 @@ elif [ -x /usr/local/bin/brew ]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-# Fetch the Brewfile and install everything
+# Use the local repo files when run from a checkout; fall back to fetching
+# from GitHub for the curl-pipe first-run case (no repo cloned yet).
+SCRIPT_DIR=""
+if [ -n "${BASH_SOURCE[0]:-}" ]; then
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
+
 echo "Installing apps..."
-BREWFILE="$(mktemp)"
-curl -fsSL "https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/Brewfile" -o "$BREWFILE"
-brew bundle install --file="$BREWFILE"
-rm -f "$BREWFILE"
+if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/Brewfile" ]; then
+  brew bundle install --file="$SCRIPT_DIR/Brewfile"
+else
+  BREWFILE="$(mktemp)"
+  curl -fsSL "https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/Brewfile" -o "$BREWFILE"
+  brew bundle install --file="$BREWFILE"
+  rm -f "$BREWFILE"
+fi
 
 echo "Done."
 
 # Remind about apps that must be installed by hand
 echo
-curl -fsSL "https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/MANUAL.md" 2>/dev/null || true
+if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/MANUAL.md" ]; then
+  cat "$SCRIPT_DIR/MANUAL.md"
+else
+  curl -fsSL "https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/MANUAL.md" 2>/dev/null || true
+fi
