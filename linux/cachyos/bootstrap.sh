@@ -38,6 +38,12 @@ configure_snapper() {
   sudo systemctl enable --now snapper-timeline.timer snapper-cleanup.timer
 }
 
+add_user_to_gamemode_group() {
+  if getent group gamemode >/dev/null 2>&1 && ! id -nG "$USER" | grep -qw gamemode; then
+    sudo usermod -aG gamemode "$USER"
+  fi
+}
+
 enable_user_services() {
   if ! command -v syncthing >/dev/null 2>&1; then
     return 0
@@ -58,6 +64,7 @@ sudo pacman -Syu --noconfirm
 install_pacman_packages
 install_aur_packages
 set_login_shell
+add_user_to_gamemode_group
 configure_snapper
 enable_user_services
 
