@@ -17,7 +17,7 @@ kwriteconfig6 \
   --key "Switch to Next Keyboard Layout" \
   "Alt+Shift,Meta+Alt+K,Switch to Next Keyboard Layout"
 
-kwriteconfig6 --file ksmserverrc --group General --key loginMode restoreSavedSession
+kwriteconfig6 --file ksmserverrc --group General --key loginMode emptySession
 
 # Adaptive Sync is configured per output and is available in Plasma Wayland.
 if [[ ${XDG_SESSION_TYPE:-} == wayland ]] && command -v kscreen-doctor >/dev/null 2>&1; then
