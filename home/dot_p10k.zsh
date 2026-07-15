@@ -117,6 +117,14 @@
     # example               # example user-defined segment (see prompt_example function below)
   )
 
+  # Keep the full information line in Ghostty. Other terminals get only the
+  # prompt character on the command line; syntax highlighting and suggestions
+  # are configured separately in .zshrc and remain enabled.
+  if [[ ${TERM_PROGRAM:-} != ghostty ]]; then
+    typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(prompt_char)
+    typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
+  fi
+
   # Defines character set used by powerlevel10k. It's best to let `p10k configure` set it for you.
   typeset -g POWERLEVEL9K_MODE=nerdfont-v3
   # When set to `moderate`, some icons will have an extra space after them. This is meant to avoid
@@ -136,8 +144,12 @@
   #   POWERLEVEL9K_DIR_NOT_WRITABLE_ICON_BEFORE_CONTENT=false
   typeset -g POWERLEVEL9K_ICON_BEFORE_CONTENT=
 
-  # Add an empty line before each prompt.
-  typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+  # Keep the spacious prompt layout only in Ghostty.
+  if [[ ${TERM_PROGRAM:-} == ghostty ]]; then
+    typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+  else
+    typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
+  fi
 
   # Connect left prompt lines with these symbols. You'll probably want to use the same color
   # as POWERLEVEL9K_MULTILINE_FIRST_PROMPT_GAP_FOREGROUND below.
