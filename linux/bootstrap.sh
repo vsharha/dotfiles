@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if grep -qi '^ID=.*cachyos' /etc/os-release 2>/dev/null; then
   "$SCRIPT_DIR/cachyos/bootstrap.sh"
-  "$SCRIPT_DIR/kde.sh"
+  "$SCRIPT_DIR/desktop/kde.sh"
   exit 0
 fi
 

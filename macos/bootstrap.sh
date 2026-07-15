@@ -35,8 +35,4 @@ echo "Done."
 
 # Remind about apps that must be installed by hand
 echo
-if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/MANUAL.md" ]; then
-  cat "$SCRIPT_DIR/MANUAL.md"
-else
-  curl -fsSL "https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/MANUAL.md" 2>/dev/null || true
-fi
+echo "Manual install: Grab2Text — https://grab2text.com"

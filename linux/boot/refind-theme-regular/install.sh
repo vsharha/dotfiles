@@ -58,7 +58,7 @@ rm -rf "$WORK_DIR"
 git clone "$THEME_REPO" "$WORK_DIR"
 
 cd "$WORK_DIR"
-cp "$SCRIPT_DIR/refind-theme-regular.conf" theme.conf
+cp "$SCRIPT_DIR/theme.conf" theme.conf
 
 rm -rf src .git .devcontainer install.sh .gitignore
 

@@ -1,12 +1,12 @@
 # dotfiles
 
-Platform setup scripts install apps and tools. Dotfiles are managed by chezmoi
-from two source layers: a shared `home/` directory, which uses templates to
-handle per-OS differences (plugin paths, ghostty settings), plus a per-OS
-overlay (`macos/home/` or `linux/home/`) for files that only exist on one OS.
-`apply.sh` applies both in turn.
+Personal setup for macOS, CachyOS, and Windows. Platform bootstraps install
+applications and tools; chezmoi manages home-directory configuration on macOS
+and Linux.
 
-Apply dotfiles on any platform:
+## Dotfiles
+
+Apply the shared dotfiles and the current OS-specific configuration:
 
 ```bash
 ./apply.sh
@@ -18,31 +18,40 @@ Preview changes first:
 ./apply.sh --dry-run --verbose
 ```
 
-Extra arguments are passed through to `chezmoi apply`. With `just`:
-
-```bash
-just apply
-```
+Extra arguments are passed to `chezmoi apply`. Once `just` is installed, use
+`just apply` to apply dotfiles, `just setup` to bootstrap and apply everything,
+and `just --list` to show commands relevant to the current system.
 
 ## macOS
 
-Install apps and CLI tools with Homebrew:
+Bootstrap a new Mac before cloning the repository:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/bootstrap.sh)"
 ```
 
-Then clone the repo and apply the dotfiles:
+Then clone the repository and apply dotfiles:
 
 ```bash
-git clone https://github.com/vsharha/dotfiles.git ~/dotfiles && ~/dotfiles/apply.sh
+git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
+~/dotfiles/apply.sh
 ```
 
-The macOS bootstrap installs `chezmoi` from `macos/Brewfile`.
+From an existing checkout, run the complete flow with `just setup`.
+
+Update the Homebrew package manifest with:
+
+```bash
+brew bundle dump --file=macos/Brewfile --force
+```
+
+Install [Grab2Text](https://grab2text.com) manually because it is unavailable
+through Homebrew and the Mac App Store.
 
 ## Linux
 
-Clone the repo, then run the Linux bootstrap and apply dotfiles:
+Linux setup currently supports CachyOS. Clone the repository, bootstrap the
+system, then apply dotfiles:
 
 ```bash
 git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
@@ -50,30 +59,39 @@ git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
 ~/dotfiles/apply.sh
 ```
 
-After the first bootstrap installs `just`, the full setup flow (bootstrap +
-apply) is available from the repo root with:
+The bootstrap installs the configured packages, sets zsh as the login shell,
+enables applicable services, and applies the KDE configuration. After the first
+bootstrap installs `just`, the complete flow is available as `just setup`.
+
+Optional system configuration:
 
 ```bash
-just setup
+just gaming-pc    # Gaming PC configuration
+just dualsense    # DualSense UCM workaround
+just refind-theme # rEFInd Regular theme
 ```
 
-Recipes are OS-aware: `just --list` only shows the ones relevant to the
-current OS, and `just bootstrap`/`just setup` run the right platform variant.
-
-The Linux bootstrap currently supports CachyOS. It installs packages (including
-`chezmoi`, zsh, and the same zsh plugins used on macOS) from
-`linux/cachyos/packages.txt` and `linux/cachyos/aur-packages.txt`, and sets zsh
-as the login shell so both systems share the same `.zshrc` and p10k config.
+Set `REFIND_DIR` before `just refind-theme` if rEFInd is not installed under
+one of the common EFI paths.
 
 ## Windows
 
-Run this in PowerShell to set up a new PC:
+Run this in PowerShell on a new PC:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; irm https://raw.githubusercontent.com/vsharha/dotfiles/main/windows/bootstrap.ps1 | iex
 ```
 
-## Browser
+Update the Windows Package Manager manifest from the repository root with:
 
-`browser/sponsorblock/config.json` is a manual backup of SponsorBlock settings;
-nothing applies it automatically — import it through the extension's UI.
+```powershell
+winget export --output windows/apps.json --accept-source-agreements
+```
+
+Windows setup currently restores applications only; it does not apply the
+macOS/Linux chezmoi configuration.
+
+## Manual backups
+
+`backups/sponsorblock/config.json` is a manual SponsorBlock settings export.
+Import it through the extension UI; no setup command applies it.

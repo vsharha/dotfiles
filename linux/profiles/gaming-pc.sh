@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-FASTFETCH_SRC="$SCRIPT_DIR/fastfetch.jsonc"
-FASTFETCH_DEST="${XDG_CONFIG_HOME:-$HOME/.config}/fastfetch/config.jsonc"
-
 write_root_file() {
   local path="$1"
 
@@ -21,8 +17,5 @@ write_root_file /etc/modprobe.d/rtw89.conf <<'EOF'
 options rtw89_core disable_ps_mode=1
 options rtw89_pci disable_aspm_l1=1 disable_aspm_l1ss=1 disable_clkreq=1
 EOF
-
-install -Dm644 "$FASTFETCH_SRC" "$FASTFETCH_DEST"
-echo "write  fastfetch/config.jsonc"
 
 echo "Gaming PC hardware config applied."

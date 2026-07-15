@@ -1,7 +1,7 @@
 default:
     just --list
 
-# Apply dotfiles (chezmoi, shared source in home/)
+# Apply shared and OS-specific dotfiles with chezmoi
 apply *args:
     ./apply.sh {{args}}
 
@@ -20,16 +20,16 @@ setup: bootstrap apply
 
 [linux]
 kde:
-    ./linux/kde.sh
+    ./linux/desktop/kde.sh
 
 [linux]
 gaming-pc:
-    ./linux/hardware/gaming-pc-amd-7800x3d-rx9070xt.sh
+    ./linux/profiles/gaming-pc.sh
 
 [linux]
 dualsense:
-    ./linux/hardware/dualsense-ucm-fix.sh
+    ./linux/fixes/dualsense-ucm.sh
 
 [linux]
 refind-theme:
-    ./linux/boot/refind-theme-regular.sh
+    ./linux/boot/refind-theme-regular/install.sh
