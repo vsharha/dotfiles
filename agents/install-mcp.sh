@@ -10,12 +10,20 @@ for cmd in npx jq uvx; do
   fi
 done
 
-while IFS= read -r name; do
+agent_args=(--agent claude-code --agent codex)
+for agent in "$@"; do
+  agent_args+=(--agent "$agent")
+done
+
+while IFS= read -r name <&3; do
   [ -n "$name" ] || continue
 
   source="$(jq -r --arg name "$name" '.mcpServers[$name]' "$SCRIPT_DIR/mcp.json")"
   source="${source/#\~/$HOME}"
 
-  # With no --agent flags, the CLI installs to the agents it detects.
-  npx -y add-mcp@latest "$source" --name "$name" --global --yes
-done < <(jq -r '.mcpServers | keys[]' "$SCRIPT_DIR/mcp.json")
+  npx -y add-mcp@latest "$source" \
+    --name "$name" \
+    --global \
+    "${agent_args[@]}" \
+    --yes
+done 3< <(jq -r '.mcpServers | keys[]' "$SCRIPT_DIR/mcp.json")

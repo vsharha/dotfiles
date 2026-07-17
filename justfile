@@ -5,13 +5,13 @@ default:
 apply *args:
     ./apply.sh {{ args }}
 
-# Install agent skills for detected coding agents
-skills:
-    ./agents/install-skills.sh
+# Install agent skills for Claude Code and any additional agents
+skills *agents:
+    ./agents/install-skills.sh {{ agents }}
 
-# Install MCP servers for detected coding agents
-mcp:
-    ./agents/install-mcp.sh
+# Install MCP servers for Claude Code, Codex, and any additional agents
+mcp *agents:
+    ./agents/install-mcp.sh {{ agents }}
 
 # Install apps and CLI tools with Homebrew
 [macos]

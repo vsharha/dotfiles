@@ -10,7 +10,12 @@ for cmd in npx jq; do
   fi
 done
 
-while IFS= read -r repo; do
+agent_args=(--agent claude-code)
+for agent in "$@"; do
+  agent_args+=(--agent "$agent")
+done
+
+while IFS= read -r repo <&3; do
   [ -n "$repo" ] || continue
 
   args=()
@@ -18,6 +23,9 @@ while IFS= read -r repo; do
     args+=(--skill "$skill")
   done < <(jq -r --arg repo "$repo" '.skills[$repo][]' "$SCRIPT_DIR/skills.json")
 
-  # With no --agent flags, the CLI installs to the agents it detects.
-  npx -y skills@latest add "$repo" --global "${args[@]}" --yes
-done < <(jq -r '.skills | keys[]' "$SCRIPT_DIR/skills.json")
+  npx -y skills@latest add "$repo" \
+    --global \
+    "${agent_args[@]}" \
+    "${args[@]}" \
+    --yes
+done 3< <(jq -r '.skills | keys[]' "$SCRIPT_DIR/skills.json")
