@@ -1,0 +1,10 @@
+{{ if ne .chezmoi.os "darwin" }}
+.config/linearmouse
+{{ end }}
+{{ if ne .chezmoi.os "linux" }}
+.config/MangoHud
+.config/fastfetch
+.config/gamemode.ini
+.config/helium-browser-flags.conf
+.local/bin/vrr
+{{ end }}
