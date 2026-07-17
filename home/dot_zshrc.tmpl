@@ -28,7 +28,7 @@ source "$_p10k_theme"
 
 # === PATH / environment ===========================================
 typeset -U path
-path=("$PNPM_HOME" "$HOME/go/bin" $path)
+path=("$PNPM_HOME" "$HOME/.local/bin" "$HOME/go/bin" $path)
 {{ if eq .chezmoi.os "darwin" -}}
 path=(
   /opt/homebrew/opt/openjdk/bin
