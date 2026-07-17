@@ -19,18 +19,4 @@ kwriteconfig6 \
 
 kwriteconfig6 --file ksmserverrc --group General --key loginMode emptySession
 
-# Adaptive Sync is configured per output and is available in Plasma Wayland.
-if [[ ${XDG_SESSION_TYPE:-} == wayland ]] && command -v kscreen-doctor >/dev/null 2>&1; then
-  mapfile -t vrr_outputs < <(
-    kscreen-doctor --outputs | awk '
-      /^Output:/ { output = $2 }
-      /^Vrr: capable$/ { print output }
-    '
-  )
-
-  for output in "${vrr_outputs[@]}"; do
-    kscreen-doctor "output.${output}.vrrpolicy.automatic"
-  done
-fi
-
 echo "KDE config applied."

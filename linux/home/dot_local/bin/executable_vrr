@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+policy="${1:-}"
+case "$policy" in
+  never | automatic | always) ;;
+  *)
+    echo "usage: ${0##*/} <never|automatic|always>" >&2
+    exit 2
+    ;;
+esac
+
+# Adaptive Sync is per-output and Wayland-only. Gate on WAYLAND_DISPLAY rather
+# than XDG_SESSION_TYPE: gamemode hooks inherit the former but not the latter.
+[[ -n ${WAYLAND_DISPLAY:-} ]] || exit 0
+command -v kscreen-doctor >/dev/null 2>&1 || exit 0
+
+# kscreen-doctor colourises its output, so strip escapes before parsing.
+mapfile -t outputs < <(
+  kscreen-doctor --outputs 2>/dev/null |
+    sed -e 's/\x1b\[[0-9;]*m//g' |
+    awk '
+      /^Output:/ { name = $3; enabled = 0 }
+      /^[[:space:]]*enabled$/ { enabled = 1 }
+      /^[[:space:]]*Vrr:/ { if (enabled && $2 != "incapable") print name }
+    '
+)
+
+((${#outputs[@]})) || exit 0
+
+for output in "${outputs[@]}"; do
+  kscreen-doctor "output.${output}.vrrpolicy.${policy}" >/dev/null
+done
