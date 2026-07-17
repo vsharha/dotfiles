@@ -17,7 +17,7 @@ done
 
 # Provides the notebooklm-mcp binary that mcp.json points at. Already-installed
 # tools are left at their current version; upgrade with `uv tool upgrade`.
-uv tool install notebooklm-mcp-cli
+uv tool install notebooklm-mcp-cli >/dev/null
 
 while IFS= read -r name; do
   [ -n "$name" ] || continue
