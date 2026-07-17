@@ -6,21 +6,22 @@ and Linux.
 
 ## Dotfiles
 
-Apply the shared dotfiles and the current OS-specific configuration:
+After running the bootstrap for the current platform, use `just` from the
+repository root to manage the setup:
 
 ```bash
-./apply.sh
+just apply
 ```
 
 Preview changes first:
 
 ```bash
-./apply.sh --dry-run --verbose
+just apply --dry-run --verbose
 ```
 
-Extra arguments are passed to `chezmoi apply`. Once `just` is installed, use
-`just apply` to apply dotfiles, `just setup` to bootstrap and apply everything,
-and `just --list` to show commands relevant to the current system.
+Extra arguments are passed to `chezmoi apply`. Use `just setup` to rerun the
+platform bootstrap and apply everything, and `just --list` to show commands
+relevant to the current system.
 
 ## macOS
 
@@ -30,11 +31,13 @@ Bootstrap a new Mac before cloning the repository:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/bootstrap.sh)"
 ```
 
-Then clone the repository and apply dotfiles:
+After the bootstrap completes, clone the repository and apply the dotfiles with
+`just`:
 
 ```bash
 git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
-~/dotfiles/apply.sh
+cd ~/dotfiles
+just apply
 ```
 
 From an existing checkout, run the complete flow with `just setup`.
@@ -50,18 +53,19 @@ through Homebrew and the Mac App Store.
 
 ## Linux
 
-Linux setup currently supports CachyOS. Clone the repository, bootstrap the
-system, then apply dotfiles:
+Linux setup currently supports CachyOS. Clone the repository and run the
+bootstrap first, then use `just` to apply the dotfiles:
 
 ```bash
 git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
-~/dotfiles/linux/bootstrap.sh
-~/dotfiles/apply.sh
+cd ~/dotfiles
+./linux/bootstrap.sh
+just apply
 ```
 
 The bootstrap installs the configured packages, sets zsh as the login shell,
-enables applicable services, and applies the KDE configuration. After the first
-bootstrap installs `just`, the complete flow is available as `just setup`.
+enables applicable services, applies the KDE configuration, and installs
+`just`. From then on, use `just setup` to rerun the complete flow.
 
 Optional system configuration:
 
