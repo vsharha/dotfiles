@@ -1,0 +1,6 @@
+{
+  "skills": {
+    "cloudflare/skills": ["*"],
+    "anthropics/skills": ["frontend-design"]
+  }
+}

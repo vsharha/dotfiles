@@ -5,6 +5,10 @@ default:
 apply *args:
     ./apply.sh {{args}}
 
+# Install agent skills for Claude Code and Codex
+skills:
+    ./agents/install-skills.sh
+
 # Install apps and CLI tools with Homebrew
 [macos]
 bootstrap:
