@@ -178,7 +178,6 @@ bindkey -M shift-select '^[[99;6u' copy-selection
 typeset -ga ZSH_AUTOSUGGEST_IGNORE_WIDGETS
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(smart-tab)
 
-# Tab: accept the grey suggestion if showing, else open the fzf-tab picker.
 smart-tab() {
   if [[ -n "$POSTDISPLAY" ]]; then
     zle autosuggest-accept

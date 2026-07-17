@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Install Homebrew if missing
 if ! command -v brew >/dev/null 2>&1; then
   echo "Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -33,6 +32,5 @@ fi
 
 echo "Done."
 
-# Remind about apps that must be installed by hand
 echo
 echo "Manual install: Grab2Text — https://grab2text.com"

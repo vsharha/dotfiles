@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Install the MCP servers declared in mcp.json for Claude Code and Codex.
 # Neither tool takes a config file we can own: Claude keeps servers in
 # ~/.claude.json alongside its state, Codex in ~/.codex/config.toml. So drive
 # their CLIs instead. Servers the apps manage themselves are left alone.
