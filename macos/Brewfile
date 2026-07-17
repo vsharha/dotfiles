@@ -5,8 +5,6 @@
 
 # === Taps ===
 tap "ddev/ddev"
-tap "oven-sh/bun"
-tap "pantheon-systems/external"
 
 # === Formulae (CLI tools — only what was installed on request) ===
 brew "act"
@@ -32,7 +30,6 @@ brew "ollama"
 brew "opencode"
 brew "openjdk"
 brew "pandoc"
-brew "pantheon-systems/external/terminus"
 brew "pipx"
 brew "pnpm"
 brew "poppler"
