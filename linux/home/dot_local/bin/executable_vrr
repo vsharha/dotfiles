@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-policy="${1:-}"
-case "$policy" in
-  never | automatic | always) ;;
+action="${1:-}"
+case "$action" in
+  enable | restore) ;;
   *)
-    echo "usage: ${0##*/} <never|automatic|always>" >&2
+    echo "usage: ${0##*/} <enable|restore>" >&2
     exit 2
     ;;
 esac
@@ -14,20 +14,39 @@ esac
 # than XDG_SESSION_TYPE: gamemode hooks inherit the former but not the latter.
 [[ -n ${WAYLAND_DISPLAY:-} ]] || exit 0
 command -v kscreen-doctor >/dev/null 2>&1 || exit 0
+command -v jq >/dev/null 2>&1 || exit 0
 
-# kscreen-doctor colourises its output, so strip escapes before parsing.
-mapfile -t outputs < <(
-  kscreen-doctor --outputs 2>/dev/null |
-    sed -e 's/\x1b\[[0-9;]*m//g' |
-    awk '
-      /^Output:/ { name = $3; enabled = 0 }
-      /^[[:space:]]*enabled$/ { enabled = 1 }
-      /^[[:space:]]*Vrr:/ { if (enabled && $2 != "incapable") print name }
-    '
-)
+state_file="${XDG_RUNTIME_DIR:-/tmp}/gamemode-vrr.state"
 
-((${#outputs[@]})) || exit 0
+# vrrPolicy is only present on VRR-capable outputs and holds the libkscreen
+# enum: 0 = never, 1 = always, 2 = automatic.
+list_outputs() {
+  kscreen-doctor --json 2>/dev/null |
+    jq -r '.outputs[]
+      | select(.enabled and has("vrrPolicy"))
+      | "\(.name)\t\(["never", "always", "automatic"][.vrrPolicy] // empty)"'
+}
 
-for output in "${outputs[@]}"; do
-  kscreen-doctor "output.${output}.vrrpolicy.${policy}" >/dev/null
-done
+case "$action" in
+  enable)
+    mapfile -t outputs < <(list_outputs)
+    ((${#outputs[@]})) || exit 0
+
+    # Snapshot once: a state file left behind by a crashed session still holds
+    # the pre-game policies, and re-snapshotting would capture the forced ones.
+    [[ -s $state_file ]] || printf '%s\n' "${outputs[@]}" >"$state_file"
+
+    for entry in "${outputs[@]}"; do
+      kscreen-doctor "output.${entry%%$'\t'*}.vrrpolicy.always" >/dev/null
+    done
+    ;;
+
+  restore)
+    [[ -f $state_file ]] || exit 0
+    # An output may have gone away mid-session; skip failures.
+    while IFS=$'\t' read -r output policy; do
+      kscreen-doctor "output.${output}.vrrpolicy.${policy}" >/dev/null || true
+    done <"$state_file"
+    rm -f "$state_file"
+    ;;
+esac
