@@ -3,13 +3,13 @@ default:
 
 # Apply shared and OS-specific dotfiles with chezmoi
 apply *args:
-    ./apply.sh {{args}}
+    ./apply.sh {{ args }}
 
-# Install agent skills for Claude Code and Codex
+# Install agent skills for detected coding agents
 skills:
     ./agents/install-skills.sh
 
-# Install MCP servers for Claude Code and Codex
+# Install MCP servers for detected coding agents
 mcp:
     ./agents/install-mcp.sh
 

@@ -18,6 +18,6 @@ while IFS= read -r repo; do
     args+=(--skill "$skill")
   done < <(jq -r --arg repo "$repo" '.skills[$repo][]' "$SCRIPT_DIR/skills.json")
 
-  npx -y skills@latest add "$repo" \
-    --global --agent claude-code --agent codex "${args[@]}" --yes
+  # With no --agent flags, the CLI installs to the agents it detects.
+  npx -y skills@latest add "$repo" --global "${args[@]}" --yes
 done < <(jq -r '.skills | keys[]' "$SCRIPT_DIR/skills.json")
