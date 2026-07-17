@@ -3,21 +3,15 @@
 # Update this file from the current machine:
 #   brew bundle dump --file=macos/Brewfile --force
 
-# === Taps ===
-tap "ddev/ddev"
-
 # === Formulae (CLI tools — only what was installed on request) ===
 brew "act"
 brew "chezmoi"
 brew "cloudflare-wrangler"
 brew "cloudflared"
-brew "composer"
-brew "ddev/ddev/ddev"
 brew "exiftool"
 brew "fastfetch"
 brew "ffmpeg"
 brew "gh"
-brew "glab"
 brew "go"
 brew "graphviz"
 brew "imagemagick"
