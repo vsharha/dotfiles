@@ -1,8 +1,21 @@
 # Personal defaults
 
-- Repository-local instructions are authoritative for project commands, validation, and Git workflow.
-- Never print or disclose secret values. When inspecting configuration, check only whether a value exists.
+Repository-local instructions are authoritative for project commands, validation, and Git workflow.
+
+## Secrets
+
+- Never print or disclose secret values. To check configuration, verify whether a key exists without revealing its value.
+- Never open `.env` files — only `.env.example` may be read normally.
+
+## Code quality
+
 - Avoid type, lint, and framework suppression directives. If one is unavoidable, explain why.
-- After each meaningful change, suggest creating a commit, provide a proposed commit message that matches the repository's recent commit-message style, and ask for permission before committing, unless repository-local guidance explicitly specifies a different Git workflow.
-- If repository guidance does not specify Git authorization, ask before pulling, rebasing, or pushing.
-- When committing, use the approved message and do not add agent attribution.
+
+## Git
+
+Unless repository-local guidance specifies a different workflow:
+
+- After each meaningful change, suggest a commit and ask for permission before committing.
+- Propose a message matching the repository's recent commit-message style.
+- If approved, commit with the approved message and do not add agent attribution.
+- Ask before pulling, rebasing, or pushing.
