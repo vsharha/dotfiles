@@ -122,9 +122,7 @@ cask "inkscape"
 cask "paintbrush"
 
 # === Casks: Gaming ===
-cask "modrinth"
 cask "prismlauncher"
-cask "roblox"
 cask "steam"
 
 # === Casks: LaTeX ===
@@ -142,7 +140,6 @@ mas "Compressor Creator Studio",     id: 6746516157
 mas "Final Cut Pro Creator Studio",  id: 1631624924
 mas "Pixelmator Pro Creator Studio", id: 6746662575
 mas "Canva",                         id: 897446215
-mas "OneDrive",                      id: 823766827
 
 # === Verify before enabling ===
 # Office: these casks install Microsoft's direct .pkg. Yours are App Store builds,
@@ -153,4 +150,4 @@ mas "OneDrive",                      id: 823766827
 # cask "microsoft-powerpoint"
 
 # === No Homebrew cask and not App Store — install manually ===
-# Google Docs/Sheets/Slides (Chrome PWAs), Grab2Text
+#  Grab2Text
