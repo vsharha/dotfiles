@@ -73,7 +73,9 @@ cask "visual-studio-code"
 
 # === Casks: Communication ===
 cask "discord"
+cask "telegram"
 cask "viber"
+cask "whatsapp"
 
 # === Casks: Productivity ===
 cask "applite"
@@ -84,9 +86,9 @@ cask "obsidian"
 cask "raycast"
 cask "readest"
 cask "shottr"
+cask "ticktick"
 
 # === Casks: Media ===
-cask "background-music"
 cask "handbrake-app"
 cask "iina"
 cask "jdownloader"
@@ -96,6 +98,7 @@ cask "yacreader"
 
 # === Casks: System / window management ===
 cask "betterdisplay"
+cask "hiddenbar"
 cask "karabiner-elements"
 cask "keka"
 cask "linearmouse"
@@ -139,11 +142,7 @@ mas "Compressor Creator Studio",     id: 6746516157
 mas "Final Cut Pro Creator Studio",  id: 1631624924
 mas "Pixelmator Pro Creator Studio", id: 6746662575
 mas "Canva",                         id: 897446215
-mas "Hidden Bar",                    id: 1452453066
 mas "OneDrive",                      id: 823766827
-mas "Telegram",                      id: 747648890
-mas "TickTick",                      id: 966085870
-mas "WhatsApp",                      id: 310633997
 
 # === Verify before enabling ===
 # Office: these casks install Microsoft's direct .pkg. Yours are App Store builds,
