@@ -15,6 +15,7 @@ brew "cloudflare-wrangler"
 brew "cloudflared"
 brew "composer"
 brew "ddev/ddev/ddev"
+brew "exiftool"
 brew "fastfetch"
 brew "ffmpeg"
 brew "gh"
@@ -60,7 +61,7 @@ cask "lm-studio"
 
 # === Casks: Browsers ===
 cask "google-chrome"
-cask "helium"
+cask "helium-browser"
 cask "zen"
 
 # === Casks: Development ===
@@ -68,14 +69,11 @@ cask "docker-desktop"
 cask "ghostty"
 cask "github"
 cask "jetbrains-toolbox"
-cask "ngrok"
 cask "visual-studio-code"
 
 # === Casks: Communication ===
 cask "discord"
-cask "telegram"
 cask "viber"
-cask "whatsapp"
 
 # === Casks: Productivity ===
 cask "applite"
@@ -86,11 +84,10 @@ cask "obsidian"
 cask "raycast"
 cask "readest"
 cask "shottr"
-cask "ticktick"
 
 # === Casks: Media ===
 cask "background-music"
-cask "handbrake"
+cask "handbrake-app"
 cask "iina"
 cask "jdownloader"
 cask "kodi"
@@ -99,7 +96,6 @@ cask "yacreader"
 
 # === Casks: System / window management ===
 cask "betterdisplay"
-cask "hiddenbar"
 cask "karabiner-elements"
 cask "keka"
 cask "linearmouse"
@@ -112,7 +108,6 @@ cask "rectangle"
 # === Casks: Cloud / sync ===
 cask "google-drive"
 cask "localsend"
-cask "onedrive"
 
 # === Casks: VPN ===
 cask "clearvpn"
@@ -120,7 +115,6 @@ cask "protonvpn"
 
 # === Casks: Creative ===
 cask "blip"
-cask "canva"
 cask "inkscape"
 cask "paintbrush"
 
@@ -133,9 +127,6 @@ cask "steam"
 # === Casks: LaTeX ===
 cask "mactex-no-gui"
 
-# === Casks: Fonts ===
-cask "font-meslo-lg-nerd-font"  # used by powerlevel10k
-
 # === Mac App Store (requires `mas`; sign into the App Store first) ===
 # Either App Store-only (no cask), or where the App Store build differs from the cask.
 brew "mas"
@@ -147,6 +138,12 @@ mas "HP Smart",                      id: 1474276998
 mas "Compressor Creator Studio",     id: 6746516157
 mas "Final Cut Pro Creator Studio",  id: 1631624924
 mas "Pixelmator Pro Creator Studio", id: 6746662575
+mas "Canva",                         id: 897446215
+mas "Hidden Bar",                    id: 1452453066
+mas "OneDrive",                      id: 823766827
+mas "Telegram",                      id: 747648890
+mas "TickTick",                      id: 966085870
+mas "WhatsApp",                      id: 310633997
 
 # === Verify before enabling ===
 # Office: these casks install Microsoft's direct .pkg. Yours are App Store builds,
