@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "svelte": {
+      "command": "npx",
+      "args": ["-y", "@sveltejs/mcp"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "notebooklm": {
+      "command": "~/.local/bin/notebooklm-mcp",
+      "args": []
+    }
+  }
+}

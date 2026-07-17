@@ -9,6 +9,10 @@ apply *args:
 skills:
     ./agents/install-skills.sh
 
+# Install MCP servers for Claude Code and Codex
+mcp:
+    ./agents/install-mcp.sh
+
 # Install apps and CLI tools with Homebrew
 [macos]
 bootstrap:
