@@ -2,6 +2,11 @@
 
 Repository-local instructions are authoritative for project commands, validation, and Git workflow.
 
+## Working style
+
+- For repository-specific questions, inspect relevant files and conventions before answering. Ground recommendations in repository evidence, not generic advice.
+- Treat “should I…?” and similar questions as advice-only. Do not make changes unless explicitly asked; if ambiguous, answer first and wait.
+
 ## Secrets
 
 - Never print or disclose secret values. To check configuration, verify whether a key exists without revealing its value.
