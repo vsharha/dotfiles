@@ -78,6 +78,7 @@ cask "viber"
 cask "whatsapp"
 
 # === Casks: Productivity ===
+cask "applite"
 cask "latest"
 cask "maccy"
 cask "netnewswire"
