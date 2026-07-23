@@ -8,6 +8,12 @@ fi
 _plugin_dir=/opt/homebrew/share
 _p10k_theme=$_plugin_dir/powerlevel10k/powerlevel10k.zsh-theme
 export PNPM_HOME="$HOME/Library/pnpm"
+{{ else if or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu") -}}
+# Debian/Ubuntu don't package p10k or fzf-tab and scatter the apt plugins across
+# per-package dirs, so the bootstrap stages every plugin under one tree.
+_plugin_dir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
+_p10k_theme=$_plugin_dir/powerlevel10k/powerlevel10k.zsh-theme
+export PNPM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
 {{ else -}}
 _plugin_dir=/usr/share/zsh/plugins
 _p10k_theme=/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
@@ -59,7 +65,14 @@ alias shadcn-sv='pnpm dlx shadcn-svelte@latest'
 alias cc="claude --dangerously-skip-permissions"
 
 # === fzf (fuzzy Ctrl-R history, Ctrl-T files, Alt-C cd) ===========
-source <(fzf --zsh)
+# `fzf --zsh` exists only on fzf >= 0.48 (macOS/Arch ship current builds);
+# Debian's older package installs the scripts under /usr/share/doc/fzf instead.
+if fzf --zsh >/dev/null 2>&1; then
+  source <(fzf --zsh)
+elif [[ -d /usr/share/doc/fzf/examples ]]; then
+  source /usr/share/doc/fzf/examples/key-bindings.zsh
+  source /usr/share/doc/fzf/examples/completion.zsh
+fi
 
 # === fzf-tab (replaces the completion menu with an fzf picker) =====
 # Must load after compinit/fzf and BEFORE autosuggestions & syntax-highlighting.

@@ -1,0 +1,7 @@
+# Shell environment only — the server's real payload (Docker, storage, services)
+# lives in the separate homelab repo, not here. zsh plugins are git-cloned by
+# bootstrap.sh because Debian packages neither powerlevel10k nor fzf-tab.
+zsh
+fzf
+git
+curl

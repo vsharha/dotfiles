@@ -9,5 +9,11 @@ if grep -qi '^ID=.*cachyos' /etc/os-release 2>/dev/null; then
   exit 0
 fi
 
+if grep -qiE '^ID=(debian|ubuntu)' /etc/os-release 2>/dev/null \
+  || grep -qi '^ID_LIKE=.*debian' /etc/os-release 2>/dev/null; then
+  "$SCRIPT_DIR/debian/bootstrap.sh" "$@"
+  exit 0
+fi
+
 echo "Unsupported Linux distro. Add a distro bootstrap under linux/ and update this script."
 exit 1
