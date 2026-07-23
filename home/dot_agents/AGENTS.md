@@ -26,6 +26,8 @@ Repository-local instructions are authoritative for project commands, validation
 Unless repository-local guidance specifies a different workflow:
 
 - After each meaningful change, suggest a commit and ask for permission before committing.
-- Propose a message matching the repository's recent commit-message style.
-- If approved, commit with the approved message and do not add agent attribution.
+- If significant uncommitted work has accumulated — including work from earlier turns or predating the session — flag it at a natural stopping point and suggest committing.
+- When the uncommitted work spans several logical changes, propose splitting it into multiple commits. Suggest the full sequence of commit messages together, up front, so the whole plan is visible before any commit is made.
+- Propose messages matching the repository's recent commit-message style.
+- If approved, commit with the approved message(s) and do not add agent attribution.
 - Ask before pulling, rebasing, or pushing.
