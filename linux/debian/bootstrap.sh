@@ -64,9 +64,9 @@ set_login_shell() {
 # With --headless the value is forced true; otherwise chezmoi init prompts.
 init_chezmoi() {
   if [ -n "$HEADLESS" ]; then
-    chezmoi init --source "$REPO_ROOT" --promptBool headless=true
+    chezmoi --no-tty init --source "$REPO_ROOT" --promptBool headless=true
   else
-    chezmoi init --source "$REPO_ROOT"
+    chezmoi --no-tty init --source "$REPO_ROOT"
   fi
 }
 

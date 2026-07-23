@@ -19,9 +19,17 @@ Preview changes first:
 just apply --dry-run --verbose
 ```
 
-Extra arguments are passed to `chezmoi apply`. Use `just setup` to rerun the
-platform bootstrap and apply everything, and `just --list` to show commands
-relevant to the current system.
+Except for the wrapper-specific `--headless` option described below, extra
+arguments are passed to `chezmoi apply`. Use `just setup` to rerun the platform
+bootstrap and apply everything, and `just --list` to show commands relevant to
+the current system.
+
+On a headless machine, persist the headless role and apply the matching
+configuration with:
+
+```bash
+just apply --headless
+```
 
 ## macOS
 
