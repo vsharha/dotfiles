@@ -31,3 +31,4 @@ Unless repository-local guidance specifies a different workflow:
 - Propose messages matching the repository's recent commit-message style.
 - If approved, commit with the approved message(s) and do not add agent attribution.
 - Ask before pulling, rebasing, or pushing.
+- Before commenting on repository state — push status, ahead/behind, whether commits are pushed — verify it with git (e.g. against the upstream); never infer it from the session's own actions.
