@@ -13,4 +13,5 @@
 .agents
 .claude
 .codex
+.zfunc
 {{ end }}

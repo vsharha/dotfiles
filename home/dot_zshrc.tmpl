@@ -13,7 +13,9 @@ export PNPM_HOME="$HOME/Library/pnpm"
 # per-package dirs, so the bootstrap stages every plugin under one tree.
 _plugin_dir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
 _p10k_theme=$_plugin_dir/powerlevel10k/powerlevel10k.zsh-theme
+{{ if not .headless -}}
 export PNPM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
+{{ end -}}
 {{ else -}}
 _plugin_dir=/usr/share/zsh/plugins
 _p10k_theme=/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
@@ -34,7 +36,11 @@ source "$_p10k_theme"
 
 # === PATH / environment ===========================================
 typeset -U path
+{{ if .headless -}}
+path=("$HOME/.local/bin" $path)
+{{ else -}}
 path=("$PNPM_HOME" "$HOME/.local/bin" "$HOME/go/bin" $path)
+{{ end -}}
 {{ if eq .chezmoi.os "darwin" -}}
 path=(
   /opt/homebrew/opt/openjdk/bin
@@ -60,9 +66,11 @@ setopt hist_reduce_blanks     # normalise whitespace before saving
 # === aliases ======================================================
 alias python=python3
 alias pip='pip3'
+{{ if not .headless -}}
 alias shadcn='pnpm dlx shadcn@latest'
 alias shadcn-sv='pnpm dlx shadcn-svelte@latest'
 alias cc="claude --dangerously-skip-permissions"
+{{ end -}}
 
 # === fzf (fuzzy Ctrl-R history, Ctrl-T files, Alt-C cd) ===========
 # `fzf --zsh` exists only on fzf >= 0.48 (macOS/Arch ship current builds);
