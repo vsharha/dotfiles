@@ -10,4 +10,7 @@
 {{ end }}
 {{ if .headless }}
 .config/ghostty
+.agents
+.claude
+.codex
 {{ end }}
