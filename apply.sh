@@ -8,4 +8,4 @@ if ! command -v chezmoi >/dev/null 2>&1; then
   exit 1
 fi
 
-chezmoi --source "$SCRIPT_DIR" apply "$@"
+chezmoi --source "$SCRIPT_DIR" --no-tty apply "$@"
