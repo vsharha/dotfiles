@@ -1,0 +1,24 @@
+#!/bin/sh
+# chezmoi owns the fields set below in ~/.claude/settings.json; any other keys
+# Claude Code writes at runtime are preserved. Fields are set as leaf paths so
+# sibling keys (e.g. a permissions.allow list) survive too.
+#
+# Requires jq at apply time. Not applied on headless machines, where .claude is
+# chezmoiignore'd, so jq is only needed on desktops that manage this file.
+input=$(cat)
+[ -z "$input" ] && input='{}'
+
+printf '%s' "$input" | jq '
+    .attribution.commit = ""
+  | .attribution.pr = ""
+  | .permissions.defaultMode = "auto"
+  | .skipDangerousModePermissionPrompt = true
+  | .skipAutoPermissionPrompt = true
+  | .tui = "fullscreen"
+  | .alwaysThinkingEnabled = true
+  | .verbose = true
+  | .awaySummaryEnabled = false
+  | .workflowKeywordTriggerEnabled = false
+  | .switchModelsOnFlag = false
+  | .agentPushNotifEnabled = true
+'
