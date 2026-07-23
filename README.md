@@ -1,8 +1,8 @@
 # dotfiles
 
-Personal setup for macOS, CachyOS, and Windows. Platform bootstraps install
-applications and tools; chezmoi manages home-directory configuration on macOS
-and Linux.
+Personal setup for macOS, CachyOS, Debian/Ubuntu, and Windows. Platform
+bootstraps install applications and tools; chezmoi manages home-directory
+configuration on macOS and Linux.
 
 ## Dotfiles
 
@@ -30,6 +30,9 @@ configuration with:
 ```bash
 just apply --headless
 ```
+
+The headless role keeps the shared zsh, prompt, history, and completion setup
+while omitting desktop-only, agent/development-only, and GUI configuration.
 
 ## macOS
 
@@ -61,8 +64,8 @@ through Homebrew and the Mac App Store.
 
 ## Linux
 
-Linux setup currently supports CachyOS. Clone the repository and run the
-bootstrap first, then use `just` to apply the dotfiles:
+Linux setup supports CachyOS and Debian/Ubuntu. Clone the repository and run the
+distro-detecting bootstrap first, then apply the dotfiles:
 
 ```bash
 git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
@@ -71,9 +74,27 @@ cd ~/dotfiles
 just apply
 ```
 
-The bootstrap installs the configured packages, sets zsh as the login shell,
-enables applicable services, applies the KDE configuration, and installs
-`just`. From then on, use `just setup` to rerun the complete flow.
+For a headless Debian/Ubuntu server, Git is the only prerequisite needed to
+clone the repo; let the bootstrap install zsh and the remaining shell
+environment:
+
+```bash
+sudo apt update
+sudo apt install -y git
+git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./linux/bootstrap.sh --headless
+just apply
+```
+
+Both distro paths install `just` with their configured packages and set zsh as
+the login shell. CachyOS additionally enables applicable services and applies
+the KDE configuration. The Debian/Ubuntu bootstrap deliberately owns only the
+shell environment and repository command runner; server-role packages and
+tooling belong in the separate homelab repo.
+
+From then on, use `just setup` to rerun the complete flow, or
+`just setup --headless` on a headless Debian/Ubuntu server.
 
 Optional system configuration:
 
