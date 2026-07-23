@@ -1,0 +1,5 @@
+# Machine role. Desktops leave this false; the Debian server bootstrap sets it
+# true (chezmoi init --promptBool headless=true) to drop desktop-only configs
+# and GUI shell bindings. Declared here so .headless always resolves, even on
+# machines that never ran `chezmoi init`.
+headless: false

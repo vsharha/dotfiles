@@ -1,0 +1,3 @@
+{{- $headless := promptBoolOnce . "headless" "Headless server (no desktop)" false -}}
+[data]
+    headless = {{ $headless }}

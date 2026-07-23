@@ -174,7 +174,7 @@ copy-selection() {
 zle -N copy-selection
 bindkey '^[[99;9u' copy-selection
 bindkey -M shift-select '^[[99;9u' copy-selection
-{{ else -}}
+{{ else if not .headless -}}
 copy-selection() {
   (( REGION_ACTIVE )) || return 0
   local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
