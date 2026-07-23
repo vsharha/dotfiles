@@ -19,6 +19,10 @@
 [[ ! -o 'no_brace_expand' ]] || p10k_config_opts+=('no_brace_expand')
 'builtin' 'setopt' 'no_aliases' 'no_sh_glob' 'brace_expand'
 
+_p10k_is_ghostty() {
+  [[ ${TERM_PROGRAM:-} == ghostty || ${TERM:-} == xterm-ghostty ]]
+}
+
 () {
   emulate -L zsh -o extended_glob
 
@@ -120,7 +124,7 @@
   # Keep the full information line in Ghostty. Other terminals get only the
   # prompt character on the command line; syntax highlighting and suggestions
   # are configured separately in .zshrc and remain enabled.
-  if [[ ${TERM_PROGRAM:-} != ghostty ]]; then
+  if ! _p10k_is_ghostty; then
     typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(prompt_char)
     typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
   fi
@@ -145,7 +149,7 @@
   typeset -g POWERLEVEL9K_ICON_BEFORE_CONTENT=
 
   # Keep the spacious prompt layout only in Ghostty.
-  if [[ ${TERM_PROGRAM:-} == ghostty ]]; then
+  if _p10k_is_ghostty; then
     typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
   else
     typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=false
