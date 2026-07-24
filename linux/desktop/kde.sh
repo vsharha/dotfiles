@@ -6,6 +6,26 @@ if ! command -v kwriteconfig6 >/dev/null 2>&1; then
   exit 0
 fi
 
+configure_default_terminal() {
+  if ! command -v ghostty >/dev/null 2>&1; then
+    echo "Ghostty not found; keeping the current default terminal."
+    return 0
+  fi
+
+  kwriteconfig6 \
+    --file kdeglobals \
+    --group General \
+    --key TerminalApplication \
+    ghostty
+  kwriteconfig6 \
+    --file kdeglobals \
+    --group General \
+    --key TerminalService \
+    com.mitchellh.ghostty.desktop
+}
+
+configure_default_terminal
+
 kwriteconfig6 --file kxkbrc --group Layout --key Use true
 kwriteconfig6 --file kxkbrc --group Layout --key LayoutList "us,ua,ru"
 kwriteconfig6 --file kxkbrc --group Layout --key VariantList ",,"

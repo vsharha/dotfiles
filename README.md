@@ -88,10 +88,11 @@ just apply
 ```
 
 Both distro paths install `just` with their configured packages and set zsh as
-the login shell. CachyOS additionally enables applicable services and applies
-the KDE configuration. The Debian/Ubuntu bootstrap deliberately owns only the
-shell environment and repository command runner; server-role packages and
-tooling belong in the separate homelab repo.
+the login shell. CachyOS additionally enables applicable services, sets Ghostty
+as KDE's default terminal, and applies the remaining KDE configuration. The
+Debian/Ubuntu bootstrap deliberately owns only the shell environment and
+repository command runner; server-role packages and tooling belong in the
+separate homelab repo.
 
 From then on, use `just setup` to rerun the complete flow, or
 `just setup --headless` on a headless Debian/Ubuntu server.
