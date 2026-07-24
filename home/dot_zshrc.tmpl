@@ -50,6 +50,9 @@ path=(
   "$HOME/.lmstudio/bin"
 )
 {{ end -}}
+{{ if not .headless -}}
+export EDITOR="code --wait"
+{{ end -}}
 
 # === history ======================================================
 # Explicit config so every OS behaves the same — macOS caps SAVEHIST at
