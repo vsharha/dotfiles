@@ -24,7 +24,39 @@ configure_default_terminal() {
     com.mitchellh.ghostty.desktop
 }
 
+disable_floating_taskbar_panel() {
+  local plasma_script='
+panels().forEach(function (panel) {
+  panel.widgets().forEach(function (widget) {
+    if (widget.type === "org.kde.plasma.taskmanager"
+        || widget.type === "org.kde.plasma.icontasks") {
+      panel.floating = false;
+    }
+  });
+});
+'
+  local qdbus_command
+
+  if command -v qdbus6 >/dev/null 2>&1; then
+    qdbus_command=qdbus6
+  elif command -v qdbus >/dev/null 2>&1; then
+    qdbus_command=qdbus
+  else
+    echo "qdbus not found; skipping KDE taskbar panel config."
+    return 0
+  fi
+
+  if ! "$qdbus_command" \
+    org.kde.plasmashell \
+    /PlasmaShell \
+    org.kde.PlasmaShell.evaluateScript \
+    "$plasma_script"; then
+    echo "Could not reach Plasma Shell; skipping KDE taskbar panel config."
+  fi
+}
+
 configure_default_terminal
+disable_floating_taskbar_panel
 
 kwriteconfig6 --file kxkbrc --group Layout --key Use true
 kwriteconfig6 --file kxkbrc --group Layout --key LayoutList "us,ua,ru"
