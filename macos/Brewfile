@@ -50,7 +50,6 @@ brew "zsh-syntax-highlighting"
 cask "chatgpt"
 cask "claude"
 cask "codex-app"
-cask "lm-studio"
 
 # === Casks: Browsers ===
 cask "google-chrome"
@@ -61,7 +60,6 @@ cask "zen"
 cask "docker-desktop"
 cask "ghostty"
 cask "github"
-cask "jetbrains-toolbox"
 cask "visual-studio-code"
 
 # === Casks: Communication ===
