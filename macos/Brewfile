@@ -89,7 +89,6 @@ cask "yacreader"
 
 # === Casks: System / window management ===
 cask "betterdisplay"
-cask "hiddenbar"
 cask "karabiner-elements"
 cask "keka"
 cask "linearmouse"
@@ -98,6 +97,7 @@ cask "monitorcontrol"
 cask "mos"
 cask "notunes"
 cask "rectangle"
+cask "thaw"
 
 # === Casks: Cloud / sync ===
 cask "google-drive"
