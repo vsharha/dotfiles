@@ -2,19 +2,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PLUGIN_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
 BIN_DIR="$HOME/.local/bin"
-
-# --headless forces the headless role non-interactively; without it, chezmoi
-# init prompts (promptBoolOnce in .chezmoi.toml.tmpl) so desktop installs decline.
-HEADLESS=""
-for arg in "$@"; do
-  case "$arg" in
-    --headless) HEADLESS=true ;;
-    *) echo "Unknown argument: $arg" >&2; exit 1 ;;
-  esac
-done
 
 # Debian packages neither powerlevel10k nor fzf-tab and scatters the apt
 # plugins across per-package dirs; clone the full set into one tree so the
@@ -65,17 +54,6 @@ set_login_shell() {
   fi
 }
 
-# Persist the machine role so `chezmoi apply` can drop desktop-only configs and
-# GUI shell bindings. Records config only; apply.sh / `just apply` applies.
-# With --headless the value is forced true; otherwise chezmoi init prompts.
-init_chezmoi() {
-  if [ -n "$HEADLESS" ]; then
-    chezmoi --no-tty init --source "$REPO_ROOT" --promptBool headless=true
-  else
-    chezmoi --no-tty init --source "$REPO_ROOT"
-  fi
-}
-
 if ! command -v apt-get >/dev/null 2>&1; then
   echo "apt-get not found; this bootstrap only supports Debian/Ubuntu." >&2
   exit 1
@@ -85,6 +63,5 @@ install_apt_packages
 install_chezmoi
 install_zsh_plugins
 set_login_shell
-init_chezmoi
 
 echo "Debian bootstrap complete."

@@ -16,8 +16,10 @@ fi
 # Use the local repo files when run from a checkout; fall back to fetching
 # from GitHub for the curl-pipe first-run case (no repo cloned yet).
 SCRIPT_DIR=""
+REPO_ROOT=""
 if [ -n "${BASH_SOURCE[0]:-}" ]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 fi
 
 echo "Installing apps..."
@@ -28,6 +30,13 @@ else
   curl -fsSL "https://raw.githubusercontent.com/vsharha/dotfiles/main/macos/Brewfile" -o "$BREWFILE"
   brew bundle install --file="$BREWFILE"
   rm -f "$BREWFILE"
+fi
+
+echo "Initializing chezmoi..."
+if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/.chezmoiroot" ]; then
+  chezmoi --no-tty init --source "$REPO_ROOT" --promptBool headless=false
+else
+  chezmoi --no-tty init vsharha/dotfiles --promptBool headless=false
 fi
 
 echo "Done."
