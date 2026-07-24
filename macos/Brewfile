@@ -117,9 +117,6 @@ cask "paintbrush"
 cask "prismlauncher"
 cask "steam"
 
-# === Casks: LaTeX ===
-cask "mactex-no-gui"
-
 # === Mac App Store (requires `mas`; sign into the App Store first) ===
 # Either App Store-only (no cask), or where the App Store build differs from the cask.
 brew "mas"
