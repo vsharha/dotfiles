@@ -201,16 +201,21 @@ typeset -ga ZSH_AUTOSUGGEST_IGNORE_WIDGETS
 ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(smart-tab)
 
 fzf-tab-complete-with-local-cwd() {
+  local _cwd_before=$PWD
   local -a _saved_chpwd_functions=("${chpwd_functions[@]}")
   {
-    # SSH completion temporarily visits ~/.ssh. Suppress Ghostty's cwd reporter
-    # during completion so a new tab opened from the subsequent SSH session
-    # inherits the directory where SSH was launched, not that implementation
-    # detail. Other chpwd hooks keep running, and the reporter is restored below.
+    # SSH completion temporarily visits ~/.ssh and can leave us parked there
+    # (notably when completing from ~, since ~/.ssh is a child of it). Suppress
+    # Ghostty's cwd reporter during completion, then pin the directory back to
+    # where completion started before reporting, so a new tab inherits the launch
+    # directory rather than that implementation detail. A Tab press must never
+    # change the shell's cwd, so restoring it is always safe. Other chpwd hooks
+    # keep running, and the reporter is restored below.
     chpwd_functions=(${chpwd_functions:#_ghostty_report_pwd})
     zle fzf-tab-complete
   } always {
     chpwd_functions=("${_saved_chpwd_functions[@]}")
+    builtin cd -q -- "$_cwd_before" 2>/dev/null
     (( $+functions[_ghostty_report_pwd] )) && _ghostty_report_pwd
   }
 }
