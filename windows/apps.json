@@ -28,12 +28,9 @@
 				{ "PackageIdentifier": "WhirlwindFX.SignalRgb" },
 				{ "PackageIdentifier": "LocalSend.LocalSend" },
 				{ "PackageIdentifier": "Ventoy.Ventoy" },
-				{ "PackageIdentifier": "Betterbird.Betterbird" },
 				{ "PackageIdentifier": "xanderfrangos.twinkletray" },
 				{ "PackageIdentifier": "Stremio.Stremio" },
-				{ "PackageIdentifier": "Obsidian.Obsidian" },
-				{ "PackageIdentifier": "mtkennerly.ludusavi" },
-				{ "PackageIdentifier": "Playnite.Playnite" }
+				{ "PackageIdentifier": "Obsidian.Obsidian" }
 			],
 			"SourceDetails": {
 				"Argument": "https://cdn.winget.microsoft.com/cache",
