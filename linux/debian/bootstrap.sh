@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PLUGIN_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
+BIN_DIR="$HOME/.local/bin"
 
 # --headless forces the headless role non-interactively; without it, chezmoi
 # init prompts (promptBoolOnce in .chezmoi.toml.tmpl) so desktop installs decline.
@@ -31,9 +32,14 @@ install_apt_packages() {
   sed 's/#.*//' "$SCRIPT_DIR/packages.txt" | xargs -r sudo apt-get install -y
 }
 
+# Install into ~/.local/bin (no sudo). The zshrc puts this on PATH for
+# interactive shells; export it here so init_chezmoi finds the binary in this
+# non-interactive bootstrap.
 install_chezmoi() {
+  export PATH="$BIN_DIR:$PATH"
   command -v chezmoi >/dev/null 2>&1 && return 0
-  sudo sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /usr/local/bin
+  mkdir -p "$BIN_DIR"
+  sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$BIN_DIR"
 }
 
 install_zsh_plugins() {
