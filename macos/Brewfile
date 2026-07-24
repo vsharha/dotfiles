@@ -5,6 +5,7 @@
 
 # === Formulae (CLI tools — only what was installed on request) ===
 brew "act"
+brew "age"
 brew "chezmoi"
 brew "cloudflare-wrangler"
 brew "cloudflared"
@@ -29,6 +30,7 @@ brew "pnpm"
 brew "poppler"
 brew "rust"
 brew "rustup"
+brew "sops"
 brew "tree"
 brew "typescript"
 brew "typst"
