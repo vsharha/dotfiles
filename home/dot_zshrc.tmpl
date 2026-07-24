@@ -50,6 +50,7 @@ path=(
   "$HOME/.lmstudio/bin"
 )
 {{ end -}}
+export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
 {{ if not .headless -}}
 export EDITOR="code --wait"
 {{ end -}}
