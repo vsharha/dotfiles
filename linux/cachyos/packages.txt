@@ -40,5 +40,4 @@ openai-codex
 # System
 snap-pac
 bazaar
-syncthing
 jq
