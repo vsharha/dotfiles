@@ -71,4 +71,6 @@ kwriteconfig6 \
 
 kwriteconfig6 --file ksmserverrc --group General --key loginMode emptySession
 
+kwriteconfig6 --file krunnerrc --group General --key FreeFloating true
+
 echo "KDE config applied."
