@@ -15,17 +15,16 @@ mcp *agents:
 
 # Install apps and CLI tools with Homebrew
 [macos]
-bootstrap *args:
-    ./macos/bootstrap.sh {{ args }}
+bootstrap:
+    ./macos/bootstrap.sh
 
-# Install packages and set zsh as the login shell. Pass --headless on a
-# Debian/Ubuntu server to persist the headless role (drops desktop-only configs).
+# Install packages and set zsh as the login shell
 [linux]
-bootstrap *args:
-    ./linux/bootstrap.sh {{ args }}
+bootstrap:
+    ./linux/bootstrap.sh
 
-# Bootstrap this OS, then apply dotfiles. Pass --headless through to bootstrap.
-setup *args: (bootstrap args) apply
+# Bootstrap this OS, then apply dotfiles. Pass --headless through to apply.
+setup *args: bootstrap (apply args)
 
 [linux]
 kde:

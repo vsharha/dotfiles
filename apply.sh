@@ -17,8 +17,14 @@ for arg in "$@"; do
   esac
 done
 
+# chezmoi init writes the config file that persists the headless role. Run it
+# on first use, or whenever --headless is passed to switch the role.
+CHEZMOI_CONFIG="$(chezmoi --source "$SCRIPT_DIR" execute-template '{{ .chezmoi.configFile }}')"
+
 if [ "$HEADLESS" = true ]; then
   chezmoi --source "$SCRIPT_DIR" --no-tty init --promptBool headless=true
+elif [ ! -f "$CHEZMOI_CONFIG" ]; then
+  chezmoi --source "$SCRIPT_DIR" --no-tty init
 fi
 
 if [ "${#APPLY_ARGS[@]}" -eq 0 ]; then
