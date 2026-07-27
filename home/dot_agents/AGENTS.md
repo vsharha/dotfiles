@@ -36,3 +36,5 @@ Unless repository-local guidance specifies a different workflow:
 ### Remote operations & state
 
 - Ask before pulling, rebasing, or pushing.
+- Suggest a remote operation when the task itself calls for it — e.g. fetching before comparing against upstream, or pushing a branch to trigger CI/CD.
+- Do not suggest pushing merely because local commits have accumulated.
