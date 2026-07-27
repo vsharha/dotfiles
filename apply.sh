@@ -22,7 +22,10 @@ done
 CHEZMOI_CONFIG="$(chezmoi --source "$SCRIPT_DIR" execute-template '{{ .chezmoi.configFile }}')"
 
 if [ "$HEADLESS" = true ]; then
-  chezmoi --source "$SCRIPT_DIR" --no-tty init --promptBool headless=true
+  # --promptBool is keyed by the prompt text in home/.chezmoi.toml.tmpl, and
+  # --prompt makes promptBoolOnce re-answer instead of reusing a stored value.
+  chezmoi --source "$SCRIPT_DIR" --no-tty init \
+    --prompt --promptBool "Headless server (no desktop)=true"
 elif [ ! -f "$CHEZMOI_CONFIG" ]; then
   chezmoi --source "$SCRIPT_DIR" --no-tty init
 fi
