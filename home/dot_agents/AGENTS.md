@@ -36,5 +36,3 @@ Unless repository-local guidance specifies a different workflow:
 ### Remote operations & state
 
 - Ask before pulling, rebasing, or pushing.
-- Before commenting on repository state — push status, ahead/behind, whether commits are pushed — verify it with git; never infer it from the session's own actions.
-- The local remote-tracking ref can be stale, so run `git fetch` first, then compare against the upstream.
