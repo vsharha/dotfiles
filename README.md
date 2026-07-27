@@ -24,6 +24,9 @@ arguments are passed to `chezmoi apply`. Use `just setup` to rerun the platform
 bootstrap and apply everything, and `just --list` to show commands relevant to
 the current system.
 
+The first `just apply` on a machine runs `chezmoi init` to create the chezmoi
+config file; later runs skip it unless `--headless` is passed.
+
 On a headless machine, persist the headless role and apply the matching
 configuration with:
 
@@ -83,8 +86,8 @@ sudo apt update
 sudo apt install -y git
 git clone https://github.com/vsharha/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-./linux/bootstrap.sh --headless
-just apply
+./linux/bootstrap.sh
+just apply --headless
 ```
 
 Both distro paths install `just` with their configured packages and set zsh as
