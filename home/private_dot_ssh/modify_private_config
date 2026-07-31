@@ -27,5 +27,12 @@ Host homelab
     User vsharha
     IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
+
+Host homelab-vps
+    HostName homelab-vps
+    User debian
+    IdentityFile ~/.ssh/id_ed25519
+    IdentitiesOnly yes
+    PreferredAuthentications publickey
 $end_marker
 EOF
