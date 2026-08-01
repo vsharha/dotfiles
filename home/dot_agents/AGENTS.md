@@ -20,6 +20,8 @@ Repository-local instructions are authoritative for project commands, validation
 ## Code quality
 
 - Avoid type, lint, and framework suppression directives. If one is unavoidable, explain why.
+- Comments must describe the code as it stands, not the conversation that produced it. No references to the request, alternatives considered, or what changed — if it's worth knowing, say it in the reply, not in the file.
+- Add a comment only when it earns its place: non-obvious rationale, constraints, or gotchas that stay true as the code evolves. Don't restate what the code already says.
 
 ## Git
 
