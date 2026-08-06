@@ -27,6 +27,8 @@ Repository-local instructions are authoritative for project commands, validation
 
 Unless repository-local guidance specifies a different workflow:
 
+- Run `git status` before commenting on repository state — uncommitted work, unpushed commits, ahead/behind counts. Never report it from the session-start snapshot or earlier output; the same clone may have been committed or pushed from another terminal since.
+
 ### Committing
 
 - After each meaningful change, suggest a commit and ask for permission before committing.
@@ -35,7 +37,7 @@ Unless repository-local guidance specifies a different workflow:
 - Propose messages matching the repository's recent commit-message style.
 - If approved, commit with the approved message(s) and do not add agent attribution.
 
-### Remote operations & state
+### Remote operations
 
 - Ask before pulling, rebasing, or pushing.
 - Suggest a remote operation when the task itself calls for it — e.g. fetching before comparing against upstream, or pushing a branch to trigger CI/CD.
