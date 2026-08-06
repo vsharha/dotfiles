@@ -1,0 +1,3 @@
+# Apps
+com.stremio.Stremio
+com.github.mtkennerly.ludusavi

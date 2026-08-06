@@ -40,4 +40,5 @@ openai-codex
 # System
 snap-pac
 bazaar
+flatpak
 jq

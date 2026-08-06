@@ -17,6 +17,21 @@ install_aur_packages() {
   sed 's/#.*//' "$SCRIPT_DIR/aur-packages.txt" | xargs -r "$AUR_HELPER" -S --needed --noconfirm
 }
 
+# Per-user installs keep this step sudo-free. Anything installed system-wide
+# pulls a second copy of the runtimes, so keep every Flatpak on --user.
+install_flatpak_apps() {
+  if ! command -v flatpak >/dev/null 2>&1; then
+    echo "flatpak not found; it should have come from packages.txt." >&2
+    return 1
+  fi
+
+  flatpak remote-add --if-not-exists --user \
+    flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+  sed 's/#.*//' "$SCRIPT_DIR/flatpak-packages.txt" \
+    | xargs -r flatpak install --user --noninteractive --or-update flathub
+}
+
 set_login_shell() {
   local zsh_path=/usr/bin/zsh
 
@@ -63,6 +78,7 @@ fi
 sudo pacman -Syu --noconfirm
 install_pacman_packages
 install_aur_packages
+install_flatpak_apps
 set_login_shell
 add_user_to_gamemode_group
 configure_snapper

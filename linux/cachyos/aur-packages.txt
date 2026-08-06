@@ -1,6 +1,4 @@
 visual-studio-code-bin
-ludusavi
-stremio
 vulkan-low-latency-layer
 
 # Zsh
