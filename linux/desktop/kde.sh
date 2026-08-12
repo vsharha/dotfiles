@@ -58,6 +58,46 @@ panels().forEach(function (panel) {
 configure_default_terminal
 disable_floating_taskbar_panel
 
+kwriteconfig6 --file kwinrc --group ElectricBorders --key TopRight None
+
+kwriteconfig6 --file kscreenlockerrc --group Daemon --key Autolock false
+kwriteconfig6 --file kscreenlockerrc --group Daemon --key Timeout 0
+
+kwriteconfig6 \
+  --file powerdevilrc \
+  --group AC \
+  --group Display \
+  --key DimDisplayWhenIdle \
+  true
+kwriteconfig6 \
+  --file powerdevilrc \
+  --group AC \
+  --group Display \
+  --key DimDisplayIdleTimeoutSec \
+  300
+kwriteconfig6 \
+  --file powerdevilrc \
+  --group AC \
+  --group Display \
+  --key TurnOffDisplayWhenIdle \
+  false
+kwriteconfig6 \
+  --file powerdevilrc \
+  --group AC \
+  --group Display \
+  --key TurnOffDisplayIdleTimeoutSec \
+  -- \
+  -1
+kwriteconfig6 \
+  --file powerdevilrc \
+  --group AC \
+  --group SuspendAndShutdown \
+  --key AutoSuspendAction \
+  0
+
+kwriteconfig6 --file plasmaparc --group General --key AudioFeedback false
+kwriteconfig6 --file kcminputrc --group Keyboard --key NumLock 0
+
 kwriteconfig6 --file kxkbrc --group Layout --key Use true
 kwriteconfig6 --file kxkbrc --group Layout --key LayoutList "us,ua,ru"
 kwriteconfig6 --file kxkbrc --group Layout --key VariantList ",,"
