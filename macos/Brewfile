@@ -28,8 +28,6 @@ brew "pandoc"
 brew "pipx"
 brew "pnpm"
 brew "poppler"
-brew "rust"
-brew "rustup"
 brew "sops"
 brew "tree"
 brew "typescript"
@@ -49,7 +47,6 @@ brew "zsh-syntax-highlighting"
 # === Casks: AI ===
 cask "chatgpt"
 cask "claude"
-cask "chatgpt"
 
 # === Casks: Browsers ===
 cask "google-chrome"
