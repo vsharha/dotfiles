@@ -59,17 +59,6 @@ add_user_to_gamemode_group() {
   fi
 }
 
-enable_user_services() {
-  if ! command -v syncthing >/dev/null 2>&1; then
-    return 0
-  fi
-
-  systemctl --user enable syncthing.service || {
-    echo "Could not enable syncthing.service for this user session." >&2
-    return 0
-  }
-}
-
 if ! command -v pacman >/dev/null 2>&1; then
   echo "pacman not found; this bootstrap only supports CachyOS." >&2
   exit 1
@@ -82,6 +71,5 @@ install_flatpak_apps
 set_login_shell
 add_user_to_gamemode_group
 configure_snapper
-enable_user_services
 
 echo "CachyOS bootstrap complete."
