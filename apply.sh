@@ -3,6 +3,11 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# The Debian bootstrap installs chezmoi here, and a shell that started before
+# the directory existed does not have it on PATH. Add it so the first apply
+# after a bootstrap works without opening a new login shell.
+export PATH="$HOME/.local/bin:$PATH"
+
 if ! command -v chezmoi >/dev/null 2>&1; then
   echo "chezmoi not found. Install it first, then rerun this script." >&2
   exit 1

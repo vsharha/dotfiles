@@ -22,8 +22,8 @@ install_apt_packages() {
 }
 
 # Install into ~/.local/bin (no sudo). The zshrc puts this on PATH for
-# interactive shells; export it here so init_chezmoi finds the binary in this
-# non-interactive bootstrap.
+# interactive shells; export it here so the check below sees an existing
+# install in this non-interactive bootstrap.
 install_chezmoi() {
   export PATH="$BIN_DIR:$PATH"
   command -v chezmoi >/dev/null 2>&1 && return 0
