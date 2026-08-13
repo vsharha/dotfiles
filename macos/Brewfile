@@ -86,7 +86,6 @@ cask "yacreader"
 
 # === Casks: System / window management ===
 cask "betterdisplay"
-cask "karabiner-elements"
 cask "keka"
 cask "linearmouse"
 cask "middleclick"
