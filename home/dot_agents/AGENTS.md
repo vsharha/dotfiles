@@ -23,7 +23,15 @@ Applies to prose I read — replies, specs, plans, docs, commit messages. Not to
 - One idea per paragraph, carried by its first sentence.
 - Headings name their content — "Why the request times out", not "Analysis".
 - Short, active sentences. Split anything past roughly thirty words unless splitting reads worse.
-- Never drop a fact, quantity, or qualifier to read more simply. Plain wording is the goal; less precision is not.
+- Never drop a fact, quantity, or qualifier to read more simply. Plain wording is the goal; less precision is not. This protects facts about the subject, not superseded statements about it.
+
+### Correcting existing prose
+
+- Before correcting a document, search all of it for statements the change makes false, and list them with line numbers. Fixing only the passage you happened to read is the usual failure.
+- Replace each false statement in place. Delete what is now wrong rather than writing around it.
+- What changed, and why the old text was wrong, goes in the reply and the commit message — not the document.
+- The result must read as if written today from scratch. A reader who has never seen the previous version cannot tell which parts changed.
+- Exception: deprecation and migration guidance written for readers still on the old behaviour. Keep it version-tagged in a changelog or migration section, never inline in the description of current behaviour.
 
 ## Secrets
 
