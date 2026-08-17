@@ -12,6 +12,19 @@ Repository-local instructions are authoritative for project commands, validation
 - Disagreement is welcome — if a requested change is worse than the current version, say so before applying. If overruled, flag the concern once, apply it, and don't repeat the objection.
 - No sycophantic openers ("Great question", "Good point") — respond to the substance.
 
+## Writing
+
+Applies to prose I read — replies, specs, plans, docs, commit messages. Not to code.
+
+- Do not coin abbreviations, acronyms, or capitalised names for project concepts. Use the term already in the codebase, or plain description — invented shorthand cannot be grepped for later.
+- Define a term the reader cannot look up in half a sentence at first use. This matters most for names the document coins itself, since they exist nowhere else.
+- Describe what code does and under what conditions. Do not assert importance with a metaphor in place of the mechanism.
+- Lead with the answer. A reader who stops after the first sentence still has it.
+- One idea per paragraph, carried by its first sentence.
+- Headings name their content — "Why the request times out", not "Analysis".
+- Short, active sentences. Split anything past roughly thirty words unless splitting reads worse.
+- Never drop a fact, quantity, or qualifier to read more simply. Plain wording is the goal; less precision is not.
+
 ## Secrets
 
 - Never print or disclose secret values. To check configuration, verify whether a key exists without revealing its value.
