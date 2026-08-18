@@ -100,7 +100,6 @@ cask "localsend"
 cask "blip"
 
 # === Casks: VPN ===
-cask "clearvpn"
 cask "protonvpn"
 cask "tailscale-app"
 
