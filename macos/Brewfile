@@ -101,7 +101,6 @@ cask "blip"
 
 # === Casks: VPN ===
 cask "protonvpn"
-cask "tailscale-app"
 
 # === Casks: Creative ===
 cask "inkscape"
@@ -115,6 +114,7 @@ cask "steam"
 # Either App Store-only (no cask), or where the App Store build differs from the cask.
 brew "mas"
 mas "Bitwarden",                     id: 1352778147  # App Store build differs from cask
+mas "Tailscale",                     id: 1475387142  # App Store build self-updates; the cask needs admin auth per update
 mas "AdGuard Mini",                  id: 1440147259
 mas "Color Picker",                  id: 1545870783
 mas "Focus for YouTube",             id: 1514703160
