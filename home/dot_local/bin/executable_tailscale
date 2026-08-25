@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# The App Store build ships the CLI inside the bundle and installs nothing on
+# PATH, unlike the standalone build's /usr/local/bin/tailscale.
+exec /Applications/Tailscale.app/Contents/MacOS/Tailscale "$@"
