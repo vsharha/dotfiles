@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Start an app at login without letting a window reach the screen. `open -j`
+# hides an app as it launches, but some apps, Telegram among them, unhide
+# themselves to show a window anyway. Watch for that window and hide the app
+# the moment it appears, then stop: a guard that kept watching would also hide
+# windows opened on purpose seconds later.
+
+if [[ $# -ne 2 ]]; then
+  echo "usage: ${0##*/} <app-path> <bundle-id>" >&2
+  exit 2
+fi
+
+open -j -g -a "$1"
+
+BUNDLE_ID="$2" osascript -l JavaScript <<'JXA' >/dev/null
+ObjC.import("AppKit");
+ObjC.import("CoreGraphics");
+ObjC.import("Foundation");
+
+// On-screen windows, minus desktop elements.
+const windowListOptions = 1 | 16;
+const bundleId = ObjC.unwrap(
+  $.NSProcessInfo.processInfo.environment.objectForKey("BUNDLE_ID"),
+);
+const deadline = $.NSDate.date.timeIntervalSince1970 + 20;
+
+// Layer 0 is an ordinary window. Menu bar items and panels sit above it and
+// are on screen from the moment the app starts, so counting them would fire
+// the hide before the window this is waiting for exists.
+function showsWindow(pid) {
+  const windows = ObjC.deepUnwrap(
+    ObjC.castRefToObject($.CGWindowListCopyWindowInfo(windowListOptions, 0)),
+  );
+  return windows.some(
+    (window) => window.kCGWindowOwnerPID === pid && window.kCGWindowLayer === 0,
+  );
+}
+
+while ($.NSDate.date.timeIntervalSince1970 < deadline) {
+  const running =
+    $.NSRunningApplication.runningApplicationsWithBundleIdentifier(bundleId);
+  if (running.count > 0) {
+    const app = running.objectAtIndex(0);
+    if (showsWindow(app.processIdentifier)) {
+      app.hide;
+      break;
+    }
+  }
+  $.NSThread.sleepForTimeInterval(0.05);
+}
+JXA

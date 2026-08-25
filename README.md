@@ -65,6 +65,38 @@ brew bundle dump --file=macos/Brewfile --force
 Install [Grab2Text](https://grab2text.com) manually because it is unavailable
 through Homebrew and the Mac App Store.
 
+### Apps started at login
+
+`Library/LaunchAgents/io.github.vsharha.login.*.plist` start Mail, Telegram, and
+Bitwarden at login without putting a window on screen. macOS no longer keeps the
+per-item "hide" flag that the login items list used to store, so launchd starts
+these three instead:
+
+- Mail starts through `open -j`, which hides an app as it launches.
+- Telegram starts through `.local/bin/start-hidden`, because `open -j` alone
+  does not hold it: Telegram unhides itself to show its window. The script
+  watches for that window and hides the app as soon as it appears, then stops,
+  leaving a window opened later alone.
+- Bitwarden starts with `--autostart`, the argument it checks before going
+  straight to the menu bar.
+
+Mail and Telegram keep their Dock icon. Bitwarden runs from the menu bar with no
+Dock icon at all. Shottr stays an ordinary login item: it builds its main window
+on every launch path, and hiding the app leaves the Dock icon behind, so
+starting it this way buys nothing.
+
+Keep those three out of System Settings > General > Login Items & Extensions,
+and leave Bitwarden's own "Start automatically on login" off, or a second copy
+starts with its window showing. Bitwarden also needs "Enable menu bar icon" on
+and "Always show in the Dock" off; those settings live in the app, not here.
+
+launchd loads the agents at the next login. To start them in the current
+session:
+
+```bash
+launchctl bootstrap gui/$UID ~/Library/LaunchAgents/io.github.vsharha.login.*.plist
+```
+
 ## Linux
 
 Linux setup supports CachyOS and Debian/Ubuntu. Clone the repository and run the

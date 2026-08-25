@@ -1,6 +1,8 @@
 {{ if ne .chezmoi.os "darwin" }}
 .config/linearmouse
+.local/bin/start-hidden
 .local/bin/tailscale
+Library/LaunchAgents
 {{ end }}
 {{ if or (ne .chezmoi.os "linux") .headless }}
 .config/MangoHud
