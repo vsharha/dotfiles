@@ -5,7 +5,7 @@ Repository-local instructions are authoritative for project commands, validation
 ## Working style
 
 - For repository-specific questions, inspect relevant files and conventions before answering. Ground recommendations in repository evidence, not generic advice.
-- Treat “should I…?” and similar questions as advice-only. Do not make changes unless explicitly asked; if ambiguous, answer first and wait.
+- Treat “should I…?” and similar questions from the user as advice-only. Do not make changes unless explicitly asked; if ambiguous, answer first and wait.
 
 ## Collaboration
 
@@ -14,7 +14,7 @@ Repository-local instructions are authoritative for project commands, validation
 
 ## Writing
 
-Applies to prose I read — replies, specs, plans, docs, commit messages. Not to code.
+Applies to prose the user reads — replies, specs, plans, docs, commit messages. Not to code.
 
 - Do not coin abbreviations, acronyms, or capitalised names for project concepts. Use the term already in the codebase, or plain description — invented shorthand cannot be grepped for later.
 - Define a term the reader cannot look up in half a sentence at first use. This matters most for names the document coins itself, since they exist nowhere else.
