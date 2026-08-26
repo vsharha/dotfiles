@@ -29,7 +29,7 @@ Applies to prose the user reads — replies, specs, plans, docs, commit messages
 
 - Before correcting a document, search all of it for statements the change makes false, and list them with line numbers. Fixing only the passage you happened to read is the usual failure.
 - Replace each false statement in place. Delete what is now wrong rather than writing around it.
-- What changed, and why the old text was wrong, goes in the reply and the commit message — not the document.
+- What changed, and why the old text was wrong, goes in the reply — not the document.
 - The result must read as if written today from scratch. A reader who has never seen the previous version cannot tell which parts changed.
 - Exception: deprecation and migration guidance written for readers still on the old behaviour. Keep it version-tagged in a changelog or migration section, never inline in the description of current behaviour.
 
@@ -55,7 +55,7 @@ Unless repository-local guidance specifies a different workflow:
 - After each meaningful change, suggest a commit and ask for permission before committing.
 - If significant uncommitted work has accumulated — including work from earlier turns or predating the session — flag it at a natural stopping point and suggest committing.
 - When the uncommitted work spans several unrelated changes, propose splitting it into multiple commits — but only where the split makes the history easier to read or revert. Don't split for the sake of splitting; related changes belong together. Suggest the full sequence of commit messages together, up front, so the whole plan is visible before any commit is made.
-- Propose messages matching the repository's recent commit-message style.
+- Propose messages matching the repository's recent commit-message style, the presence or absence of a body included. Subject line only unless recent commits consistently carry a body; when they are mixed, or the repository has no history to match, no body. Rationale worth keeping goes in the changed files, not in a commit body.
 - If approved, commit with the approved message(s) and do not add agent attribution.
 
 ### Remote operations
