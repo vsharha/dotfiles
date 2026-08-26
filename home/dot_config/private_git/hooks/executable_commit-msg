@@ -1,0 +1,50 @@
+#!/bin/sh
+set -e
+
+# Strip agent attribution from commit messages.
+#
+# Claude Code's `attribution` settings only decide whether the system prompt
+# asks for these trailers. Nothing checks the message the model actually
+# wrote, so an empty `attribution.commit` removes the instruction without
+# preventing the trailer. This hook is the only place the outcome is certain.
+#
+# What was removed is reported on stderr, which git shows even when the commit
+# succeeds, so a stripped trailer is visible rather than silently corrected.
+#
+# Trailers naming a person are left alone; only Anthropic's own attribution is
+# matched.
+#
+# core.hooksPath points every repository at this directory, which supersedes
+# its .git/hooks. Run the repository's own hook first so it keeps working.
+
+common_dir=$(git rev-parse --git-common-dir 2>/dev/null) || common_dir=.git
+local_hook="$common_dir/hooks/$(basename "$0")"
+if [ -x "$local_hook" ]; then
+  "$local_hook" "$@" || exit $?
+fi
+
+msg=$1
+[ -n "$msg" ] && [ -f "$msg" ] || exit 0
+
+tmp=$(mktemp) || exit 1
+trap 'rm -f "$tmp"' EXIT
+
+# Buffer the kept lines so the blank line left behind by a stripped trailer
+# block can be dropped along with it.
+awk '
+  function drop(name) {
+    if (!(name in seen)) { seen[name] = 1; order[++dropped] = name }
+  }
+  { lower = tolower($0) }
+  lower ~ /^co-authored-by:.*<noreply@anthropic\.com>/ { drop("Co-Authored-By"); next }
+  lower ~ /^claude-session:[[:space:]]/ { drop("Claude-Session"); next }
+  lower ~ /generated with \[claude code\]/ { drop("Generated with [Claude Code]"); next }
+  { kept[++n] = $0; if ($0 ~ /[^[:space:]]/) last = n }
+  END {
+    for (i = 1; i <= last; i++) print kept[i]
+    for (i = 1; i <= dropped; i++)
+      printf "commit-msg: removed %s\n", order[i] >"/dev/stderr"
+  }
+' "$msg" >"$tmp"
+
+cat "$tmp" >"$msg"

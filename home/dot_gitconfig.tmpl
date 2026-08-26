@@ -1,0 +1,29 @@
+{{ if eq .chezmoi.os "darwin" -}}
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+{{ end -}}
+[user]
+	name = Viktor Sharha
+	email = vsharha07@gmail.com
+[core]
+	autocrlf = input
+	# Absolute so the hooks are found from any directory. A relative path is
+	# resolved against the current directory, not the repository root.
+	hooksPath = ~/.config/git/hooks
+{{ if not .headless }}	editor = code --wait
+{{ end -}}
+[push]
+	autoSetupRemote = true
+{{ if eq .chezmoi.os "darwin" -}}
+[credential]
+	helper = osxkeychain
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+{{ end -}}
