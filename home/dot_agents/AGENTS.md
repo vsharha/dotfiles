@@ -56,6 +56,7 @@ Unless repository-local guidance specifies a different workflow:
 - If significant uncommitted work has accumulated — including work from earlier turns or predating the session — flag it at a natural stopping point and suggest committing.
 - When the uncommitted work spans several unrelated changes, propose splitting it into multiple commits — but only where the split makes the history easier to read or revert. Don't split for the sake of splitting; related changes belong together. Suggest the full sequence of commit messages together, up front, so the whole plan is visible before any commit is made.
 - Propose messages matching the repository's recent commit-message style, the presence or absence of a body included. Subject line only unless recent commits consistently carry a body; when they are mixed, or the repository has no history to match, no body. Rationale worth keeping goes in the changed files, not in a commit body.
+- Show each proposed message in full, exactly as it will be passed to git — subject line, and body if there is one. Nothing withheld from the proposal may appear in the commit.
 - If approved, commit with the approved message(s) and do not add agent attribution.
 
 ### Remote operations
