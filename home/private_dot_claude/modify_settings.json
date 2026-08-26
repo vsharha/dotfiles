@@ -11,6 +11,7 @@ input=$(cat)
 printf '%s' "$input" | jq '
     .attribution.commit = ""
   | .attribution.pr = ""
+  | .attribution.sessionUrl = false
   | .permissions.defaultMode = "auto"
   | .skipDangerousModePermissionPrompt = true
   | .skipAutoPermissionPrompt = true
