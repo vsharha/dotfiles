@@ -20,5 +20,6 @@ printf '%s' "$input" | jq '
   | .awaySummaryEnabled = false
   | .workflowKeywordTriggerEnabled = false
   | .switchModelsOnFlag = false
+  | .remoteControlAtStartup = false
   | .agentPushNotifEnabled = true
 '
