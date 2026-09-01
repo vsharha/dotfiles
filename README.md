@@ -19,23 +19,39 @@ Preview changes first:
 just apply --dry-run --verbose
 ```
 
-Except for the wrapper-specific `--headless` option described below, extra
-arguments are passed to `chezmoi apply`. Use `just setup` to rerun the platform
-bootstrap and apply everything, and `just --list` to show commands relevant to
-the current system.
+Except for the wrapper-specific role options described below, extra arguments
+are passed to `chezmoi apply`. Use `just setup` to rerun the platform bootstrap
+and apply everything, and `just --list` to show commands relevant to the current
+system.
 
-The first `just apply` on a machine runs `chezmoi init` to create the chezmoi
-config file; later runs skip it unless `--headless` is passed.
+### Machine roles
 
-On a headless machine, persist the headless role and apply the matching
-configuration with:
+Two independent booleans decide what a machine gets:
+
+- `headless` — nothing attached to it draws pixels. It gates the terminal,
+  clipboard, editor, and gaming configuration.
+- `dev` — development tooling and agent configuration belong here. It gates
+  `~/.agents`, `~/.claude`, `~/.codex`, `~/.zfunc`, the pnpm and Go entries on
+  `PATH`, and the pnpm aliases.
+
+Everything else — zsh, the prompt, history, completion, Git — is shared and
+applies everywhere. The three roles in use:
 
 ```bash
-just apply --headless
+just apply                    # desktop: display, dev tooling
+just apply --headless         # server: neither
+just apply --headless --dev   # container or cloud sandbox: dev tooling, no display
 ```
 
-The headless role keeps the shared zsh, prompt, history, and completion setup
-while omitting desktop-only, agent/development-only, and GUI configuration.
+Both flags are one-way; they can only set a value to true. `dev` defaults to
+the opposite of `headless`, so `--headless` alone gives a server and no flags
+gives a desktop.
+
+Every `just apply` runs `chezmoi init`, which writes the answers to the chezmoi
+config file. A machine that has already answered is not asked again, so passing
+a flag is the only way to change a role. Passing one flag and not the other
+asks for the axis left unnamed, which is how a machine configured before `dev`
+existed acquires it.
 
 ## macOS
 

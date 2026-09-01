@@ -23,7 +23,7 @@ bootstrap:
 bootstrap:
     ./linux/bootstrap.sh
 
-# Bootstrap this OS, then apply dotfiles. Pass --headless through to apply.
+# Bootstrap this OS, then apply dotfiles. Role flags pass through to apply.
 setup *args: bootstrap (apply args)
 
 [linux]

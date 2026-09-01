@@ -3,8 +3,9 @@
 # Claude Code writes at runtime are preserved. Fields are set as leaf paths so
 # sibling keys (e.g. a permissions.allow list) survive too.
 #
-# Requires jq at apply time. Not applied on headless machines, where .claude is
-# chezmoiignore'd, so jq is only needed on desktops that manage this file.
+# Requires jq at apply time. Applied wherever the dev role is set, which
+# includes headless machines such as containers and cloud sandboxes, so jq
+# belongs in the package list of any image that runs apply with dev true.
 input=$(cat)
 [ -z "$input" ] && input='{}'
 
