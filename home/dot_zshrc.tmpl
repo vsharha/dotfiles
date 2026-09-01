@@ -13,7 +13,7 @@ export PNPM_HOME="$HOME/Library/pnpm"
 # per-package dirs, so the bootstrap stages every plugin under one tree.
 _plugin_dir="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
 _p10k_theme=$_plugin_dir/powerlevel10k/powerlevel10k.zsh-theme
-{{ if not .headless -}}
+{{ if .dev -}}
 export PNPM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
 {{ end -}}
 {{ else -}}
@@ -36,10 +36,10 @@ source "$_p10k_theme"
 
 # === PATH / environment ===========================================
 typeset -U path
-{{ if .headless -}}
-path=("$HOME/.local/bin" $path)
-{{ else -}}
+{{ if .dev -}}
 path=("$PNPM_HOME" "$HOME/.local/bin" "$HOME/go/bin" $path)
+{{ else -}}
+path=("$HOME/.local/bin" $path)
 {{ end -}}
 {{ if eq .chezmoi.os "darwin" -}}
 path=(
@@ -69,9 +69,14 @@ setopt hist_reduce_blanks     # normalise whitespace before saving
 # === aliases ======================================================
 alias python=python3
 alias pip='pip3'
-{{ if not .headless -}}
+{{ if .dev -}}
 alias shadcn='pnpm dlx shadcn@latest'
 alias shadcn-sv='pnpm dlx shadcn-svelte@latest'
+{{ end -}}
+{{/* Both axes: skipping the permission prompts suits a machine someone is
+sitting at, where each action is watched as it happens. A headless dev box is
+unattended and holds credentials and push access, so it keeps the prompts. */ -}}
+{{ if and .dev (not .headless) -}}
 alias cc="claude --dangerously-skip-permissions"
 {{ end -}}
 

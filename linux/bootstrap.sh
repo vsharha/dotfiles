@@ -4,13 +4,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # This script takes no arguments, and one silently ignored here is worse than a
-# failure: --headless belongs on the apply step, which persists the role through
-# chezmoi init. Accepted and dropped, it installs the desktop configuration on a
-# server and reports success.
+# failure: the role flags belong on the apply step, which persists the answers
+# through chezmoi init. Accepted and dropped, they install the desktop
+# configuration on a server and report success.
 if [ "$#" -gt 0 ]; then
   case " $* " in
-    *" --headless "*)
-      echo "--headless belongs on the apply step: run 'just setup --headless', or 'just apply --headless' after this." >&2
+    *" --headless "* | *" --dev "*)
+      echo "role flags belong on the apply step: run 'just setup $*', or 'just apply $*' after this." >&2
       ;;
     *)
       echo "$(basename "$0") takes no arguments; got: $*" >&2

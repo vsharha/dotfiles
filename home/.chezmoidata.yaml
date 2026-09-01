@@ -1,5 +1,15 @@
-# Machine role. Desktops leave this false; the Debian server bootstrap sets it
-# true (chezmoi init --promptBool headless=true) to drop desktop-only configs
-# and GUI shell bindings. Declared here so .headless always resolves, even on
-# machines that never ran `chezmoi init`.
+# Machine capabilities, one boolean each. `headless` is "nothing attached draws
+# pixels"; `dev` is "development tooling and agent configuration belong here".
+# They are independent: a desktop is headless false and dev true, the Debian
+# server is headless true and dev false, and a container or cloud sandbox is
+# true for both.
+#
+# `dev` defaults to the negation of `headless` in .chezmoi.toml.tmpl, so a
+# machine answering only the first question lands on the role it had before the
+# two were separated.
+#
+# The values below are the desktop answers. They resolve both keys on a machine
+# that never ran chezmoi init; anywhere init has run, the config file it writes
+# takes precedence.
 headless: false
+dev: true

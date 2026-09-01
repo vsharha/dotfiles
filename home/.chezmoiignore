@@ -13,6 +13,8 @@ Library/LaunchAgents
 {{ end }}
 {{ if .headless }}
 .config/ghostty
+{{ end }}
+{{ if not .dev }}
 .agents
 .claude
 .codex

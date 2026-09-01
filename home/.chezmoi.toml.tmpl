@@ -1,3 +1,5 @@
 {{- $headless := promptBoolOnce . "headless" "Headless server (no desktop)" false -}}
+{{- $dev := promptBoolOnce . "dev" "Development and agent configuration" (not $headless) -}}
 [data]
     headless = {{ $headless }}
+    dev = {{ $dev }}
