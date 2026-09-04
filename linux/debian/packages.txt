@@ -6,4 +6,3 @@ zsh
 fzf
 git
 curl
-just

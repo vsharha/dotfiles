@@ -47,11 +47,13 @@ Both flags are one-way; they can only set a value to true. `dev` defaults to
 the opposite of `headless`, so `--headless` alone gives a server and no flags
 gives a desktop.
 
-Every `just apply` runs `chezmoi init`, which writes the answers to the chezmoi
-config file. A machine that has already answered is not asked again, so passing
-a flag is the only way to change a role. Passing one flag and not the other
-asks for the axis left unnamed, which is how a machine configured before `dev`
-existed acquires it.
+Every `just apply` runs `chezmoi init` to resolve the machine's role. Normal
+applies save the answers in the chezmoi config; `--dry-run` (or `-n`) previews
+them using temporary configuration without changing the saved role.
+A machine that has already answered is not asked again, so passing a flag is
+the only way to change a role through this wrapper. Passing one flag and not
+the other asks for the axis left unnamed. A machine configured before `dev`
+existed is asked for that missing answer on its next apply.
 
 ## macOS
 
@@ -138,8 +140,11 @@ cd ~/dotfiles
 just apply --headless
 ```
 
-Both distro paths install `just` with their configured packages and set zsh as
-the login shell. CachyOS additionally configures Snapper on Btrfs roots, adds
+Both distro paths install `just` and set zsh as the login shell. Debian/Ubuntu
+uses apt when a `just` package is available, or installs the upstream binary
+into `~/.local/bin` otherwise. If that directory is not on the current shell's
+`PATH`, run `export PATH="$HOME/.local/bin:$PATH"` before invoking `just`.
+CachyOS additionally configures Snapper on Btrfs roots, adds
 the user to the `gamemode` group, sets Ghostty as KDE's default terminal, and
 applies the remaining KDE configuration. The Debian/Ubuntu bootstrap
 deliberately owns only the shell environment and repository command runner;

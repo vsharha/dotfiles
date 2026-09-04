@@ -17,31 +17,45 @@ fi
 # the data key. Each flag answers one axis; an axis no flag names is asked for.
 PROMPT_ARGS=()
 APPLY_ARGS=()
+DRY_RUN=false
 for arg in "$@"; do
   case "$arg" in
     --headless) PROMPT_ARGS+=(--promptBool "Headless server (no desktop)=true") ;;
     --dev) PROMPT_ARGS+=(--promptBool "Development and agent configuration=true") ;;
+    --dry-run|-n|--dry-run=true|-n=true)
+      DRY_RUN=true
+      APPLY_ARGS+=("$arg")
+      ;;
+    --dry-run=false|-n=false)
+      DRY_RUN=false
+      APPLY_ARGS+=("$arg")
+      ;;
+    -n*|-[^-]*n*)
+      DRY_RUN=true
+      APPLY_ARGS+=("$arg")
+      ;;
     *) APPLY_ARGS+=("$arg") ;;
   esac
 done
 
-# chezmoi init writes the config file that persists the machine's role. It runs
-# on every apply, not only the first: promptBoolOnce reuses a stored answer, so
-# a machine that has answered is never asked again, while a config file written
-# before an axis existed gains the missing key on the next run.
-#
-# --prompt is what makes a stored answer re-asked, so a role flag can only
-# change a value when it is passed. It applies to every prompt rather than the
-# one a --promptBool names, which is why an unnamed axis is asked interactively
-# instead of keeping its current value. Pass both flags to answer both.
-if [ "${#PROMPT_ARGS[@]}" -gt 0 ]; then
-  chezmoi --source "$SCRIPT_DIR" --no-tty init --prompt "${PROMPT_ARGS[@]}"
-else
-  chezmoi --source "$SCRIPT_DIR" --no-tty init
+CHEZMOI_ARGS=(--source "$SCRIPT_DIR" --no-tty)
+INIT_ARGS=()
+if "$DRY_RUN"; then
+  PREVIEW_DIR="$(mktemp -d)"
+  trap 'rm -rf "$PREVIEW_DIR"' EXIT
+  CHEZMOI_ARGS+=(--persistent-state "$PREVIEW_DIR/state.boltdb" --cache "$PREVIEW_DIR/cache")
+  # Read saved answers from the normal config, but write preview answers only
+  # to a temporary config that the following apply uses.
+  INIT_ARGS+=(--config-path "$PREVIEW_DIR/chezmoi.toml")
 fi
 
-if [ "${#APPLY_ARGS[@]}" -eq 0 ]; then
-  chezmoi --source "$SCRIPT_DIR" --no-tty apply
-else
-  chezmoi --source "$SCRIPT_DIR" --no-tty apply "${APPLY_ARGS[@]}"
+if [ "${#PROMPT_ARGS[@]}" -gt 0 ]; then
+  INIT_ARGS+=(--prompt "${PROMPT_ARGS[@]}")
 fi
+# Bash 3.2 treats an empty array as unset under nounset.
+chezmoi "${CHEZMOI_ARGS[@]}" init ${INIT_ARGS[@]+"${INIT_ARGS[@]}"}
+
+if "$DRY_RUN"; then
+  CHEZMOI_ARGS+=(--config "$PREVIEW_DIR/chezmoi.toml")
+fi
+chezmoi "${CHEZMOI_ARGS[@]}" apply ${APPLY_ARGS[@]+"${APPLY_ARGS[@]}"}

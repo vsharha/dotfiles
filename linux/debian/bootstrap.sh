@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLUGIN_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
 BIN_DIR="$HOME/.local/bin"
+export PATH="$BIN_DIR:$PATH"
 
 # Debian packages neither powerlevel10k nor fzf-tab and scatters the apt
 # plugins across per-package dirs; clone the full set into one tree so the
@@ -21,14 +22,26 @@ install_apt_packages() {
   sed 's/#.*//' "$SCRIPT_DIR/packages.txt" | xargs -r sudo apt-get install -y
 }
 
-# Install into ~/.local/bin (no sudo). The zshrc puts this on PATH for
-# interactive shells; export it here so the check below sees an existing
-# install in this non-interactive bootstrap.
+# Download completely before executing so a failed transfer stops bootstrap.
 install_chezmoi() {
-  export PATH="$BIN_DIR:$PATH"
   command -v chezmoi >/dev/null 2>&1 && return 0
+  local installer
   mkdir -p "$BIN_DIR"
-  sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$BIN_DIR"
+  installer="$(curl --proto '=https' --proto-redir '=https' -fsLS https://get.chezmoi.io)"
+  sh -c "$installer" -- -b "$BIN_DIR"
+}
+
+install_just() {
+  command -v just >/dev/null 2>&1 && return 0
+  local candidate installer
+  candidate="$(LC_ALL=C apt-cache policy just | awk '/Candidate:/ { print $2 }')"
+  if [ -n "$candidate" ] && [ "$candidate" != "(none)" ]; then
+    sudo apt-get install -y just
+  else
+    mkdir -p "$BIN_DIR"
+    installer="$(curl --proto '=https' --proto-redir '=https' -fsLS https://just.systems/install.sh)"
+    bash -c "$installer" -- --to "$BIN_DIR"
+  fi
 }
 
 install_zsh_plugins() {
@@ -61,6 +74,7 @@ fi
 
 install_apt_packages
 install_chezmoi
+install_just
 install_zsh_plugins
 set_login_shell
 
