@@ -99,11 +99,18 @@ just apply
 
 From an existing checkout, run the complete flow with `just setup`.
 
-Update the Homebrew package manifest with:
+The Brewfile is maintained by hand. It carries section headings, notes on which
+entries are App Store builds rather than casks, and a block of casks left
+commented out on purpose; `brew bundle dump` regenerates the file from scratch
+and drops all of it. To see what has drifted since the last edit:
 
 ```bash
-brew bundle dump --file=macos/Brewfile --force
+just brew-diff
 ```
+
+That lists formulae and casks installed here but missing from the manifest,
+entries in the manifest that are not installed, and the same both ways for App
+Store apps. Add or remove the entries it names by hand.
 
 Install [Grab2Text](https://grab2text.com) manually because it is unavailable
 through Homebrew and the Mac App Store.

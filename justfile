@@ -22,6 +22,11 @@ git-hooks *roots:
 bootstrap:
     ./macos/bootstrap.sh
 
+# Report drift between the Brewfile and what is installed
+[macos]
+brew-diff:
+    ./macos/brew-diff.sh
+
 # Install packages and set zsh as the login shell
 [linux]
 bootstrap:
