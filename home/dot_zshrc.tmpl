@@ -48,8 +48,10 @@ path=(
   "$HOME/.local/share/solana/install/active_release/bin"
   $path
 )
-{{ end -}}
+# The age identity and the sops/age binaries live on this machine only; Linux
+# gets neither from its package list, so the variable would name nothing there.
 export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
+{{ end -}}
 {{ if not .headless -}}
 export EDITOR="code --wait"
 {{ end -}}
