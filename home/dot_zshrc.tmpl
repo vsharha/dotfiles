@@ -193,15 +193,19 @@ zle -N copy-selection
 bindkey '^[[99;9u' copy-selection
 bindkey -M shift-select '^[[99;9u' copy-selection
 {{ else if not .headless -}}
-copy-selection() {
-  (( REGION_ACTIVE )) || return 0
-  local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
-  local _to=$(( MARK > CURSOR ? MARK : CURSOR ))
-  print -rn -- "${BUFFER[_from,_to]}" | wl-copy 2>/dev/null
-}
-zle -N copy-selection
-bindkey '^[[99;6u' copy-selection
-bindkey -M shift-select '^[[99;6u' copy-selection
+# Only the CachyOS package list installs wl-clipboard, so bind the key just
+# where wl-copy exists rather than leaving a key that silently does nothing.
+if command -v wl-copy >/dev/null 2>&1; then
+  copy-selection() {
+    (( REGION_ACTIVE )) || return 0
+    local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
+    local _to=$(( MARK > CURSOR ? MARK : CURSOR ))
+    print -rn -- "${BUFFER[_from,_to]}" | wl-copy 2>/dev/null
+  }
+  zle -N copy-selection
+  bindkey '^[[99;6u' copy-selection
+  bindkey -M shift-select '^[[99;6u' copy-selection
+fi
 {{ end -}}
 
 # === Tab / Shift-Tab behaviour ====================================
