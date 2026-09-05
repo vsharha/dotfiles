@@ -265,14 +265,13 @@ bindkey '^[[Z' fzf-tab-list                       # Shift-Tab
 source "$_plugin_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 # === zoxide (cd ranked by how often and how recently a dir is used) ==
-# `--cmd cd` replaces cd with zoxide's own function rather than adding a second
-# jump command, so muscle memory keeps working: a path that exists from here is
-# passed straight through, as are `-`, `..` and `+N`/`-N`; anything else is
-# matched against the database. `cdi` picks from the matches interactively.
+# `z` jumps to the highest-ranked directory matching its arguments. `zi` picks
+# from the matches interactively. Plain `cd` remains the shell builtin so a bad
+# path fails instead of taking a fuzzy match from zoxide's database.
 # Guarded because the database and the binary are optional — a machine whose
 # distro has no zoxide package still gets a working shell, with plain cd.
 if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init zsh --cmd cd)"
+  eval "$(zoxide init zsh)"
 fi
 
 unset _plugin_dir _p10k_theme
