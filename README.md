@@ -80,6 +80,28 @@ Reinitializing installs only the hooks a repository is missing; its branch,
 worktree, and history are untouched. A repository that sets its own
 `core.hooksPath` — husky, lefthook — bypasses the hook entirely.
 
+### Agent skills and MCP servers
+
+`just skills` installs every skill listed in `agents/skills.json`, and `just mcp`
+every server in `agents/mcp.json`. Skills go to Claude Code and MCP servers to
+Claude Code and Codex; arguments add further agents to those defaults:
+
+```bash
+just skills          # Claude Code
+just skills codex    # and Codex
+just mcp             # Claude Code and Codex
+just mcp opencode    # and opencode
+```
+
+Both scripts install through `npx` and read their JSON with `jq`, and `just mcp`
+additionally needs `uvx` for the servers that run through uv. On macOS the
+Brewfile provides uv, Node arrives as a dependency of the formulae it installs,
+and jq comes with the system at `/usr/bin/jq`. CachyOS installs jq and uv from
+its package list. The Debian/Ubuntu bootstrap installs none of the three,
+because it owns only the shell environment and this repository's command runner
+— so a Debian machine applied with `--dev` needs Node, jq, and uv before either
+command works. Both scripts stop with a message naming the missing one.
+
 ## macOS
 
 Bootstrap a new Mac before cloning the repository:
