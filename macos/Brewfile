@@ -35,10 +35,11 @@ brew "typst"
 brew "uv"
 brew "yt-dlp"
 
-# === Formulae (shell — zsh plugins, prompt, fuzzy finder) ===
+# === Formulae (shell — zsh plugins, prompt, fuzzy finder, directory jumper) ===
 brew "fzf"
 brew "fzf-tab"
 brew "powerlevel10k"
+brew "zoxide"
 brew "zsh-autosuggestions"
 brew "zsh-completions"
 brew "zsh-history-substring-search"

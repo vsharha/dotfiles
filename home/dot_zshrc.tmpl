@@ -258,6 +258,17 @@ bindkey '^[[Z' fzf-tab-list                       # Shift-Tab
 # === syntax highlighting (MUST be last of the plugin sources) =====
 source "$_plugin_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
+# === zoxide (cd ranked by how often and how recently a dir is used) ==
+# `--cmd cd` replaces cd with zoxide's own function rather than adding a second
+# jump command, so muscle memory keeps working: a path that exists from here is
+# passed straight through, as are `-`, `..` and `+N`/`-N`; anything else is
+# matched against the database. `cdi` picks from the matches interactively.
+# Guarded because the database and the binary are optional — a machine whose
+# distro has no zoxide package still gets a working shell, with plain cd.
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh --cmd cd)"
+fi
+
 unset _plugin_dir _p10k_theme
 
 # === p10k prompt config — keep at the very BOTTOM =================

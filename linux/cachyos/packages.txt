@@ -26,6 +26,7 @@ zsh-syntax-highlighting
 zsh-history-substring-search
 zsh-theme-powerlevel10k  # from the CachyOS repo
 fzf
+zoxide  # frecency-ranked cd, initialised by the zshrc
 wl-clipboard  # wl-copy, used by the zshrc Ctrl-C selection copy
 ttf-meslo-nerd  # p10k font
 

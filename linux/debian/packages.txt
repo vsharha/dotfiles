@@ -4,5 +4,6 @@
 # neither powerlevel10k nor fzf-tab.
 zsh
 fzf
+zoxide
 git
 curl
