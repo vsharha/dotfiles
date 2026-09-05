@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Run the shared commit-msg hook.
+#
+# git init and git clone copy this file into a repository that has no
+# commit-msg hook of its own, and never replace one that does. Keeping it a
+# loader means the logic in ~/.config/git/hooks/commit-msg stays in one place
+# and reaches repositories that were set up earlier.
+
+hook="$HOME/.config/git/hooks/commit-msg"
+[ -x "$hook" ] || exit 0
+exec "$hook" "$@"

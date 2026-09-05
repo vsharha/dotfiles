@@ -13,6 +13,10 @@ skills *agents:
 mcp *agents:
     ./agents/install-mcp.sh {{ agents }}
 
+# Install the Git hook template into repositories cloned before it existed
+git-hooks *roots:
+    ./git-hooks.sh {{ roots }}
+
 # Install apps and CLI tools with Homebrew
 [macos]
 bootstrap:

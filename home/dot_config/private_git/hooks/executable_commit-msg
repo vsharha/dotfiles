@@ -14,14 +14,8 @@ set -e
 # Trailers naming a person are left alone; only Anthropic's own attribution is
 # matched.
 #
-# core.hooksPath points every repository at this directory, which supersedes
-# its .git/hooks. Run the repository's own hook first so it keeps working.
-
-common_dir=$(git rev-parse --git-common-dir 2>/dev/null) || common_dir=.git
-local_hook="$common_dir/hooks/$(basename "$0")"
-if [ -x "$local_hook" ]; then
-  "$local_hook" "$@" || exit $?
-fi
+# Repositories reach this file through the loader that init.templateDir copies
+# into them, so a change here also applies to repositories created earlier.
 
 msg=$1
 [ -n "$msg" ] && [ -f "$msg" ] || exit 0

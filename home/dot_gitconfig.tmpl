@@ -3,11 +3,10 @@
 	email = vsharha07@gmail.com
 [core]
 	autocrlf = input
-	# Absolute so the hooks are found from any directory. A relative path is
-	# resolved against the current directory, not the repository root.
-	hooksPath = ~/.config/git/hooks
 {{ if not .headless }}	editor = code --wait
 {{ end -}}
+[init]
+	templateDir = ~/.config/git/template
 [push]
 	autoSetupRemote = true
 {{ if eq .chezmoi.os "darwin" -}}

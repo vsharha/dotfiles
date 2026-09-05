@@ -55,6 +55,31 @@ the only way to change a role through this wrapper. Passing one flag and not
 the other asks for the axis left unnamed. A machine configured before `dev`
 existed is asked for that missing answer on its next apply.
 
+### Git hooks
+
+A `commit-msg` hook strips agent attribution trailers from commit messages. Git
+offers no way to layer a global hook over a repository's own, so this one is
+installed per repository rather than through `core.hooksPath`, which replaces
+the lookup for every hook name and would silence the hooks a repository already
+has.
+
+`init.templateDir` points at `~/.config/git/template`. Git copies its hooks into
+each repository that `git init` or `git clone` creates, and skips any hook the
+repository already provides. The copied file is a loader that runs
+`~/.config/git/hooks/commit-msg`, so a later change to the hook reaches
+repositories created earlier.
+
+Repositories cloned before the template existed need one pass to pick it up:
+
+```bash
+just git-hooks              # ~/Projects
+just git-hooks ~/work ~/src # or named roots
+```
+
+Reinitializing installs only the hooks a repository is missing; its branch,
+worktree, and history are untouched. A repository that sets its own
+`core.hooksPath` — husky, lefthook — bypasses the hook entirely.
+
 ## macOS
 
 Bootstrap a new Mac before cloning the repository:
