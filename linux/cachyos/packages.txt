@@ -43,3 +43,4 @@ snap-pac
 bazaar
 flatpak
 jq
+ncdu
