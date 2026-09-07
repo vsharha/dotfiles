@@ -68,7 +68,6 @@ cask "whatsapp"
 
 # === Casks: Productivity ===
 cask "applite"
-cask "latest"
 cask "maccy"
 cask "netnewswire"
 cask "obsidian"
@@ -81,7 +80,6 @@ cask "ticktick"
 cask "handbrake-app"
 cask "iina"
 cask "jdownloader"
-cask "kodi"
 cask "stremio"
 cask "yacreader"
 
