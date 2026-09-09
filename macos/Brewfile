@@ -84,6 +84,14 @@ cask "jdownloader"
 cask "stremio"
 cask "yacreader"
 
+# === Casks: Quick Look ===
+# Each installs a host app; enable its extension in
+# System Settings > General > Login Items & Extensions > Quick Look.
+cask "qlmarkdown"
+cask "quicklook-video"
+cask "suspicious-package"
+cask "syntax-highlight"
+
 # === Casks: System / window management ===
 cask "betterdisplay"
 cask "keka"
