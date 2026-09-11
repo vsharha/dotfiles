@@ -17,6 +17,7 @@ Library/LaunchAgents
 {{ if not .dev }}
 .agents
 .claude
+.claude.json
 .codex
 .zfunc
 {{ end }}

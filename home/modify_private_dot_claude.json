@@ -1,0 +1,20 @@
+#!/bin/sh
+# chezmoi owns the field set below in ~/.claude.json; every other key, all of
+# which Claude Code writes as runtime state, is preserved.
+#
+# messageIdleNotifThresholdMs is how long after a turn ends Claude Code sends
+# its own "Claude is waiting for your input" notification. notify-turn-end.sh
+# has already notified at turn end, so the built-in only repeats it a minute
+# later. There is no off switch: the timer treats 0 or less as "fire now", so
+# the value is the largest it accepts, about 25 days.
+#
+# Requires jq at apply time, as modify_settings.json does.
+input=$(cat)
+[ -z "$input" ] && input='{}'
+
+# Claude Code writes this file without a trailing newline, which jq adds. The
+# command substitution strips it back off, so an apply that changes nothing
+# leaves the file byte-identical instead of reporting drift on every run.
+printf '%s' "$(printf '%s' "$input" | jq '
+    .messageIdleNotifThresholdMs = 2147483647
+')"
