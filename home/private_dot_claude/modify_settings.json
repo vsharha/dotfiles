@@ -24,4 +24,6 @@ printf '%s' "$input" | jq '
   | .switchModelsOnFlag = false
   | .remoteControlAtStartup = false
   | .agentPushNotifEnabled = true
+  | .hooks.Stop = [{"hooks": [{"type": "command", "command": "\"$HOME/.claude/notify-turn-end.sh\" \"Turn finished\""}]}]
+  | .hooks.StopFailure = [{"hooks": [{"type": "command", "command": "\"$HOME/.claude/notify-turn-end.sh\" \"Turn failed\""}]}]
 '
