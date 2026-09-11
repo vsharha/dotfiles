@@ -48,6 +48,9 @@ Applies to prose the user reads — replies, specs, plans, docs, commit messages
 
 Unless repository-local guidance specifies a different workflow:
 
+- Infer the target branch from the request and preceding work. Continue on that branch for follow-up changes; do not assume the repository's default branch is always the target.
+- Work in the existing checkout. Do not create branches or worktrees unless explicitly requested or required by repository-local instructions.
+- If the checkout changes branches during a task, retain the inferred target and check for conflicting work before switching back. Ask only when the target is ambiguous or continuing would interfere with other work.
 - Run `git status` before commenting on repository state — uncommitted work, unpushed commits, ahead/behind counts. Never report it from the session-start snapshot or earlier output; the same clone may have been committed or pushed from another terminal since.
 
 ### Committing
