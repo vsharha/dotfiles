@@ -9,6 +9,14 @@
 	templateDir = ~/.config/git/template
 [push]
 	autoSetupRemote = true
+[merge]
+	conflictStyle = zdiff3
+{{ if not .headless }}	tool = vscode
+{{ end -}}
+[mergetool]
+	keepBackup = false
+[rerere]
+	enabled = true
 {{ if eq .chezmoi.os "darwin" -}}
 [credential]
 	helper = osxkeychain
