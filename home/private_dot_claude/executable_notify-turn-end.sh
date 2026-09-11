@@ -64,20 +64,22 @@ title="${title:0:60}"
 # turn has not been marked finished by the time this hook runs, so the subtitle
 # would show whichever spinner frame was current. Rewriting the title to the
 # bare session name drops it; Claude Code sets its own title again on the next
-# render. The name comes from the transcript's last ai-title record, which is
-# the same string Claude Code puts in the title, so a session it has not named
-# yet keeps the title it has.
-session_title=''
+# render.
+#
+# The name comes from the transcript: a custom-title record if the session has
+# been renamed, otherwise the last ai-title. Claude Code prefers a rename over
+# a generated name however late the name arrives, so the order here matches. A
+# session that has neither, which means its first turn, falls back to the same
+# default Claude Code uses.
+session_title='Claude Code'
 if [[ -n ${transcript:-} && -f $transcript ]]; then
-  session_title="$(grep -F '"type":"ai-title"' "$transcript" 2>/dev/null |
-    tail -n 1 | jq -r '.aiTitle // empty' 2>/dev/null | tr -d '[:cntrl:]')" ||
-    session_title=''
-  session_title="${session_title:0:60}"
-fi
-
-set_title=''
-if [[ -n $session_title ]]; then
-  set_title=$'\033]0;'"$session_title"$'\033\\'
+  recorded="$(grep -F -e '"type":"custom-title"' -e '"type":"ai-title"' "$transcript" 2>/dev/null |
+    jq -rs '(map(select(.type == "custom-title") | .customTitle) | last)
+            // (map(select(.type == "ai-title") | .aiTitle) | last)
+            // empty' 2>/dev/null | tr -d '[:cntrl:]')" || recorded=''
+  if [[ -n $recorded ]]; then
+    session_title="${recorded:0:60}"
+  fi
 fi
 
 # OSC 777 is the desktop-notification sequence ghostty honours when
@@ -86,4 +88,4 @@ fi
 # support discard it, so this is a no-op rather than an error elsewhere. The
 # title change is written in the same call so that Claude Code's own title
 # update cannot land between the two sequences.
-printf '%s\033]777;notify;%s;%s\033\\' "$set_title" "$title" "$body" >"/dev/$tty" 2>/dev/null || true
+printf '\033]0;%s\033\\\033]777;notify;%s;%s\033\\' "$session_title" "$title" "$body" >"/dev/$tty" 2>/dev/null || true
