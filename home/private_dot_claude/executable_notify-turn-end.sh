@@ -48,11 +48,13 @@ fi
 body="${body:-Turn ended}"
 
 # The title names the project, so notifications from different repositories are
-# told apart. It does not name the session: ghostty shows the terminal title as
-# the notification subtitle, and that already carries the session name.
+# told apart. It names neither the application nor the session: the icon is
+# ghostty's, and ghostty shows the terminal title as the notification subtitle,
+# which carries the session name. Only a payload without cwd, which a Stop hook
+# should not get, falls back to naming the application.
 title='Claude Code'
 if [[ -n ${cwd:-} ]]; then
-  title="$title · $(basename "$cwd")"
+  title="$(basename "$cwd")"
 fi
 
 # A semicolon ends the title field early and spills the rest into the body.
@@ -62,15 +64,16 @@ title="${title:0:60}"
 # Claude Code keeps the terminal title set to "<glyph> <session name>", where
 # the glyph is ✳ at rest and alternates between ◐ and ◑ while a turn runs. The
 # turn has not been marked finished by the time this hook runs, so the subtitle
-# would show whichever spinner frame was current. Rewriting the title to the
-# bare session name drops it; Claude Code sets its own title again on the next
-# render.
+# would show whichever spinner frame was current. Rewriting the title drops it;
+# Claude Code sets its own title again on the next render.
 #
 # The name comes from the transcript: a custom-title record if the session has
 # been renamed, otherwise the last ai-title. Claude Code prefers a rename over
 # a generated name however late the name arrives, so the order here matches. A
 # session that has neither, which means its first turn, falls back to the same
-# default Claude Code uses.
+# default Claude Code uses. An empty title is not an option: ghostty then shows
+# the working directory, which is longer and says less than the name it
+# replaces.
 session_title='Claude Code'
 if [[ -n ${transcript:-} && -f $transcript ]]; then
   recorded="$(grep -F -e '"type":"custom-title"' -e '"type":"ai-title"' "$transcript" 2>/dev/null |
