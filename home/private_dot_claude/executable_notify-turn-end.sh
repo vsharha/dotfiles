@@ -82,10 +82,16 @@ if [[ -n ${transcript:-} && -f $transcript ]]; then
   fi
 fi
 
+# Ghostty debounces terminal-title changes by 75ms before publishing the title
+# the notification reads, so the two sequences cannot go out together: the
+# notification would be built from the title this write is replacing. Waiting
+# out the debounce with a margin for run-loop latency costs a sixth of a second
+# at the end of a turn.
+printf '\033]0;%s\033\\' "$session_title" >"/dev/$tty" 2>/dev/null || true
+sleep 0.15
+
 # OSC 777 is the desktop-notification sequence ghostty honours when
 # desktop-notifications is on (the default); ghostty drops it while the surface
 # is focused, so only turns you are not watching notify. Terminals without
-# support discard it, so this is a no-op rather than an error elsewhere. The
-# title change is written in the same call so that Claude Code's own title
-# update cannot land between the two sequences.
-printf '\033]0;%s\033\\\033]777;notify;%s;%s\033\\' "$session_title" "$title" "$body" >"/dev/$tty" 2>/dev/null || true
+# support discard it, so this is a no-op rather than an error elsewhere.
+printf '\033]777;notify;%s;%s\033\\' "$title" "$body" >"/dev/$tty" 2>/dev/null || true
