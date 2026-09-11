@@ -7,8 +7,14 @@
 {{ end -}}
 [init]
 	templateDir = ~/.config/git/template
+[pull]
+	rebase = true
 [push]
 	autoSetupRemote = true
+[rebase]
+	autoStash = true
+	autoSquash = true
+	updateRefs = true
 [merge]
 	conflictStyle = zdiff3
 {{ if not .headless }}	tool = vscode
