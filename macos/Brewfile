@@ -69,6 +69,7 @@ cask "whatsapp"
 
 # === Casks: Productivity ===
 cask "applite"
+cask "libreoffice"
 cask "maccy"
 cask "netnewswire"
 cask "obsidian"
