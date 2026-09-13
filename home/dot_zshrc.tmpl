@@ -178,11 +178,12 @@ source ~/.config/zsh/zsh-shift-select.zsh
 # delivers it as a real SIGINT before zle ever sees a byte, so intercepting
 # it needs TRAPINT; Powerlevel10k's precmd hook unconditionally reclaims the
 # INT trap every prompt cycle for its own async worker, silently overwriting
-# any TRAPINT we define. Copying the keyboard selection instead lives on
-# Cmd+Shift+C (macOS) / Ctrl+Shift+C (Linux), which ghostty re-encodes as a CSI-u
-# escape sequence bound to a normal zle keybinding below — no signal/trap
-# involved, so it can't be clobbered.
-{{ if eq .chezmoi.os "darwin" -}}
+# any TRAPINT we define.
+# On a desktop, copying the keyboard selection instead lives on Cmd+Shift+C
+# (macOS) / Ctrl+Shift+C (Linux), which ghostty re-encodes as a CSI-u escape
+# sequence bound to a normal zle keybinding below — no signal/trap involved, so
+# it can't be clobbered.
+{{ if and (eq .chezmoi.os "darwin") (not .headless) -}}
 copy-selection() {
   (( REGION_ACTIVE )) || return 0
   local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
@@ -192,7 +193,7 @@ copy-selection() {
 zle -N copy-selection
 bindkey '^[[99;9u' copy-selection
 bindkey -M shift-select '^[[99;9u' copy-selection
-{{ else if not .headless -}}
+{{ else if and (eq .chezmoi.os "linux") (not .headless) -}}
 # Only the CachyOS package list installs wl-clipboard, so bind the key just
 # where wl-copy exists rather than leaving a key that silently does nothing.
 if command -v wl-copy >/dev/null 2>&1; then
