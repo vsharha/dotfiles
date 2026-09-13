@@ -1,16 +1,29 @@
 $ErrorActionPreference = "Stop"
 
-Write-Host "Waiting for network..."
-# A failed probe is the expected state while waiting, so keep its error and
-# warning output from ending the script under the Stop preference above.
-while (-not (Test-NetConnection -ComputerName 8.8.8.8 -InformationLevel Quiet `
-        -ErrorAction SilentlyContinue -WarningAction SilentlyContinue)) {
-    Start-Sleep -Seconds 5
+$appsUrl = "https://raw.githubusercontent.com/vsharha/dotfiles/main/windows/apps.json"
+$downloadAttempts = 6
+$downloadTimeoutSeconds = 15
+$downloadRetrySeconds = 5
+$appsJson = $null
+
+for ($attempt = 1; $attempt -le $downloadAttempts; $attempt++) {
+    Write-Host "Downloading app manifest (attempt $attempt of $downloadAttempts)..."
+    try {
+        $appsJson = (Invoke-WebRequest -Uri $appsUrl -UseBasicParsing `
+            -TimeoutSec $downloadTimeoutSeconds).Content
+        break
+    }
+    catch {
+        if ($attempt -eq $downloadAttempts) {
+            throw "Could not download the app manifest after $downloadAttempts attempts: $($_.Exception.Message)"
+        }
+
+        Write-Host "Download failed; retrying in $downloadRetrySeconds seconds..."
+        Start-Sleep -Seconds $downloadRetrySeconds
+    }
 }
 
 Write-Host "Installing apps..."
-$appsUrl = "https://raw.githubusercontent.com/vsharha/dotfiles/main/windows/apps.json"
-$appsJson = (Invoke-WebRequest -Uri $appsUrl -UseBasicParsing).Content
 $tmpFile = "$env:TEMP\apps.json"
 $appsJson | Out-File -FilePath $tmpFile -Encoding utf8
 
