@@ -1,68 +1,68 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.11.4",
-  "schemes" : [
-    {
-      "buttons" : {
-        "universalBackForward" : true
-      },
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productID" : "0xc53f",
-          "productName" : "USB Receiver",
-          "vendorID" : "0x46d"
-        }
-      },
-      "scrolling" : {
-        "acceleration" : {
-          "vertical" : 1
-        },
-        "distance" : {
-          "vertical" : 3
-        },
-        "reverse" : {
-          "vertical" : true
-        },
-        "speed" : {
-          "vertical" : 0
-        }
-      }
-    },
-    {
-      "if" : {
-        "device" : {
-          "category" : "mouse",
-          "productID" : "0xb034",
-          "productName" : "MX Master 3S",
-          "serialNumber" : "05C493F7",
-          "vendorID" : "0x46d"
-        }
-      },
-      "logitech" : {
-        "highResolutionWheel" : false
-      },
-      "pointer" : {
-        "disableAcceleration" : false
-      },
-      "scrolling" : {
-        "acceleration" : {
-          "vertical" : 1
-        },
-        "distance" : {
-          "vertical" : 1
-        },
-        "reverse" : {
-          "vertical" : false
-        },
-        "smoothed" : {
-          "vertical" : {
-            "enabled" : false
-          }
-        },
-        "speed" : {
-          "vertical" : 0
-        }
-      }
-    }
-  ]
+	"$schema": "https:\/\/schema.linearmouse.app\/0.11.4",
+	"schemes": [
+		{
+			"buttons": {
+				"universalBackForward": true
+			},
+			"if": {
+				"device": {
+					"category": "mouse",
+					"productID": "0xc53f",
+					"productName": "USB Receiver",
+					"vendorID": "0x46d"
+				}
+			},
+			"scrolling": {
+				"acceleration": {
+					"vertical": 1
+				},
+				"distance": {
+					"vertical": 3
+				},
+				"reverse": {
+					"vertical": true
+				},
+				"speed": {
+					"vertical": 0
+				}
+			}
+		},
+		{
+			"if": {
+				"device": {
+					"category": "mouse",
+					"productID": "0xb034",
+					"productName": "MX Master 3S",
+					"serialNumber": "05C493F7",
+					"vendorID": "0x46d"
+				}
+			},
+			"logitech": {
+				"highResolutionWheel": false
+			},
+			"pointer": {
+				"disableAcceleration": false
+			},
+			"scrolling": {
+				"acceleration": {
+					"vertical": 1
+				},
+				"distance": {
+					"vertical": 1
+				},
+				"reverse": {
+					"vertical": true
+				},
+				"smoothed": {
+					"vertical": {
+						"enabled": false
+					}
+				},
+				"speed": {
+					"vertical": 0
+				}
+			}
+		}
+	]
 }
