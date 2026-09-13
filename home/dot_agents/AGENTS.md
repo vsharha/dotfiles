@@ -60,12 +60,13 @@ Unless repository-local guidance specifies a different workflow:
 
 ### Committing
 
-- When a piece of work is finished and you are handing back, suggest a commit and ask for permission before committing. Don't propose commits partway through a task.
+- For a task that will take several separable steps, ask at the start whether to commit automatically. If a task turns out to need several steps, ask before starting the second. If the user agrees, commit each step once it works and the checks covering it pass, without proposing the message first, and list the commits made (hash and subject) when handing back. The agreement lasts for that task only and does not cover pushing, amending, rebasing, or uncommitted work the task didn't produce.
+- Otherwise, when a piece of work is finished and you are handing back, suggest a commit and ask for permission before committing. Don't propose commits partway through a task.
 - If significant uncommitted work has accumulated — including work from earlier turns or predating the session — flag it at a natural stopping point and suggest committing.
-- When the uncommitted work spans several unrelated changes, propose splitting it into multiple commits — but only where the split makes the history easier to read or revert. Don't split for the sake of splitting; related changes belong together. Suggest the full sequence of commit messages together, up front, so the whole plan is visible before any commit is made.
+- When the uncommitted work spans several unrelated changes, propose splitting it into multiple commits — but only where the split makes the history easier to read or revert, and only along whole files: changes to one file stay in one commit. Don't split for the sake of splitting; related changes belong together. Suggest the full sequence of commit messages together, up front, so the whole plan is visible before any commit is made.
 - Propose messages matching the repository's recent commit-message style, the presence or absence of a body included. Subject line only unless recent commits consistently carry a body; when they are mixed, or the repository has no history to match, no body. Exception: add a body when the reason for the change can't be recovered from the result — why something was reverted, or why one approach replaced another. Rationale about the code as it stands goes in the changed files.
-- Show each proposed message in full, exactly as it will be passed to git — subject line, and body if there is one. Nothing withheld from the proposal may appear in the commit.
-- If approved, commit with the approved message(s) and do not add agent attribution.
+- When proposing a commit, show each message in full, exactly as it will be passed to git — subject line, and body if there is one. Nothing withheld from the proposal may appear in the commit.
+- Never add agent attribution. After approval, commit with the approved message(s).
 
 ### Discarding or rewriting work
 
