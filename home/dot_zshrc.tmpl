@@ -276,5 +276,61 @@ fi
 
 unset _plugin_dir _p10k_theme
 
+# === finished-command notifications ==============================
+# Notify after an unattended foreground command returns. Ghostty suppresses
+# desktop notifications while its surface is focused, so commands completed
+# while this terminal is being watched stay quiet.
+autoload -Uz add-zsh-hook
+zmodload zsh/datetime
+
+typeset -gF _notify_command_started_at=-1
+typeset -g _notify_command_text=''
+typeset -g _notify_command_cwd=''
+
+_notify_command_start() {
+  _notify_command_started_at=$EPOCHREALTIME
+  _notify_command_text=$1
+  _notify_command_cwd=$PWD
+}
+
+_notify_command_finish() {
+  local exit_status=$?
+  local -F 1 elapsed
+  (( _notify_command_started_at >= 0 )) || return 0
+
+  elapsed=$(( EPOCHREALTIME - _notify_command_started_at ))
+  _notify_command_started_at=-1
+  (( elapsed >= 20 )) || return 0
+
+  local title=${_notify_command_cwd:t}
+  local summary=''
+  local body
+
+  # A leading space keeps sensitive commands out of history; keep their text
+  # out of desktop notifications too. Control characters and semicolons would
+  # otherwise corrupt Ghostty's OSC 777 notification fields.
+  if [[ $_notify_command_text != ' '* ]]; then
+    summary=${_notify_command_text//[[:cntrl:]]/ }
+    summary=${summary//;/,}
+    summary=${summary[1,100]}
+  fi
+  title=${title//[[:cntrl:]]/ }
+  title=${title//;/,}
+  title=${title[1,60]}
+
+  if (( exit_status == 0 )); then
+    body="Finished in ${elapsed}s"
+  else
+    body="Exited ${exit_status} after ${elapsed}s"
+  fi
+  [[ -n $summary ]] && body+=" — ${summary}"
+
+  printf '\033]777;notify;%s;%s\033\\' "$title" "$body" 2>/dev/null >/dev/tty || true
+  return 0
+}
+
+add-zsh-hook preexec _notify_command_start
+add-zsh-hook precmd _notify_command_finish
+
 # === p10k prompt config — keep at the very BOTTOM =================
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
