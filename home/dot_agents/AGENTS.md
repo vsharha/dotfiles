@@ -2,12 +2,13 @@
 
 Repository-local instructions are authoritative for project commands, validation, and Git workflow.
 
-## Working style
+## Questions and ambiguous requests
 
 - For repository-specific questions, inspect relevant files and conventions before answering. Ground recommendations in repository evidence, not generic advice.
-- Treat “should I…?” and similar questions from the user as advice-only. Do not make changes unless explicitly asked; if ambiguous, answer first and wait.
+- Treat “should I…?” and similar questions from the user as advice-only: answer them and make no changes unless explicitly asked.
+- When a task request is missing a decision that the code and sensible defaults don't settle, ask before starting work that depends on it.
 
-## Collaboration
+## Disagreement and openers
 
 - Disagreement is welcome — if a requested change is worse than the current version, say so before applying. If overruled, flag the concern once, apply it, and don't repeat the objection.
 - No sycophantic openers ("Great question", "Good point") — respond to the substance.
@@ -27,7 +28,7 @@ Applies to prose the user reads — replies, specs, plans, docs, commit messages
 
 ### Correcting existing prose
 
-- Before correcting a document, search all of it for statements the change makes false, and list them with line numbers. Fixing only the passage you happened to read is the usual failure.
+- Before correcting a document, search all of it for statements the change makes false. If the search finds any beyond the passage being edited, list them with line numbers in the reply. Fixing only the passage you happened to read is the usual failure.
 - Replace each false statement in place. Delete what is now wrong rather than writing around it.
 - What changed, and why the old text was wrong, goes in the reply — not the document.
 - The result must read as if written today from scratch. A reader who has never seen the previous version cannot tell which parts changed.
@@ -44,26 +45,34 @@ Applies to prose the user reads — replies, specs, plans, docs, commit messages
 - Comments must describe the code as it stands, not the conversation that produced it. No references to the request, alternatives considered, or what changed — if it's worth knowing, say it in the reply, not in the file.
 - Add a comment only when it earns its place: non-obvious rationale, constraints, or gotchas that stay true as the code evolves. Don't restate what the code already says.
 
+## Checking work before reporting it done
+
+- Before reporting work finished, run the repository's tests, linting and type checks that cover the change. Report any failure with its output.
+
 ## Git
 
 Unless repository-local guidance specifies a different workflow:
 
 - Infer the target branch from the request and preceding work. Continue on that branch for follow-up changes; do not assume the repository's default branch is always the target.
 - Work in the existing checkout. Do not create branches or worktrees unless explicitly requested or required by repository-local instructions.
-- If the checkout changes branches during a task, retain the inferred target and check for conflicting work before switching back. Ask only when the target is ambiguous or continuing would interfere with other work.
+- If the checkout changes branches during a task, stop and report it. Switch back only after the user agrees.
 - Run `git status` before commenting on repository state — uncommitted work, unpushed commits, ahead/behind counts. Never report it from the session-start snapshot or earlier output; the same clone may have been committed or pushed from another terminal since.
 
 ### Committing
 
-- After each meaningful change, suggest a commit and ask for permission before committing.
+- When a piece of work is finished and you are handing back, suggest a commit and ask for permission before committing. Don't propose commits partway through a task.
 - If significant uncommitted work has accumulated — including work from earlier turns or predating the session — flag it at a natural stopping point and suggest committing.
 - When the uncommitted work spans several unrelated changes, propose splitting it into multiple commits — but only where the split makes the history easier to read or revert. Don't split for the sake of splitting; related changes belong together. Suggest the full sequence of commit messages together, up front, so the whole plan is visible before any commit is made.
-- Propose messages matching the repository's recent commit-message style, the presence or absence of a body included. Subject line only unless recent commits consistently carry a body; when they are mixed, or the repository has no history to match, no body. Rationale worth keeping goes in the changed files, not in a commit body.
+- Propose messages matching the repository's recent commit-message style, the presence or absence of a body included. Subject line only unless recent commits consistently carry a body; when they are mixed, or the repository has no history to match, no body. Exception: add a body when the reason for the change can't be recovered from the result — why something was reverted, or why one approach replaced another. Rationale about the code as it stands goes in the changed files.
 - Show each proposed message in full, exactly as it will be passed to git — subject line, and body if there is one. Nothing withheld from the proposal may appear in the commit.
 - If approved, commit with the approved message(s) and do not add agent attribution.
 
+### Discarding or rewriting work
+
+- Ask before any command that discards uncommitted work or rewrites commits: `reset --hard`, `checkout` or `restore` of paths, `clean`, `stash drop` or `stash clear`, and rebasing.
+
 ### Remote operations
 
-- Ask before pulling, rebasing, or pushing.
+- Ask before pulling or pushing.
 - Suggest a remote operation when the task itself calls for it — e.g. fetching before comparing against upstream, or pushing a branch to trigger CI/CD.
 - Do not suggest pushing merely because local commits have accumulated.
