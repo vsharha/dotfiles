@@ -7,6 +7,10 @@ theme = "Apple System Colors"
 font-feature = -liga
 background-opacity = 0.95
 background-blur-radius = 80
+# Reopen windows, tabs and splits in their working directories after quitting.
+# `default` defers to the macOS "Close windows when quitting" setting, which
+# discards them on a normal quit. macOS only; Ghostty ignores it on Linux.
+window-save-state = always
 # Let Shift+Home/End reach zsh for shift-select instead of adjusting the
 # terminal's scrollback selection.
 keybind = shift+home=unbind
