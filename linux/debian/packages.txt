@@ -7,3 +7,4 @@ fzf
 zoxide
 git
 curl
+jq  # chezmoi modify scripts when the dev role is enabled

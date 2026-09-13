@@ -97,10 +97,12 @@ Both scripts install through `npx` and read their JSON with `jq`, and `just mcp`
 additionally needs `uvx` for the servers that run through uv. On macOS the
 Brewfile provides uv, Node arrives as a dependency of the formulae it installs,
 and jq comes with the system at `/usr/bin/jq`. CachyOS installs jq and uv from
-its package list. The Debian/Ubuntu bootstrap installs none of the three,
-because it owns only the shell environment and this repository's command runner
-— so a Debian machine applied with `--dev` needs Node, jq, and uv before either
-command works. Both scripts stop with a message naming the missing one.
+its package list. Debian/Ubuntu installs jq because chezmoi needs it to apply
+the dev-role configuration, but it installs neither Node nor uv because it owns
+only the shell environment and this repository's command runner. A Debian
+machine applied with `--dev` therefore needs Node before either command works,
+and additionally needs uv before `just mcp` works. Both scripts stop with a
+message naming the missing dependency.
 
 ## macOS
 
