@@ -6,6 +6,10 @@
 # Requires jq at apply time. Applied wherever the dev role is set, which
 # includes headless machines such as containers and cloud sandboxes, so jq
 # belongs in the package list of any image that runs apply with dev true.
+#
+# permissions.deny is merged rather than replaced. It lists .env variants one by
+# one because deny rules take precedence over allow rules: a broad `.env.*`
+# pattern would also block `.env.example`, and no allow rule could restore it.
 input=$(cat)
 [ -z "$input" ] && input='{}'
 
@@ -14,6 +18,11 @@ printf '%s' "$input" | jq '
   | .attribution.pr = ""
   | .attribution.sessionUrl = false
   | .permissions.defaultMode = "auto"
+  | .permissions.deny = ((.permissions.deny // []) + [
+      "Read(**/.env)", "Read(**/.env.local)", "Read(**/.env.*.local)",
+      "Read(**/.env.development)", "Read(**/.env.production)", "Read(**/.env.test)"
+    ] | unique)
+  | .autoMemoryEnabled = false
   | .skipDangerousModePermissionPrompt = true
   | .skipAutoPermissionPrompt = true
   | .tui = "fullscreen"

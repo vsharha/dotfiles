@@ -1,9 +1,5 @@
 @~/.agents/AGENTS.md
 
-## Memory
-
-- Never write to your own memory. Do not create, update, or delete memory files, and do not add entries to the memory index. If something seems worth persisting, say so in the reply and let the user decide.
-
 ## Clarifying questions
 
 - When a task request is missing a decision, use the question tool to gather it instead of guessing. Advice questions get an answer instead (see AGENTS.md).
