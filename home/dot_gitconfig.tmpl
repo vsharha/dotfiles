@@ -1,3 +1,10 @@
+{{- $brewPrefix := "" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $brewPrefix = env "HOMEBREW_PREFIX" -}}
+{{-   if not $brewPrefix -}}
+{{-     $brewPrefix = output "brew" "--prefix" | trim -}}
+{{-   end -}}
+{{- end -}}
 [user]
 	name = Viktor Sharha
 	email = vsharha07@gmail.com
@@ -28,8 +35,8 @@
 	helper = osxkeychain
 [credential "https://github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = {{ printf "!\"%s/bin/gh\" auth git-credential" $brewPrefix | quote }}
 [credential "https://gist.github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = {{ printf "!\"%s/bin/gh\" auth git-credential" $brewPrefix | quote }}
 {{ end -}}

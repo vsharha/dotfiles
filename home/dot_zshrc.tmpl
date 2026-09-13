@@ -1,3 +1,10 @@
+{{- $brewPrefix := "" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $brewPrefix = env "HOMEBREW_PREFIX" -}}
+{{-   if not $brewPrefix -}}
+{{-     $brewPrefix = output "brew" "--prefix" | trim -}}
+{{-   end -}}
+{{- end -}}
 # === p10k instant prompt — keep at the VERY TOP, above everything ===
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -5,7 +12,7 @@ fi
 
 # === per-OS locations (rendered by chezmoi) =======================
 {{ if eq .chezmoi.os "darwin" -}}
-_plugin_dir=/opt/homebrew/share
+_plugin_dir={{ printf "%s/share" $brewPrefix | quote }}
 _p10k_theme=$_plugin_dir/powerlevel10k/powerlevel10k.zsh-theme
 export PNPM_HOME="$HOME/Library/pnpm"
 {{ else if or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu") -}}
@@ -25,7 +32,7 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 # === completions (must come before compinit) ===
 # ~/.zfunc must precede the system dirs so its overrides (e.g. _pnpm) win.
 {{ if eq .chezmoi.os "darwin" -}}
-fpath=(~/.zfunc /opt/homebrew/share/zsh-completions $fpath)
+fpath=(~/.zfunc {{ printf "%s/share/zsh-completions" $brewPrefix | quote }} $fpath)
 {{ else -}}
 fpath=(~/.zfunc $fpath)  # zsh-completions installs into site-functions, already in fpath
 {{ end -}}
@@ -43,7 +50,7 @@ path=("$HOME/.local/bin" $path)
 {{ end -}}
 {{ if eq .chezmoi.os "darwin" -}}
 path=(
-  /opt/homebrew/opt/openjdk/bin
+  {{ printf "%s/opt/openjdk/bin" $brewPrefix | quote }}
   "$HOME/.antigravity/antigravity/bin"
   "$HOME/.local/share/solana/install/active_release/bin"
   $path
