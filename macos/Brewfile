@@ -107,6 +107,7 @@ cask "thaw"
 cask "google-drive"
 cask "localsend"
 cask "blip"
+cask "ente-auth"
 
 # === Casks: VPN ===
 cask "protonvpn"
