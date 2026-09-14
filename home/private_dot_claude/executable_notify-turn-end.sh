@@ -6,7 +6,6 @@ set -euo pipefail
 tty="$(ps -o tty= -p "$PPID" 2>/dev/null | tr -d '[:space:]')"
 [[ -n $tty && $tty != '??' ]] || exit 0
 
-log="${TMPDIR:-/tmp}/notify-turn-end.log"
 input="$(cat)"
 
 # Stop and StopFailure both pass last_assistant_message on stdin, so the
@@ -36,7 +35,8 @@ if ! fields="$(printf '%s' "$input" | jq -r '
   (.cwd // ""),
   (.transcript_path // "")
 ' 2>/dev/null)"; then
-  printf '%s unreadable payload: %.500s\n' "$(date -u +%FT%TZ)" "$input" >>"$log"
+  # Rejected input can contain assistant text and local paths, so do not
+  # persist it.
   fields=''
 fi
 
