@@ -6,6 +6,7 @@
 # === Formulae (CLI tools — only what was installed on request) ===
 brew "act"
 brew "age"
+brew "age-plugin-se"
 brew "chezmoi"
 brew "cloudflare-wrangler"
 brew "cloudflared"
