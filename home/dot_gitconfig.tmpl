@@ -7,7 +7,7 @@
 {{- end -}}
 [user]
 	name = Viktor Sharha
-	email = vsharha07@gmail.com
+	email = {{ .email }}
 [core]
 	autocrlf = input
 {{ if not .headless }}	editor = code --wait

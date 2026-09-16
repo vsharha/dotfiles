@@ -1,5 +1,12 @@
-{{- $headless := promptBoolOnce . "headless" "Headless server (no desktop)" false -}}
-{{- $dev := promptBoolOnce . "dev" "Development and agent configuration" (not $headless) -}}
+{{/* Each default is the machine's saved answer where it has one, so a prompt
+forced by a flag (apply.sh passes --prompt) offers what the machine already is.
+Taking the literal default instead would flip an axis on an empty answer. */ -}}
+{{- $headless := promptBoolOnce . "headless" "Headless server (no desktop)" (dig "headless" false .) -}}
+{{- $dev := promptBoolOnce . "dev" "Development and agent configuration" (dig "dev" (not $headless) .) -}}
+{{- $personal := promptBoolOnce . "personal" "Personal accounts and services" (dig "personal" true .) -}}
+{{- $email := promptStringOnce . "email" "Git email" (dig "email" "vsharha07@gmail.com" .) -}}
 [data]
     headless = {{ $headless }}
     dev = {{ $dev }}
+    personal = {{ $personal }}
+    email = {{ $email | quote }}

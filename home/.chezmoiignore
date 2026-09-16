@@ -1,10 +1,16 @@
 {{ if or (ne .chezmoi.os "darwin") .headless }}
 .config/linearmouse
+{{ end }}
+{{ if or (ne .chezmoi.os "darwin") .headless (not .personal) }}
+# start-hidden is launched by the login items and has no other caller.
 .local/bin/start-hidden
 Library/LaunchAgents
 {{ end }}
-{{ if ne .chezmoi.os "darwin" }}
+{{ if or (ne .chezmoi.os "darwin") (not .personal) }}
 .local/bin/tailscale
+{{ end }}
+{{ if not .personal }}
+.ssh/config
 {{ end }}
 {{ if or (ne .chezmoi.os "linux") .headless }}
 .config/MangoHud

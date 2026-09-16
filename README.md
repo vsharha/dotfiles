@@ -26,34 +26,42 @@ system.
 
 ### Machine roles
 
-Two independent booleans decide what a machine gets:
+Three independent booleans decide what a machine gets:
 
 - `headless` — nothing attached to it draws pixels. It gates the terminal,
   clipboard, editor, and gaming configuration.
 - `dev` — development tooling and agent configuration belong here. It gates
   `~/.agents`, `~/.claude`, `~/.codex`, `~/.zfunc`, the pnpm and Go entries on
   `PATH`, and the pnpm aliases.
+- `personal` — personal accounts and services belong here. It gates the
+  homelab SSH hosts, the macOS login items, and the shim for the App Store
+  Tailscale build.
 
 Everything else — zsh, the prompt, history, completion, Git — is shared and
-applies everywhere. The three roles in use:
+applies everywhere. The four machines in use:
 
 ```bash
-just apply                    # desktop: display, dev tooling
-just apply --headless         # server: neither
+just apply                    # desktop: display, dev tooling, personal
+just apply --headless         # server: no display, no dev tooling
 just apply --headless --dev   # container or cloud sandbox: dev tooling, no display
+just apply --no-personal      # work: display and dev tooling, nothing personal
 ```
 
-Both flags are one-way; they can only set a value to true. `dev` defaults to
-the opposite of `headless`, so `--headless` alone gives a server and no flags
-gives a desktop.
+Every axis also takes a `--no-` form — `--no-headless`, `--no-dev`,
+`--no-personal` — so a value can be set in either direction. `dev` defaults to
+the opposite of `headless` and `personal` defaults to true, so `--headless`
+alone gives a server and no flags gives a desktop.
+
+The Git email is prompted for once per machine rather than derived from a role,
+because it varies between machines that otherwise match. The personal address
+is offered as the default.
 
 Every `just apply` runs `chezmoi init` to resolve the machine's role. Normal
 applies save the answers in the chezmoi config; `--dry-run` (or `-n`) previews
-them using temporary configuration without changing the saved role.
-A machine that has already answered is not asked again, so passing a flag is
-the only way to change a role through this wrapper. Passing one flag and not
-the other asks for the axis left unnamed. A machine configured before `dev`
-existed is asked for that missing answer on its next apply.
+them using temporary configuration without changing what is saved. A machine
+that has already answered is not asked again, and a flag overrides the answer
+saved for the axis it names. A machine configured before an axis existed is
+asked for that missing answer on its next apply.
 
 ### Git hooks
 

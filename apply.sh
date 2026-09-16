@@ -14,14 +14,19 @@ if ! command -v chezmoi >/dev/null 2>&1; then
 fi
 
 # --promptBool is keyed by the prompt text in home/.chezmoi.toml.tmpl, not by
-# the data key. Each flag answers one axis; an axis no flag names is asked for.
+# the data key. Each flag sets one axis; what becomes of the axes left unnamed
+# depends on --prompt, added below whenever any flag is present.
 PROMPT_ARGS=()
 APPLY_ARGS=()
 DRY_RUN=false
 for arg in "$@"; do
   case "$arg" in
     --headless) PROMPT_ARGS+=(--promptBool "Headless server (no desktop)=true") ;;
+    --no-headless) PROMPT_ARGS+=(--promptBool "Headless server (no desktop)=false") ;;
     --dev) PROMPT_ARGS+=(--promptBool "Development and agent configuration=true") ;;
+    --no-dev) PROMPT_ARGS+=(--promptBool "Development and agent configuration=false") ;;
+    --personal) PROMPT_ARGS+=(--promptBool "Personal accounts and services=true") ;;
+    --no-personal) PROMPT_ARGS+=(--promptBool "Personal accounts and services=false") ;;
     --dry-run|-n|--dry-run=true|-n=true)
       DRY_RUN=true
       APPLY_ARGS+=("$arg")
@@ -49,6 +54,9 @@ if "$DRY_RUN"; then
   INIT_ARGS+=(--config-path "$PREVIEW_DIR/chezmoi.toml")
 fi
 
+# --prompt is what lets a flag override an answer already saved for its axis:
+# the prompt*Once functions read --promptBool only when they would prompt. It
+# also re-asks the axes no flag named, which default to the saved answer.
 if [ "${#PROMPT_ARGS[@]}" -gt 0 ]; then
   INIT_ARGS+=(--prompt "${PROMPT_ARGS[@]}")
 fi
