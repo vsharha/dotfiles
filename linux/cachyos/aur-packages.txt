@@ -1,4 +1,5 @@
 localsend-bin
+proton-mail-bin
 visual-studio-code-bin
 vulkan-low-latency-layer
 
