@@ -154,26 +154,29 @@ through Homebrew and the Mac App Store.
 
 ### Apps started at login
 
-`Library/LaunchAgents/io.github.vsharha.login.*.plist` start Telegram and
-Bitwarden at login without putting a window on screen. macOS no longer keeps the
-per-item "hide" flag that the login items list used to store, so launchd starts
-these two instead:
+`Library/LaunchAgents/io.github.vsharha.login.*.plist` start Telegram,
+Proton Mail, and Bitwarden at login without putting a window on screen. macOS no
+longer keeps the per-item "hide" flag that the login items list used to store,
+so launchd starts these three instead:
 
-- Telegram starts through `.local/bin/start-hidden`, because `open -j` alone
-  does not hold it: Telegram unhides itself to show its window. The script
-  watches for that window and hides the app as soon as it appears, then stops,
-  leaving a window opened later alone.
+- Telegram and Proton Mail start through `.local/bin/start-hidden`, because
+  `open -j` alone does not hold them: each unhides itself to show its window.
+  The script watches for that window and hides the app as soon as it appears,
+  then stops, leaving a window opened later alone. It gives up after 20
+  seconds, and Proton Mail shows its window only once the inbox has loaded, so
+  on a slow network at login its window can stay on screen.
 - Bitwarden starts with `--autostart`, the argument it checks before going
   straight to the menu bar.
 
-Telegram keeps its Dock icon. Bitwarden runs from the menu bar with no
-Dock icon at all. Shottr stays an ordinary login item: it builds its main window
+Telegram and Proton Mail keep their Dock icon. Bitwarden runs from the menu bar
+with no Dock icon at all. Shottr stays an ordinary login item: it builds its main window
 on every launch path, and hiding the app leaves the Dock icon behind, so
 starting it this way buys nothing.
 
-Keep those two out of System Settings > General > Login Items & Extensions,
-and leave Bitwarden's own "Start automatically on login" off, or a second copy
-starts with its window showing. Bitwarden also needs "Enable menu bar icon" on
+Keep those three out of System Settings > General > Login Items & Extensions,
+and leave Proton Mail's "Start Proton Mail at login" menu item and Bitwarden's
+own "Start automatically on login" off, or a second copy starts with its window
+showing. Bitwarden also needs "Enable menu bar icon" on
 and "Always show in the Dock" off; those settings live in the app, not here.
 
 launchd loads the agents at the next login. To start them in the current
