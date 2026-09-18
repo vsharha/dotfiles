@@ -135,13 +135,13 @@ mas "Compressor Creator Studio",     id: 6746516157
 mas "Final Cut Pro Creator Studio",  id: 1631624924
 mas "Pixelmator Pro Creator Studio", id: 6746662575
 mas "Canva",                         id: 897446215
+mas "Microsoft Outlook",             id: 985367838
 
 # === Verify before enabling ===
 # Office: these casks install Microsoft's direct .pkg. Yours are App Store builds,
-# so either add them as `mas` entries below or uncomment these casks — not both.
+# so either add them as `mas` entries above or uncomment these casks — not both.
 # cask "microsoft-excel"
 # cask "microsoft-word"
-# cask "microsoft-outlook"
 # cask "microsoft-powerpoint"
 
 # === No Homebrew cask and not App Store — install manually ===
