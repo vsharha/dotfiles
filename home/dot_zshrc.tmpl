@@ -275,6 +275,32 @@ fzf-tab-list() {
 zle -N fzf-tab-list
 bindkey '^[[Z' fzf-tab-list                       # Shift-Tab
 
+# === empty Enter redraws the prompt in place ======================
+# accept-line prints a fresh prompt even for an empty command line, so holding
+# Enter scrolls the screen — with POWERLEVEL9K_TRANSIENT_PROMPT=always, into a
+# column of bare prompt characters. On an empty (or whitespace-only) line,
+# re-run the precmd hooks and redraw where the prompt already is: the hooks are
+# what rebuild p10k's PROMPT, so reset-prompt alone would redraw stale segments.
+# Git state still refreshes, because p10k queries gitstatus asynchronously from
+# its precmd and issues its own reset-prompt when the answer arrives. Ctrl-J is
+# left bound to plain accept-line, so a blank line is still one keystroke away.
+refresh-or-accept-line() {
+  # No leading dot: the real accept-line keeps the autosuggestions and
+  # syntax-highlighting wrappers that a typed command needs.
+  if [[ -n ${BUFFER//[[:space:]]/} ]]; then
+    zle accept-line
+    return
+  fi
+  BUFFER=
+  local f
+  for f in $precmd_functions; do
+    (( $+functions[$f] )) && $f
+  done
+  zle .reset-prompt
+}
+zle -N refresh-or-accept-line
+bindkey '^M' refresh-or-accept-line               # Enter
+
 # === syntax highlighting (MUST be last of the plugin sources) =====
 source "$_plugin_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
