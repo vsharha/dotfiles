@@ -54,7 +54,7 @@ alone gives a server and no flags gives a desktop.
 
 The Git email is prompted for once per machine rather than derived from a role,
 because it varies between machines that otherwise match. The personal address
-is offered as the default.
+is offered as the default, and `--email you@example.com` answers it outright.
 
 Every `just apply` runs `chezmoi init` to resolve the machine's role. Normal
 applies save the answers in the chezmoi config; `--dry-run` (or `-n`) previews
@@ -62,6 +62,11 @@ them using temporary configuration without changing what is saved. A machine
 that has already answered is not asked again, and a flag overrides the answer
 saved for the axis it names. A machine configured before an axis existed is
 asked for that missing answer on its next apply.
+
+Passing any flag re-asks every prompt, each offering the machine's saved answer
+as its default, and the answers are read from stdin rather than a terminal. An
+apply driven by a script instead of typed should therefore name every axis and
+pass `--email`, or it stops at the first prompt it has nothing to read for.
 
 ### Git hooks
 
