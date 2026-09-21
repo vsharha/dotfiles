@@ -65,6 +65,7 @@ cask "visual-studio-code"
 # === Casks: Communication ===
 cask "discord"
 cask "microsoft-outlook"
+cask "microsoft-teams"
 cask "proton-mail"
 cask "telegram"
 cask "viber"
