@@ -64,6 +64,7 @@ cask "visual-studio-code"
 
 # === Casks: Communication ===
 cask "discord"
+cask "microsoft-outlook"
 cask "proton-mail"
 cask "telegram"
 cask "viber"
@@ -115,6 +116,7 @@ cask "ente-auth"
 cask "protonvpn"
 
 # === Casks: Creative ===
+cask "canva"
 cask "inkscape"
 cask "paintbrush"
 
@@ -134,8 +136,6 @@ mas "HP Smart",                      id: 1474276998
 mas "Compressor Creator Studio",     id: 6746516157
 mas "Final Cut Pro Creator Studio",  id: 1631624924
 mas "Pixelmator Pro Creator Studio", id: 6746662575
-mas "Canva",                         id: 897446215
-mas "Microsoft Outlook",             id: 985367838
 
 # === Verify before enabling ===
 # Office: these casks install Microsoft's direct .pkg. Yours are App Store builds,
