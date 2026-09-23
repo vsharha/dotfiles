@@ -19,7 +19,6 @@ brew "graphviz"
 brew "imagemagick"
 brew "just"
 brew "latexindent"
-brew "llama.cpp"
 brew "ncdu"
 brew "neovim"
 brew "nginx"
@@ -50,6 +49,7 @@ brew "zsh-syntax-highlighting"
 # === Casks: AI ===
 cask "chatgpt"
 cask "claude"
+cask "lm-studio"
 
 # === Casks: Browsers ===
 cask "google-chrome"
