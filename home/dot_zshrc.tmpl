@@ -302,6 +302,13 @@ refresh-or-accept-line() {
 zle -N refresh-or-accept-line
 bindkey '^M' refresh-or-accept-line               # Enter
 
+# Shift+Enter arrives as the modifyOtherKeys sequence when a program leaves
+# that mode on. Unbound, zle drops only the '^[[27' prefix and self-inserts
+# the ';2;13~' tail, so bind the full sequence to insert a newline instead.
+insert-newline() { LBUFFER+=$'\n' }
+zle -N insert-newline
+bindkey '^[[27;2;13~' insert-newline              # Shift-Enter
+
 # === syntax highlighting (MUST be last of the plugin sources) =====
 source "$_plugin_dir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
