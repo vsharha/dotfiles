@@ -1,3 +1,6 @@
+{{ if ne .chezmoi.os "darwin" }}
+.zprofile
+{{ end }}
 {{ if or (ne .chezmoi.os "darwin") .headless }}
 .config/linearmouse
 {{ end }}
