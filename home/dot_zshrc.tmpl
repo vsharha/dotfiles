@@ -6,6 +6,9 @@
 {{-   end -}}
 {{- end -}}
 # === p10k instant prompt — keep at the VERY TOP, above everything ===
+# Keys typed before zsh starts are echoed by the tty at column 0; wipe them so
+# the instant prompt draws on this line instead of below a stray fragment.
+[[ -t 1 ]] && print -n '\r\e[K'
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
