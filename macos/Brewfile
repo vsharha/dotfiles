@@ -72,7 +72,7 @@ cask "viber"
 cask "whatsapp"
 
 # === Casks: Productivity ===
-cask "applite"
+cask "homebrew-app"
 cask "libreoffice"
 cask "maccy"
 cask "netnewswire"
