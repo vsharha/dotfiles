@@ -1,10 +1,5 @@
 @~/.agents/AGENTS.md
 
-## Clarifying questions
-
-- When a task request is missing a decision, use the question tool to gather it instead of guessing. Advice questions get an answer instead (see AGENTS.md).
-- Ask across multiple turns if one round is not enough — do not begin work that depends on an unanswered question.
-
 ## Shell mode
 
 - The `!` prefix runs a command inside this session with no TTY and the same filesystem and network access you have. It is not an interactive shell and grants the user no extra access — it only skips your permission prompts.

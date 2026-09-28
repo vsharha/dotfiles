@@ -6,7 +6,8 @@ Repository-local instructions are authoritative for project commands, validation
 
 - For repository-specific questions, inspect relevant files and conventions before answering. Ground recommendations in repository evidence, not generic advice.
 - Treat “should I…?” and similar questions from the user as advice-only: answer them and make no changes unless explicitly asked.
-- When a task request is missing a decision that the code and sensible defaults don't settle, ask before starting work that depends on it.
+- When a task request is missing a decision that the code and sensible defaults don't settle, ask before starting work that depends on it. If a question tool is available, ask with it rather than in prose.
+- Ask across multiple turns if one round is not enough — do not begin work that depends on an unanswered question.
 
 ## Disagreement and openers
 
