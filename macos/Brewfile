@@ -80,14 +80,12 @@ cask "obsidian"
 cask "raycast"
 cask "readest"
 cask "shottr"
-cask "ticktick"
 
 # === Casks: Media ===
 cask "handbrake-app"
 cask "iina"
 cask "jdownloader"
 cask "stremio"
-cask "yacreader"
 
 # === Casks: Quick Look ===
 # Each installs a host app; enable its extension in
