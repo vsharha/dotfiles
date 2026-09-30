@@ -84,6 +84,9 @@ setopt inc_append_history     # write each command as it runs, not on exit
 setopt hist_ignore_all_dups   # drop older duplicates so Ctrl-R shows unique lines
 setopt hist_ignore_space      # leading space keeps a command out of history
 setopt hist_reduce_blanks     # normalise whitespace before saving
+setopt extended_history       # save a start timestamp with each entry
+setopt hist_fcntl_lock        # lock with fcntl() so concurrent tabs don't corrupt the file
+setopt hist_verify            # show !!, !$ etc. expanded for review before running
 
 # === aliases ======================================================
 alias python=python3
