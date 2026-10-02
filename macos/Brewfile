@@ -105,7 +105,6 @@ cask "rectangle"
 cask "thaw"
 
 # === Casks: Cloud / sync ===
-cask "google-drive"
 cask "proton-drive"
 cask "localsend"
 cask "blip"
