@@ -59,22 +59,10 @@ path=(
   "$HOME/.lmstudio/bin"
   $path
 )
-# SOPS on macOS would otherwise look under ~/Library/Application Support.
-export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/keys.txt"
-{{ else -}}
-# The homelab origin's provisioning installs sops and a TPM-held age identity
-# readable by the tss group. Its units set the variable themselves; this covers
-# sops run by hand. No other Linux machine has the file.
-if [[ -r /etc/homelab/age-identity.txt ]]; then
-  export SOPS_AGE_KEY_FILE=/etc/homelab/age-identity.txt
-fi
 {{ end -}}
 {{ if not .headless -}}
 export EDITOR="code --wait"
-{{ end -}}
-# Keeps __pycache__ directories out of project checkouts.
-export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME:-$HOME/.cache}/pycache"
-
+{{ end }}
 # === history ======================================================
 # Explicit config so every OS behaves the same — macOS caps SAVEHIST at
 # 1000 in /etc/zshrc and Linux distros vary. Large limits keep fzf Ctrl-R
