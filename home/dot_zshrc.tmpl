@@ -72,6 +72,8 @@ fi
 {{ if not .headless -}}
 export EDITOR="code --wait"
 {{ end -}}
+# Keeps __pycache__ directories out of project checkouts.
+export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME:-$HOME/.cache}/pycache"
 
 # === history ======================================================
 # Explicit config so every OS behaves the same — macOS caps SAVEHIST at
