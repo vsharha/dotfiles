@@ -2,6 +2,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Pinned so an install runs reviewed code; bump it deliberately.
+INSTALLER="add-mcp@2.4.1"
 
 for cmd in npx jq uvx; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
@@ -21,7 +23,7 @@ while IFS= read -r name <&3; do
   source="$(jq -r --arg name "$name" '.mcpServers[$name]' "$SCRIPT_DIR/mcp.json")"
   source="${source/#\~/$HOME}"
 
-  npx -y add-mcp@latest "$source" \
+  npx -y "$INSTALLER" "$source" \
     --name "$name" \
     --global \
     "${agent_args[@]}" \

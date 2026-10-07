@@ -2,6 +2,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Pinned so an install runs reviewed code; bump it deliberately.
+INSTALLER="skills@1.7.1"
 
 for cmd in npx jq; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
@@ -23,7 +25,7 @@ while IFS= read -r repo <&3; do
     args+=(--skill "$skill")
   done < <(jq -r --arg repo "$repo" '.skills[$repo][]' "$SCRIPT_DIR/skills.json")
 
-  npx -y skills@latest add "$repo" \
+  npx -y "$INSTALLER" add "$repo" \
     --global \
     "${agent_args[@]}" \
     "${args[@]}" \

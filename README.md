@@ -106,8 +106,9 @@ just mcp             # Claude Code and Codex
 just mcp opencode    # and opencode
 ```
 
-Both scripts install through `npx` and read their JSON with `jq`, and `just mcp`
-additionally needs `uvx` for the servers that run through uv. On macOS the
+Both scripts install through `npx`, running the installer version pinned at the
+top of each script. They read their JSON with `jq`, and `just mcp` additionally
+needs `uvx` for the servers that run through uv. On macOS the
 Brewfile provides uv, Node arrives as a dependency of the formulae it installs,
 and jq comes with the system at `/usr/bin/jq`. CachyOS installs jq and uv from
 its package list. Debian/Ubuntu installs jq because chezmoi needs it to apply
