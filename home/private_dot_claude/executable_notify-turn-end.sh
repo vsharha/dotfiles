@@ -9,11 +9,9 @@ tty="$(ps -o tty= -p "$PPID" 2>/dev/null | tr -d '[:space:]')"
 input="$(cat)"
 
 # Stop and StopFailure both pass last_assistant_message on stdin, so the
-# transcript is not needed for the body. StopFailure also passes error — one of
-# rate_limit, overloaded, invalid_request, model_not_found, server_error,
-# max_output_tokens, cloud_credential_error, unknown — and, when the API
-# returned one, error_details with the raw message. The kind leads: it is
-# always present and it is the part that says whether waiting will help.
+# transcript is not needed for the body. StopFailure also passes error, the
+# kind of failure such as rate_limit, and sometimes error_details. The kind
+# leads because it is always present and says whether waiting will help.
 #
 # The message is markdown. Backticks and emphasis markers are stripped because
 # they render literally and spend characters that macOS only shows about three

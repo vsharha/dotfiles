@@ -2,17 +2,13 @@
 # pixels"; `dev` is "development tooling and agent configuration belong here";
 # `personal` is "my own accounts and services belong here". They are
 # independent: a desktop is headless false and the other two true, the Debian
-# server is dev false and the other two as on a desktop, a container or cloud
-# sandbox is headless true with dev and personal as on a desktop, and a work
-# machine is a desktop with personal false.
+# server is headless true, dev false and personal true, a container or cloud
+# sandbox is all three true, and a work machine is a desktop with personal
+# false.
 #
 # `personal` gates the homelab SSH hosts, the macOS login items, and the
 # helper the login items call. The Git email is prompted for separately, since
 # it varies per machine rather than per machine type.
-#
-# `dev` defaults to the negation of `headless` in .chezmoi.toml.tmpl, so a
-# machine answering only the first question lands on the role it had before the
-# two were separated.
 #
 # The values below are the desktop answers. They resolve every key on a machine
 # that never ran chezmoi init; anywhere init has run, the config file it writes

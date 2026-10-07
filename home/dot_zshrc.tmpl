@@ -108,19 +108,13 @@ source "$_plugin_dir/fzf-tab/fzf-tab.zsh"
 ZSH_AUTOSUGGEST_STRATEGY=(completion history)
 source "$_plugin_dir/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
-# The completion strategy captures its grey hint by running real completion in a
-# hidden zpty; its post-completion hook forces compstate[insert]=1, i.e. the
-# first full candidate. Switch it to `unambiguous` so the hint is the longest
-# common prefix instead — the same text fzf-tab (menu no) inserts on the first
-# Tab. Now the grey hint and Tab completion agree: accepting the suggestion is
-# identical to completing. History hits (no completion match) still show a full
-# recalled line, which is the point of the history fallback. The zpty forks this
-# shell at suggestion time, so this override is inherited.
+# The completion strategy's hook forces compstate[insert]=1, making the grey
+# hint the first full candidate. `unambiguous` makes it the longest common
+# prefix, the same text fzf-tab inserts on the first Tab, so accepting the hint
+# and pressing Tab agree. History hits still show the full recalled line.
 #
-# This patches a private plugin function, so guard it: only override when the
-# upstream body still hard-codes compstate[insert]=1 (what we mean to flip), and
-# warn otherwise. Turns a silent revert-to-first-match on some future update
-# into a loud, actionable message.
+# This replaces a private plugin function, so it applies only while upstream
+# still sets compstate[insert]=1, and warns otherwise.
 if [[ "$(functions _zsh_autosuggest_capture_postcompletion 2>/dev/null)" == *'compstate[insert]=1'* ]]; then
   _zsh_autosuggest_capture_postcompletion() {
     compstate[insert]=unambiguous
@@ -177,15 +171,9 @@ bindkey '^U' backward-kill-line
 # or Backspace replaces/deletes the selection.
 source ~/.config/zsh/zsh-shift-select.zsh
 
-# Ctrl-C is left as a plain interrupt — it can't be repurposed here. The tty
-# delivers it as a real SIGINT before zle ever sees a byte, so intercepting
-# it needs TRAPINT; Powerlevel10k's precmd hook unconditionally reclaims the
-# INT trap every prompt cycle for its own async worker, silently overwriting
-# any TRAPINT we define.
-# On a desktop, copying the keyboard selection instead lives on Cmd+Shift+C
-# (macOS) / Ctrl+Shift+C (Linux), which ghostty re-encodes as a CSI-u escape
-# sequence bound to a normal zle keybinding below — no signal/trap involved, so
-# it can't be clobbered.
+# Copying the keyboard selection is on Cmd+Shift+C (macOS) / Ctrl+Shift+C
+# (Linux), which ghostty sends as a CSI-u sequence. Ctrl-C stays an interrupt:
+# it arrives as SIGINT, and p10k resets the INT trap on every prompt.
 {{- $copyCommand := "" -}}
 {{- $copyKey := "" -}}
 {{- if and (eq .chezmoi.os "darwin") (not .headless) -}}
@@ -222,13 +210,9 @@ fzf-tab-complete-with-local-cwd() {
   local _cwd_before=$PWD
   local -a _saved_chpwd_functions=("${chpwd_functions[@]}")
   {
-    # SSH completion temporarily visits ~/.ssh and can leave us parked there
-    # (notably when completing from ~, since ~/.ssh is a child of it). Suppress
-    # Ghostty's cwd reporter during completion, then pin the directory back to
-    # where completion started before reporting, so a new tab inherits the launch
-    # directory rather than that implementation detail. A Tab press must never
-    # change the shell's cwd, so restoring it is always safe. Other chpwd hooks
-    # keep running, and the reporter is restored below.
+    # SSH completion can cd into ~/.ssh and stay there. Mute ghostty's cwd
+    # reporter while completing, then return to the starting directory and
+    # report it, so a new tab opens where this shell actually is.
     chpwd_functions=(${chpwd_functions:#_ghostty_report_pwd})
     zle fzf-tab-complete
   } always {
@@ -248,12 +232,9 @@ smart-tab() {
 zle -N smart-tab
 bindkey '^I'   smart-tab                          # Tab
 
-# Shift-Tab: open the picker on the FIRST press. With `menu no`, fzf-tab
-# inserts the longest common prefix (e.g. `drive:`) and only lists on the
-# second press — it does that whenever $compstate[insert] ends in
-# "unambiguous". The `menu` style is what zsh uses to set that value, so
-# switching it to yes for one call makes compstate[insert]=menu and the
-# picker opens at once. Public zstyle only; no fzf-tab internals.
+# Shift-Tab opens the picker on the first press. With `menu no`, fzf-tab only
+# inserts the common prefix on the first press; `menu yes` for this one call
+# makes it list immediately.
 fzf-tab-list() {
   {
     zstyle ':completion:*' menu yes
@@ -266,14 +247,10 @@ zle -N fzf-tab-list
 bindkey '^[[Z' fzf-tab-list                       # Shift-Tab
 
 # === empty Enter redraws the prompt in place ======================
-# accept-line prints a fresh prompt even for an empty command line, so holding
-# Enter scrolls the screen — with POWERLEVEL9K_TRANSIENT_PROMPT=always, into a
-# column of bare prompt characters. On an empty (or whitespace-only) line,
-# re-run the precmd hooks and redraw where the prompt already is: the hooks are
-# what rebuild p10k's PROMPT, so reset-prompt alone would redraw stale segments.
-# Git state still refreshes, because p10k queries gitstatus asynchronously from
-# its precmd and issues its own reset-prompt when the answer arrives. Ctrl-J is
-# left bound to plain accept-line, so a blank line is still one keystroke away.
+# Holding Enter on an empty line would otherwise scroll a column of transient
+# prompts. The precmd hooks rebuild p10k's PROMPT, so they run before the
+# redraw; reset-prompt alone would show stale segments. Ctrl-J stays plain
+# accept-line, for when a new prompt line is wanted.
 refresh-or-accept-line() {
   # No leading dot: the real accept-line keeps the autosuggestions and
   # syntax-highlighting wrappers that a typed command needs.

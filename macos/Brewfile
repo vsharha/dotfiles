@@ -1,7 +1,7 @@
 # Restore on a new Mac:
 #   brew bundle install --file=macos/Brewfile
-# Update this file from the current machine:
-#   brew bundle dump --file=macos/Brewfile --force
+# Edited by hand; `just brew-diff` lists what has drifted. `brew bundle dump`
+# would drop every comment here.
 
 # === Formulae (CLI tools — only what was installed on request) ===
 brew "act"
