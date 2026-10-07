@@ -240,7 +240,7 @@ From then on, use `just setup` to rerun the complete flow, or
 Optional system configuration:
 
 ```bash
-just gaming-pc    # Gaming PC configuration
+just rtw89-wifi   # Disable rtw89 Wi-Fi power saving
 just dualsense    # DualSense UCM workaround
 just refind-theme # rEFInd Regular theme
 ```

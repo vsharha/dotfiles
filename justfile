@@ -44,8 +44,8 @@ kde:
     ./linux/desktop/kde.sh
 
 [linux]
-gaming-pc:
-    ./linux/profiles/gaming-pc.sh
+rtw89-wifi:
+    ./linux/fixes/rtw89-wifi.sh
 
 [linux]
 dualsense:
