@@ -1,0 +1,10 @@
+{{- /* Homebrew's prefix on macOS, empty elsewhere. HOMEBREW_PREFIX is set
+once .zprofile has run brew shellenv; asking brew covers a first apply from a
+shell that has not. */ -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $prefix := env "HOMEBREW_PREFIX" -}}
+{{-   if not $prefix -}}
+{{-     $prefix = output "brew" "--prefix" | trim -}}
+{{-   end -}}
+{{-   $prefix -}}
+{{- end -}}

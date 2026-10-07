@@ -1,10 +1,4 @@
-{{- $brewPrefix := "" -}}
-{{- if eq .chezmoi.os "darwin" -}}
-{{-   $brewPrefix = env "HOMEBREW_PREFIX" -}}
-{{-   if not $brewPrefix -}}
-{{-     $brewPrefix = output "brew" "--prefix" | trim -}}
-{{-   end -}}
-{{- end -}}
+{{- $brewPrefix := includeTemplate "brew-prefix" . -}}
 {{- $gh := "" -}}
 {{- if eq .chezmoi.os "darwin" -}}
 {{-   $gh = printf "%s/bin/gh" $brewPrefix -}}

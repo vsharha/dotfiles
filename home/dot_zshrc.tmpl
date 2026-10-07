@@ -1,10 +1,4 @@
-{{- $brewPrefix := "" -}}
-{{- if eq .chezmoi.os "darwin" -}}
-{{-   $brewPrefix = env "HOMEBREW_PREFIX" -}}
-{{-   if not $brewPrefix -}}
-{{-     $brewPrefix = output "brew" "--prefix" | trim -}}
-{{-   end -}}
-{{- end -}}
+{{- $brewPrefix := includeTemplate "brew-prefix" . -}}
 # === p10k instant prompt — keep at the VERY TOP, above everything ===
 # Keys typed before zsh starts are echoed by the tty at column 0; wipe them so
 # the instant prompt draws on this line instead of below a stray fragment.
@@ -192,29 +186,29 @@ source ~/.config/zsh/zsh-shift-select.zsh
 # (macOS) / Ctrl+Shift+C (Linux), which ghostty re-encodes as a CSI-u escape
 # sequence bound to a normal zle keybinding below — no signal/trap involved, so
 # it can't be clobbered.
-{{ if and (eq .chezmoi.os "darwin") (not .headless) -}}
-copy-selection() {
-  (( REGION_ACTIVE )) || return 0
-  local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
-  local _to=$(( MARK > CURSOR ? MARK : CURSOR ))
-  print -rn -- "${BUFFER[_from,_to]}" | pbcopy
-}
-zle -N copy-selection
-bindkey '^[[99;9u' copy-selection
-bindkey -M shift-select '^[[99;9u' copy-selection
-{{ else if and (eq .chezmoi.os "linux") (not .headless) -}}
+{{- $copyCommand := "" -}}
+{{- $copyKey := "" -}}
+{{- if and (eq .chezmoi.os "darwin") (not .headless) -}}
+{{-   $copyCommand = "pbcopy" -}}
+{{-   $copyKey = "^[[99;9u" -}}
+{{- else if and (eq .chezmoi.os "linux") (not .headless) -}}
+{{-   $copyCommand = "wl-copy" -}}
+{{-   $copyKey = "^[[99;6u" -}}
+{{- end }}
+{{ if $copyCommand -}}
 # Only the CachyOS package list installs wl-clipboard, so bind the key just
-# where wl-copy exists rather than leaving a key that silently does nothing.
-if command -v wl-copy >/dev/null 2>&1; then
+# where the clipboard command exists rather than leaving a key that silently
+# does nothing.
+if command -v {{ $copyCommand }} >/dev/null 2>&1; then
   copy-selection() {
     (( REGION_ACTIVE )) || return 0
     local _from=$(( (MARK < CURSOR ? MARK : CURSOR) + 1 ))
     local _to=$(( MARK > CURSOR ? MARK : CURSOR ))
-    print -rn -- "${BUFFER[_from,_to]}" | wl-copy 2>/dev/null
+    print -rn -- "${BUFFER[_from,_to]}" | {{ $copyCommand }} 2>/dev/null
   }
   zle -N copy-selection
-  bindkey '^[[99;6u' copy-selection
-  bindkey -M shift-select '^[[99;6u' copy-selection
+  bindkey '{{ $copyKey }}' copy-selection
+  bindkey -M shift-select '{{ $copyKey }}' copy-selection
 fi
 {{ end -}}
 
