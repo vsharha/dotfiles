@@ -3,6 +3,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 THEME_REPO="https://github.com/bobafetthotmail/refind-theme-regular.git"
+# The theme is copied into the EFI partition as root, so install a reviewed
+# commit rather than whatever the default branch holds today.
+THEME_COMMIT="ed76f1e6d1bfe790ea7333fe5886fa7af126475d"
 THEME_NAME="refind-theme-regular"
 INCLUDE_LINE="include themes/$THEME_NAME/theme.conf"
 LEGACY_INCLUDE_LINE="include themes/regular-theme/theme.conf"
@@ -55,9 +58,11 @@ if ! path_is_file "$REFIND_DIR/refind.conf"; then
   exit 1
 fi
 
-WORK_DIR="/tmp/$THEME_NAME"
-rm -rf "$WORK_DIR"
-git clone "$THEME_REPO" "$WORK_DIR"
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+WORK_DIR="$TMP_DIR/$THEME_NAME"
+git clone --quiet "$THEME_REPO" "$WORK_DIR"
+git -C "$WORK_DIR" -c advice.detachedHead=false checkout --quiet "$THEME_COMMIT"
 
 cd "$WORK_DIR"
 cp "$SCRIPT_DIR/theme.conf" theme.conf
