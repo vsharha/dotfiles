@@ -6,6 +6,7 @@ discord
 qbittorrent
 proton-vpn-gtk-app
 obsidian
+libreoffice-fresh
 
 # Terminal and shell
 chezmoi
