@@ -24,9 +24,20 @@ if [ "${#HOOKS[@]}" -eq 0 ]; then
   exit 1
 fi
 
+# The default is the first projects directory that exists. Only one is taken:
+# on a case-insensitive filesystem both spellings name the same directory.
 ROOTS=("$@")
 if [ "${#ROOTS[@]}" -eq 0 ]; then
-  ROOTS=("$HOME/Projects")
+  for candidate in "$HOME/Projects" "$HOME/projects"; do
+    if [ -d "$candidate" ]; then
+      ROOTS=("$candidate")
+      break
+    fi
+  done
+  if [ "${#ROOTS[@]}" -eq 0 ]; then
+    echo "Neither ~/Projects nor ~/projects exists; name the roots to scan." >&2
+    exit 1
+  fi
 fi
 for root in "${ROOTS[@]}"; do
   if [ ! -d "$root" ]; then

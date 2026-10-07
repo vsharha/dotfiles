@@ -85,7 +85,7 @@ repositories created earlier.
 Repositories cloned before the template existed need one pass to pick it up:
 
 ```bash
-just git-hooks              # ~/Projects
+just git-hooks              # ~/Projects or ~/projects
 just git-hooks ~/work ~/src # or named roots
 ```
 
