@@ -5,6 +5,12 @@
 {{-     $brewPrefix = output "brew" "--prefix" | trim -}}
 {{-   end -}}
 {{- end -}}
+{{- $gh := "" -}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $gh = printf "%s/bin/gh" $brewPrefix -}}
+{{- else -}}
+{{-   $gh = lookPath "gh" -}}
+{{- end -}}
 [user]
 	name = Viktor Sharha
 	email = {{ .email }}
@@ -34,10 +40,12 @@
 {{ if eq .chezmoi.os "darwin" -}}
 [credential]
 	helper = osxkeychain
+{{ end -}}
+{{ if $gh -}}
 [credential "https://github.com"]
 	helper =
-	helper = {{ printf "!\"%s/bin/gh\" auth git-credential" $brewPrefix | quote }}
+	helper = {{ printf "!\"%s\" auth git-credential" $gh | quote }}
 [credential "https://gist.github.com"]
 	helper =
-	helper = {{ printf "!\"%s/bin/gh\" auth git-credential" $brewPrefix | quote }}
+	helper = {{ printf "!\"%s\" auth git-credential" $gh | quote }}
 {{ end -}}

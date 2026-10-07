@@ -11,6 +11,7 @@ libreoffice-fresh
 # Terminal and shell
 chezmoi
 just
+github-cli  # gh, the git credential helper for GitHub
 ghostty
 ghostty-nautilus
 paru
