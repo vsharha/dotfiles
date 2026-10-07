@@ -5,6 +5,10 @@ default:
 apply *args:
     ./apply.sh {{ args }}
 
+# Lint the scripts and render the dotfiles for every machine role
+lint:
+    ./lint.sh
+
 # Install agent skills for Claude Code and any additional agents
 skills *agents:
     ./agents/install-skills.sh {{ agents }}

@@ -117,6 +117,19 @@ machine applied with `--dev` therefore needs Node before either command works,
 and additionally needs uv before `just mcp` works. Both scripts stop with a
 message naming the missing dependency.
 
+### Linting
+
+```bash
+just lint
+```
+
+runs shellcheck on every shell script and renders the dotfiles for each of the
+four machine roles described above into a temporary directory, checking that every
+template renders and that the rendered zsh files parse. It leaves the home
+directory alone. Only the current OS's templates render, so it catches
+macOS-only mistakes only when run on a Mac. The CachyOS package list and the
+Brewfile install shellcheck; Debian/Ubuntu does not.
+
 ## macOS
 
 Bootstrap a new Mac before cloning the repository:
