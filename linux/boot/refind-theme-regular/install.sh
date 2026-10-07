@@ -7,6 +7,8 @@ THEME_NAME="refind-theme-regular"
 INCLUDE_LINE="include themes/$THEME_NAME/theme.conf"
 LEGACY_INCLUDE_LINE="include themes/regular-theme/theme.conf"
 INCLUDE_COMMENT="# Load rEFInd theme Regular"
+RESOLUTION_LINE="resolution max"
+RESOLUTION_COMMENT="# Use the highest video mode the firmware reports"
 
 path_is_dir() {
   local path="$1"
@@ -71,8 +73,13 @@ sudo sed -i \
   -e "\|^$INCLUDE_COMMENT$|d" \
   -e "\|^$LEGACY_INCLUDE_LINE$|d" \
   -e "\|^$INCLUDE_LINE$|d" \
+  -e "\|^$RESOLUTION_COMMENT$|d" \
+  -e "\|^[[:space:]]*resolution[[:space:]]|d" \
   "$REFIND_DIR/refind.conf"
 
-printf '\n%s\n%s\n' "$INCLUDE_COMMENT" "$INCLUDE_LINE" | sudo tee -a "$REFIND_DIR/refind.conf" >/dev/null
+printf '\n%s\n%s\n%s\n%s\n' \
+  "$RESOLUTION_COMMENT" "$RESOLUTION_LINE" \
+  "$INCLUDE_COMMENT" "$INCLUDE_LINE" \
+  | sudo tee -a "$REFIND_DIR/refind.conf" >/dev/null
 
-echo "Installed rEFInd Regular theme: medium icons, dark theme."
+echo "Installed rEFInd Regular theme: medium icons, dark theme, max resolution."
