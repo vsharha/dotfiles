@@ -13,30 +13,24 @@ if ! command -v chezmoi >/dev/null 2>&1; then
   exit 1
 fi
 
-# --promptBool and --promptString are keyed by the prompt text in
-# home/.chezmoi.toml.tmpl, not by the data key. Each flag answers one prompt;
-# what becomes of the prompts left unnamed depends on --prompt, added below
-# whenever any flag is present.
-PROMPT_ARGS=()
+# Each role flag exports the variable .chezmoi.toml.tmpl reads in place of the
+# saved answer for that axis. Axes no flag names keep their saved answers.
 APPLY_ARGS=()
 DRY_RUN=false
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --headless) PROMPT_ARGS+=(--promptBool "Headless server (no desktop)=true") ;;
-    --no-headless) PROMPT_ARGS+=(--promptBool "Headless server (no desktop)=false") ;;
-    --dev) PROMPT_ARGS+=(--promptBool "Development and agent configuration=true") ;;
-    --no-dev) PROMPT_ARGS+=(--promptBool "Development and agent configuration=false") ;;
-    --personal) PROMPT_ARGS+=(--promptBool "Personal accounts and services=true") ;;
-    --no-personal) PROMPT_ARGS+=(--promptBool "Personal accounts and services=false") ;;
-    # The Git email is the one answer no role implies, so it needs a value
-    # rather than a direction. Without it an apply that passes any flag stops
-    # to ask, which --no-tty below turns into a read from stdin.
+    --headless) export DOTFILES_HEADLESS=true ;;
+    --no-headless) export DOTFILES_HEADLESS=false ;;
+    --dev) export DOTFILES_DEV=true ;;
+    --no-dev) export DOTFILES_DEV=false ;;
+    --personal) export DOTFILES_PERSONAL=true ;;
+    --no-personal) export DOTFILES_PERSONAL=false ;;
     --email)
       if [ "$#" -lt 2 ] || [ -z "$2" ]; then
         echo "--email needs an address, e.g. --email you@example.com" >&2
         exit 1
       fi
-      PROMPT_ARGS+=(--promptString "Git email=$2")
+      export DOTFILES_EMAIL="$2"
       shift
       ;;
     --email=*)
@@ -44,7 +38,7 @@ while [ "$#" -gt 0 ]; do
         echo "--email needs an address, e.g. --email=you@example.com" >&2
         exit 1
       fi
-      PROMPT_ARGS+=(--promptString "Git email=${1#--email=}")
+      export DOTFILES_EMAIL="${1#--email=}"
       ;;
     --dry-run|-n|--dry-run=true|-n=true)
       DRY_RUN=true
@@ -54,11 +48,15 @@ while [ "$#" -gt 0 ]; do
       DRY_RUN=false
       APPLY_ARGS+=("$1")
       ;;
-    -n*|-[^-]*n*)
-      DRY_RUN=true
+    *)
+      # A cluster of chezmoi's argument-free short flags that includes -n,
+      # such as -nv. Flags that take a value are left out, so -xencrypted is
+      # not mistaken for one.
+      if [[ $1 =~ ^-[hPrkv]*n[hPrkv]*$ ]]; then
+        DRY_RUN=true
+      fi
       APPLY_ARGS+=("$1")
       ;;
-    *) APPLY_ARGS+=("$1") ;;
   esac
   shift
 done
@@ -74,14 +72,6 @@ if "$DRY_RUN"; then
   INIT_ARGS+=(--config-path "$PREVIEW_DIR/chezmoi.toml")
 fi
 
-# --prompt is what lets a flag override an answer already saved for its prompt:
-# the prompt*Once functions read --promptBool and --promptString only when they
-# would prompt. It also re-asks whatever no flag named, defaulting to the saved
-# answer, so an apply that passes one flag should pass the rest too when nothing
-# can answer the re-asked prompts.
-if [ "${#PROMPT_ARGS[@]}" -gt 0 ]; then
-  INIT_ARGS+=(--prompt "${PROMPT_ARGS[@]}")
-fi
 # Bash 3.2 treats an empty array as unset under nounset.
 chezmoi "${CHEZMOI_ARGS[@]}" init ${INIT_ARGS[@]+"${INIT_ARGS[@]}"}
 

@@ -1,10 +1,28 @@
-{{/* Each default is the machine's saved answer where it has one, so a prompt
-forced by a flag (apply.sh passes --prompt) offers what the machine already is.
-Taking the literal default instead would flip an axis on an empty answer. */ -}}
-{{- $headless := promptBoolOnce . "headless" "Headless server (no desktop)" (dig "headless" false .) -}}
-{{- $dev := promptBoolOnce . "dev" "Development and agent configuration" (dig "dev" (not $headless) .) -}}
-{{- $personal := promptBoolOnce . "personal" "Personal accounts and services" (dig "personal" true .) -}}
-{{- $email := promptStringOnce . "email" "Git email" (dig "email" "vsharha07@gmail.com" .) -}}
+{{/* apply.sh sets DOTFILES_<AXIS> for each axis a flag names, and that value
+replaces the saved answer. An axis no flag names keeps its saved answer, and is
+asked for only on a machine that has never answered it. */ -}}
+{{- $headless := false -}}
+{{- if env "DOTFILES_HEADLESS" -}}
+{{-   $headless = eq (env "DOTFILES_HEADLESS") "true" -}}
+{{- else -}}
+{{-   $headless = promptBoolOnce . "headless" "Headless server (no desktop)" false -}}
+{{- end -}}
+{{- $dev := false -}}
+{{- if env "DOTFILES_DEV" -}}
+{{-   $dev = eq (env "DOTFILES_DEV") "true" -}}
+{{- else -}}
+{{-   $dev = promptBoolOnce . "dev" "Development and agent configuration" (not $headless) -}}
+{{- end -}}
+{{- $personal := false -}}
+{{- if env "DOTFILES_PERSONAL" -}}
+{{-   $personal = eq (env "DOTFILES_PERSONAL") "true" -}}
+{{- else -}}
+{{-   $personal = promptBoolOnce . "personal" "Personal accounts and services" true -}}
+{{- end -}}
+{{- $email := env "DOTFILES_EMAIL" -}}
+{{- if not $email -}}
+{{-   $email = promptStringOnce . "email" "Git email" "vsharha07@gmail.com" -}}
+{{- end -}}
 [data]
     headless = {{ $headless }}
     dev = {{ $dev }}

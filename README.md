@@ -48,9 +48,10 @@ just apply --no-personal      # work: display and dev tooling, nothing personal
 ```
 
 Every axis also takes a `--no-` form — `--no-headless`, `--no-dev`,
-`--no-personal` — so a value can be set in either direction. `dev` defaults to
-the opposite of `headless` and `personal` defaults to true, so `--headless`
-alone gives a server and no flags gives a desktop.
+`--no-personal` — so a value can be set in either direction. On a new machine,
+each axis no flag names is asked for, with `dev` defaulting to the opposite of
+`headless` and `personal` to true. Accepting the defaults therefore makes
+`--headless` alone a server and no flags a desktop.
 
 The Git email is prompted for once per machine rather than derived from a role,
 because it varies between machines that otherwise match. The personal address
@@ -58,15 +59,14 @@ is offered as the default, and `--email you@example.com` answers it outright.
 
 Every `just apply` runs `chezmoi init` to resolve the machine's role. Normal
 applies save the answers in the chezmoi config; `--dry-run` (or `-n`) previews
-them using temporary configuration without changing what is saved. A machine
-that has already answered is not asked again, and a flag overrides the answer
-saved for the axis it names. A machine configured before an axis existed is
-asked for that missing answer on its next apply.
+them using temporary configuration without changing what is saved. A flag
+replaces the saved answer for the axis it names and leaves the others as they
+were, so switching one axis takes one flag. A machine is asked only for answers
+it has never given, including an axis added after it was first configured.
 
-Passing any flag re-asks every prompt, each offering the machine's saved answer
-as its default, and the answers are read from stdin rather than a terminal. An
-apply driven by a script instead of typed should therefore name every axis and
-pass `--email`, or it stops at the first prompt it has nothing to read for.
+Prompts read from stdin rather than a terminal. An apply driven by a script on
+a new machine should therefore name every axis and pass `--email`, or it stops
+at the first prompt it has nothing to read for.
 
 ### Git hooks
 
