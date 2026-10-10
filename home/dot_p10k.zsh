@@ -20,16 +20,12 @@ source "$__p9k_root_dir/config/p10k-rainbow.zsh"
 [[ ! -o 'no_brace_expand' ]] || p10k_config_opts+=('no_brace_expand')
 'builtin' 'setopt' 'no_aliases' 'no_sh_glob' 'brace_expand'
 
-# Ghostty gets the full two-line prompt. Other terminals, such as a console or
-# a client without the Nerd Font, get the prompt character alone.
-_p10k_is_ghostty() {
-  [[ ${TERM_PROGRAM:-} == ghostty || ${TERM:-} == xterm-ghostty ]]
-}
-
 () {
   emulate -L zsh -o extended_glob
 
-  if _p10k_is_ghostty; then
+  # Ghostty gets the full two-line prompt. Other terminals, such as a console
+  # or a client without the Nerd Font, get the prompt character alone.
+  if [[ ${TERM:-} == xterm-ghostty ]]; then
     typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs newline prompt_char)
     typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
       status command_execution_time background_jobs direnv asdf virtualenv
