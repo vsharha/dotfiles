@@ -50,6 +50,7 @@ brew "zsh-syntax-highlighting"
 # === Casks: AI ===
 cask "chatgpt"
 cask "claude"
+cask "codex"
 cask "lm-studio"
 
 # === Casks: Browsers ===

@@ -93,7 +93,7 @@ Reinitializing installs only the hooks a repository is missing; its branch,
 worktree, and history are untouched. A repository that sets its own
 `core.hooksPath` — husky, lefthook — bypasses the hook entirely.
 
-### Agent skills and MCP servers
+### Agent skills, MCP servers, and plugins
 
 `just skills` installs every skill listed in `agents/skills.json`, and `just mcp`
 every server in `agents/mcp.json`. Skills go to Claude Code and MCP servers to
@@ -117,6 +117,22 @@ only the shell environment and this repository's command runner. A Debian
 machine applied with `--dev` therefore needs Node before either command works,
 and additionally needs uv before `just mcp` works. Both scripts stop with a
 message naming the missing dependency.
+
+Claude Code plugins have no `just` recipe. They are declared in
+`home/private_dot_claude/modify_settings.json` as `extraKnownMarketplaces` and
+`enabledPlugins` entries, so `just apply` enables them on every dev machine.
+Claude Code registers the marketplaces on its next start, but whether it also
+installs the plugins depends on their source, so install each once per machine
+if `/plugin` doesn't list it. Plugins installed by hand with `/plugin` are left
+alone. For the Codex plugin:
+
+```bash
+claude plugin install codex@openai-codex
+```
+
+then run `/codex:setup` inside Claude Code to check the `codex` CLI and sign in.
+The plugin calls that CLI, which the Brewfile and the CachyOS package list
+install; on other systems install it separately.
 
 ### Linting
 
