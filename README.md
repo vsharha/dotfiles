@@ -130,9 +130,10 @@ alone. For the Codex plugin:
 claude plugin install codex@openai-codex
 ```
 
-then run `/codex:setup` inside Claude Code to check the `codex` CLI and sign in.
-The plugin calls that CLI, which the Brewfile and the CachyOS package list
-install; on other systems install it separately.
+then run `/codex:setup` inside Claude Code to check that the `codex` CLI is
+installed and signed in. The plugin calls that CLI, which the Brewfile and the
+CachyOS package list install. Elsewhere, `/codex:setup` offers to install it
+through npm. Sign in with `codex login`.
 
 ### Linting
 
