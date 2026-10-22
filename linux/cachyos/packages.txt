@@ -43,6 +43,7 @@ openai-codex
 
 # System
 snap-pac
+tailscale
 bazaar
 flatpak
 jq

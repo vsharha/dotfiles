@@ -53,6 +53,10 @@ configure_snapper() {
   sudo systemctl enable --now snapper-timeline.timer snapper-cleanup.timer
 }
 
+enable_tailscaled() {
+  sudo systemctl enable --now tailscaled.service
+}
+
 add_user_to_gamemode_group() {
   if getent group gamemode >/dev/null 2>&1 && ! id -nG "$USER" | grep -qw gamemode; then
     sudo usermod -aG gamemode "$USER"
@@ -70,6 +74,7 @@ install_aur_packages
 install_flatpak_apps
 set_login_shell
 add_user_to_gamemode_group
+enable_tailscaled
 configure_snapper
 
 echo "CachyOS bootstrap complete."
