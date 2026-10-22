@@ -47,3 +47,7 @@ bazaar
 flatpak
 jq
 ncdu
+
+# KDE theme
+oxygen  # style and window decoration; pulls in oxygen-icons and oxygen-cursors
+oxygen-sounds
