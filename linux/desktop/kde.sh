@@ -59,6 +59,7 @@ configure_default_terminal
 disable_floating_taskbar_panel
 
 kwriteconfig6 --file kwinrc --group ElectricBorders --key TopRight None
+kwriteconfig6 --file kwinrc --group TabBox --key LayoutName thumbnail_grid
 
 kwriteconfig6 --file kscreenlockerrc --group Daemon --key Autolock false
 kwriteconfig6 --file kscreenlockerrc --group Daemon --key Timeout 0
