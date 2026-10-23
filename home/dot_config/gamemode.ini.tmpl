@@ -1,6 +1,7 @@
 # Adaptive Sync can flicker during low-framerate fullscreen video (browsers), so
-# GameMode temporarily forces it on only while a game runs. Each output's
-# previous policy is restored afterwards.
+# it stays off on the desktop and GameMode switches it to automatic only while a
+# game runs, which enables it whenever a fullscreen window is shown. Each
+# output's previous policy is restored afterwards.
 # Paths must be absolute: hooks inherit gamemoded's PATH, which omits ~/.local/bin.
 [custom]
 start={{ .chezmoi.homeDir }}/.local/bin/vrr enable

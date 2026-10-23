@@ -37,7 +37,7 @@ case "$action" in
     [[ -s $state_file ]] || printf '%s\n' "${outputs[@]}" >"$state_file"
 
     for entry in "${outputs[@]}"; do
-      kscreen-doctor "output.${entry%%$'\t'*}.vrrpolicy.always" >/dev/null
+      kscreen-doctor "output.${entry%%$'\t'*}.vrrpolicy.automatic" >/dev/null
     done
     ;;
 
