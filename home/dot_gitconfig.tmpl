@@ -34,6 +34,9 @@
 {{ if eq .chezmoi.os "darwin" -}}
 [credential]
 	helper = osxkeychain
+{{ else if and (eq .chezmoi.os "linux") (not .headless) -}}
+[credential]
+	helper = libsecret
 {{ end -}}
 {{ if $gh -}}
 [credential "https://github.com"]
