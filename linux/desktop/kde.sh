@@ -3,7 +3,8 @@ set -euo pipefail
 
 # Without arguments the settings go to the current user's ~/.config. With
 # --system they go to /etc/xdg, which KDE reads as defaults for every user:
-# a key a user sets in their own ~/.config still overrides it.
+# a key a user sets in their own ~/.config still overrides it. Shortcuts are
+# the exception, and reach only accounts created afterwards; see kconfig.
 system=false
 case "${1-}" in
   "") ;;
@@ -22,10 +23,14 @@ fi
 kconfig() {
   local file="$1"
   shift
-  if [ "$system" = true ]; then
-    sudo kwriteconfig6 --file "/etc/xdg/$file" "$@"
-  else
+  if [ "$system" = false ]; then
     kwriteconfig6 --file "$file" "$@"
+  elif [ "$file" = kglobalshortcutsrc ]; then
+    # kglobalacceld opens this file without falling back to /etc/xdg, so the
+    # shortcuts go to the template that useradd copies into new home folders.
+    sudo kwriteconfig6 --file "/etc/skel/.config/$file" "$@"
+  else
+    sudo kwriteconfig6 --file "/etc/xdg/$file" "$@"
   fi
 }
 
