@@ -42,4 +42,7 @@ keybind = ctrl+shift+arrow_right=unbind
 # selection, instead of ghostty's default mouse-selection copy — unused here,
 # and plain Ctrl-C can't do this (see dot_zshrc.tmpl for why).
 keybind = ctrl+shift+c=text:\x1b[99;6u
+# Send Alt+V as ESC v on any keyboard layout, so Claude Code's alt+v
+# image-paste binding also fires with the ua/ru layouts active.
+keybind = alt+key_v=esc:v
 {{ end -}}
