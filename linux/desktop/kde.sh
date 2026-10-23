@@ -1,10 +1,33 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Without arguments the settings go to the current user's ~/.config. With
+# --system they go to /etc/xdg, which KDE reads as defaults for every user:
+# a key a user sets in their own ~/.config still overrides it.
+system=false
+case "${1-}" in
+  "") ;;
+  --system) system=true ;;
+  *)
+    echo "usage: $(basename "$0") [--system]" >&2
+    exit 2
+    ;;
+esac
+
 if ! command -v kwriteconfig6 >/dev/null 2>&1; then
   echo "kwriteconfig6 not found; skipping KDE config."
   exit 0
 fi
+
+kconfig() {
+  local file="$1"
+  shift
+  if [ "$system" = true ]; then
+    sudo kwriteconfig6 --file "/etc/xdg/$file" "$@"
+  else
+    kwriteconfig6 --file "$file" "$@"
+  fi
+}
 
 configure_default_terminal() {
   if ! command -v ghostty >/dev/null 2>&1; then
@@ -12,13 +35,11 @@ configure_default_terminal() {
     return 0
   fi
 
-  kwriteconfig6 \
-    --file kdeglobals \
+  kconfig kdeglobals \
     --group General \
     --key TerminalApplication \
     ghostty
-  kwriteconfig6 \
-    --file kdeglobals \
+  kconfig kdeglobals \
     --group General \
     --key TerminalService \
     com.mitchellh.ghostty.desktop
@@ -36,6 +57,16 @@ panels().forEach(function (panel) {
 });
 '
   local qdbus_command
+
+  if [ "$system" = true ]; then
+    # Plasma runs each script in this directory once per user, when their
+    # desktop next starts, and records it in plasmashellrc so it never reruns.
+    # The name only needs to stay clear of the scripts plasma-desktop ships.
+    printf '%s' "$plasma_script" | sudo tee \
+      /usr/share/plasma/shells/org.kde.plasma.desktop/contents/updates/dotfiles_taskbar_not_floating.js \
+      >/dev/null
+    return 0
+  fi
 
   if command -v qdbus6 >/dev/null 2>&1; then
     qdbus_command=qdbus6
@@ -58,60 +89,58 @@ panels().forEach(function (panel) {
 configure_default_terminal
 disable_floating_taskbar_panel
 
-kwriteconfig6 --file kwinrc --group ElectricBorders --key TopRight None
-kwriteconfig6 --file kwinrc --group TabBox --key LayoutName thumbnail_grid
+kconfig kwinrc --group ElectricBorders --key TopRight None
+kconfig kwinrc --group TabBox --key LayoutName thumbnail_grid
 
-kwriteconfig6 --file kscreenlockerrc --group Daemon --key Autolock false
-kwriteconfig6 --file kscreenlockerrc --group Daemon --key Timeout 0
+kconfig kscreenlockerrc --group Daemon --key Autolock false
+kconfig kscreenlockerrc --group Daemon --key Timeout 0
 
-kwriteconfig6 \
-  --file powerdevilrc \
+kconfig powerdevilrc \
   --group AC \
   --group Display \
   --key DimDisplayWhenIdle \
   true
-kwriteconfig6 \
-  --file powerdevilrc \
+kconfig powerdevilrc \
   --group AC \
   --group Display \
   --key DimDisplayIdleTimeoutSec \
   300
-kwriteconfig6 \
-  --file powerdevilrc \
+kconfig powerdevilrc \
   --group AC \
   --group Display \
   --key TurnOffDisplayWhenIdle \
   false
-kwriteconfig6 \
-  --file powerdevilrc \
+kconfig powerdevilrc \
   --group AC \
   --group Display \
   --key TurnOffDisplayIdleTimeoutSec \
   -- \
   -1
-kwriteconfig6 \
-  --file powerdevilrc \
+kconfig powerdevilrc \
   --group AC \
   --group SuspendAndShutdown \
   --key AutoSuspendAction \
   0
 
-kwriteconfig6 --file plasmaparc --group General --key AudioFeedback false
-kwriteconfig6 --file kcminputrc --group Keyboard --key NumLock 0
+kconfig plasmaparc --group General --key AudioFeedback false
+kconfig kcminputrc --group Keyboard --key NumLock 0
 
-kwriteconfig6 --file kxkbrc --group Layout --key Use true
-kwriteconfig6 --file kxkbrc --group Layout --key LayoutList "us,ua,ru"
-kwriteconfig6 --file kxkbrc --group Layout --key VariantList ",,"
-kwriteconfig6 --file kxkbrc --group Layout --key DisplayNames ",,"
+kconfig kxkbrc --group Layout --key Use true
+kconfig kxkbrc --group Layout --key LayoutList "us,ua,ru"
+kconfig kxkbrc --group Layout --key VariantList ",,"
+kconfig kxkbrc --group Layout --key DisplayNames ",,"
 
-kwriteconfig6 \
-  --file kglobalshortcutsrc \
+kconfig kglobalshortcutsrc \
   --group "KDE Keyboard Layout Switcher" \
   --key "Switch to Next Keyboard Layout" \
   "Alt+Shift,Meta+Alt+K,Switch to Next Keyboard Layout"
 
-kwriteconfig6 --file ksmserverrc --group General --key loginMode emptySession
+kconfig ksmserverrc --group General --key loginMode emptySession
 
-kwriteconfig6 --file krunnerrc --group General --key FreeFloating true
+kconfig krunnerrc --group General --key FreeFloating true
 
-echo "KDE config applied."
+if [ "$system" = true ]; then
+  echo "KDE defaults applied for all users."
+else
+  echo "KDE config applied."
+fi

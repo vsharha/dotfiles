@@ -39,9 +39,10 @@ bootstrap:
 # Bootstrap this OS, then apply dotfiles. Role flags pass through to apply.
 setup *args: bootstrap (apply args)
 
+# Apply KDE settings to this account, or with --system as defaults for every user
 [linux]
-kde:
-    ./linux/desktop/kde.sh
+kde *args:
+    ./linux/desktop/kde.sh {{ args }}
 
 [linux]
 rtw89-wifi:
