@@ -20,6 +20,7 @@ Library/LaunchAgents
 .config/fastfetch
 .config/gamemode.ini
 .config/helium-browser-flags.conf
+.local/share/icons/hicolor/256x256/apps/helium.png
 .local/bin/vrr
 {{ end }}
 {{ if .headless }}
