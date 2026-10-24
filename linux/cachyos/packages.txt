@@ -45,6 +45,7 @@ faugus-launcher
 
 # AI
 claude-code
+claude-desktop
 openai-codex
 
 # System
