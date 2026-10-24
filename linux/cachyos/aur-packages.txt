@@ -1,3 +1,4 @@
+chatgpt-desktop
 blipnet
 localsend-bin
 visual-studio-code-bin

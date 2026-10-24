@@ -7,17 +7,22 @@ qbittorrent
 proton-vpn-gtk-app
 obsidian
 libreoffice-fresh
+jdownloader2
+vlc
 
 # Terminal and shell
 chezmoi
 just
 shellcheck  # used by just lint
 github-cli  # gh, the git credential helper for GitHub
+forgejo-cli  # fj
 ghostty
 paru
 go
 uv
 pnpm
+typst
+pandoc-cli
 gamemode
 lact
 
@@ -36,6 +41,7 @@ ttf-meslo-nerd  # p10k font
 # Gaming
 cachyos-gaming-applications
 protonup-qt
+faugus-launcher
 
 # AI
 claude-code
@@ -46,6 +52,7 @@ snap-pac
 tailscale
 bazaar
 flatpak
+shelly-flatpak-backend  # Flatpak support in Shelly, the CachyOS package manager
 jq
 ncdu
 
