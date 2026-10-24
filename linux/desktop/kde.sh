@@ -3,8 +3,9 @@ set -euo pipefail
 
 # Without arguments the settings go to the current user's ~/.config. With
 # --system they go to /etc/xdg, which KDE reads as defaults for every user:
-# a key a user sets in their own ~/.config still overrides it. Shortcuts are
-# the exception, and reach only accounts created afterwards; see kconfig.
+# a key a user sets in their own ~/.config still overrides it. Shortcuts and
+# window rules are the exception, and reach only accounts created afterwards;
+# see kconfig.
 system=false
 case "${1-}" in
   "") ;;
@@ -25,9 +26,11 @@ kconfig() {
   shift
   if [ "$system" = false ]; then
     kwriteconfig6 --file "$file" "$@"
-  elif [ "$file" = kglobalshortcutsrc ]; then
-    # kglobalacceld opens this file without falling back to /etc/xdg, so the
-    # shortcuts go to the template that useradd copies into new home folders.
+  elif [ "$file" = kglobalshortcutsrc ] || [ "$file" = kwinrulesrc ]; then
+    # kglobalacceld opens kglobalshortcutsrc without falling back to /etc/xdg,
+    # and /etc/xdg/kwinrulesrc belongs to the kwin package, which replaces it
+    # on upgrade. Both go to the template that useradd copies into new home
+    # folders instead.
     sudo kwriteconfig6 --file "/etc/skel/.config/$file" "$@"
   else
     sudo kwriteconfig6 --file "/etc/xdg/$file" "$@"
@@ -91,8 +94,84 @@ panels().forEach(function (panel) {
   fi
 }
 
+# kwin ships a "steam" rule in /etc/xdg/kwinrulesrc. Order lists the rules
+# that apply, and the one written here replaces the shipped list, so it names
+# steam as well.
+keep_picture_in_picture_on_top() {
+  kconfig kwinrulesrc \
+    --group picture-in-picture \
+    --key Description \
+    "Picture-in-Picture always on top"
+  kconfig kwinrulesrc --group picture-in-picture --key title Picture-in-picture
+  kconfig kwinrulesrc --group picture-in-picture --key titlematch 2
+  kconfig kwinrulesrc --group picture-in-picture --key above true
+  kconfig kwinrulesrc --group picture-in-picture --key aboverule 2
+  kconfig kwinrulesrc --group General --key Order steam,picture-in-picture
+}
+
+set_default_app() {
+  local desktop_file="$1"
+  shift
+
+  if [ ! -e "/usr/share/applications/$desktop_file" ]; then
+    echo "$desktop_file not found; keeping the current defaults for its types."
+    return 0
+  fi
+
+  local mime_type
+  for mime_type in "$@"; do
+    kconfig mimeapps.list \
+      --group "Default Applications" \
+      --key "$mime_type" \
+      "$desktop_file;"
+  done
+}
+
+configure_default_apps() {
+  set_default_app helium.desktop \
+    text/html \
+    x-scheme-handler/http \
+    x-scheme-handler/https \
+    x-scheme-handler/mailto
+  set_default_app org.qbittorrent.qBittorrent.desktop \
+    application/x-bittorrent \
+    x-scheme-handler/magnet
+  set_default_app vlc.desktop \
+    audio/aac \
+    audio/mp4 \
+    audio/mpeg \
+    audio/mpegurl \
+    audio/ogg \
+    audio/vnd.rn-realaudio \
+    audio/vorbis \
+    audio/x-flac \
+    audio/x-mp3 \
+    audio/x-mpegurl \
+    audio/x-ms-wma \
+    audio/x-musepack \
+    audio/x-oggflac \
+    audio/x-pn-realaudio \
+    audio/x-scpls \
+    audio/x-speex \
+    audio/x-vorbis \
+    audio/x-vorbis+ogg \
+    audio/x-wav
+}
+
+# Breeze Dark stays the global theme; these override its window decoration,
+# widget style, and sounds.
+configure_theme() {
+  kconfig kwinrc --group org.kde.kdecoration2 --key library org.kde.oxygen
+  kconfig kwinrc --group org.kde.kdecoration2 --key theme Oxygen
+  kconfig kdeglobals --group KDE --key widgetStyle Union
+  kconfig kdeglobals --group Sounds --key Theme oxygen
+}
+
 configure_default_terminal
 disable_floating_taskbar_panel
+keep_picture_in_picture_on_top
+configure_default_apps
+configure_theme
 
 kconfig kwinrc --group ElectricBorders --key TopRight None
 kconfig kwinrc --group TabBox --key LayoutName thumbnail_grid
