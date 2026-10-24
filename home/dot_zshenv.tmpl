@@ -17,3 +17,9 @@ if [[ -r /etc/homelab/age-identity.txt ]]; then
   export SOPS_AGE_KEY_FILE=/etc/homelab/age-identity.txt
 fi
 {{ end -}}
+
+{{ if and .dev .personal }}
+# Host for the Forgejo CLI (fj) when neither --host nor the current repo's
+# remote names one. The instance is reachable only over the tailnet.
+export FJ_FALLBACK_HOST="https://git.sharha.net"
+{{ end -}}
