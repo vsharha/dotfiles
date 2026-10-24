@@ -35,7 +35,8 @@ Three independent booleans decide what a machine gets:
   `PATH`, and the pnpm aliases.
 - `personal` — personal accounts and services belong here. It gates the
   homelab SSH hosts, the macOS login items, and the shim for the App Store
-  Tailscale build.
+  Tailscale build. With `dev` it also adds `fjs`, the Forgejo CLI aimed at the
+  self-hosted instance.
 
 Everything else — zsh, the prompt, history, completion, Git — is shared and
 applies everywhere. The four machines in use:

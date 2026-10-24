@@ -84,6 +84,10 @@ unattended and holds credentials and push access, so it keeps the prompts. */ -}
 {{ if and .dev (not .headless) -}}
 alias cc="claude --dangerously-skip-permissions"
 {{ end -}}
+{{/* The self-hosted Forgejo is reachable only over the tailnet. */ -}}
+{{ if and .dev .personal -}}
+alias fjs='fj -H git.sharha.net'
+{{ end -}}
 
 # === fzf (fuzzy Ctrl-R history, Ctrl-T files, Alt-C cd) ===========
 # `fzf --zsh` exists only on fzf >= 0.48 (macOS/Arch ship current builds);
