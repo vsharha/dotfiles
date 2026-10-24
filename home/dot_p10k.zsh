@@ -36,11 +36,15 @@ source "$__p9k_root_dir/config/p10k-rainbow.zsh"
       timewarrior taskwarrior per_directory_history newline
     )
     typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-    # Put the OSC 133 prompt marks in PROMPT itself. Ghostty clears a marked
-    # prompt on resize so zsh can redraw it; without marks, the reflowed first
-    # line stays behind and the prompt redraws below it. Ghostty's own shell
-    # integration only patches PS1 while its precmd hook runs last, and p10k
-    # moves _p9k_precmd to the end of precmd_functions on every prompt.
+    # Put the OSC 133 prompt marks in PROMPT itself, so Ghostty knows where
+    # each prompt and command output starts. Ghostty's own shell integration
+    # only patches PS1 while its precmd hook runs last, and p10k moves
+    # _p9k_precmd to the end of precmd_functions on every prompt.
+    #
+    # Narrowing the window still leaves a copy of the first line behind. The
+    # right segments sit on that line, so p10k pads it with spaces to the full
+    # width; Ghostty reflows it onto two rows, and zsh redraws the prompt one
+    # row too low. Moving the right segments to the last line avoids this.
     typeset -g POWERLEVEL9K_TERM_SHELL_INTEGRATION=true
   else
     typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(prompt_char)
