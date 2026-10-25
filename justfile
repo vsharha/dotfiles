@@ -53,5 +53,9 @@ dualsense:
     ./linux/fixes/dualsense-ucm.sh
 
 [linux]
+steam-compatdata:
+    ./linux/fixes/steam-compatdata-0.sh
+
+[linux]
 refind-theme:
     ./linux/boot/refind-theme-regular/install.sh
