@@ -249,8 +249,7 @@ into `~/.local/bin` otherwise. If that directory is not on the current shell's
 `PATH`, run `export PATH="$HOME/.local/bin:$PATH"` before invoking `just`.
 CachyOS additionally configures Snapper for `/` and `/home` on Btrfs, keeping
 12 hourly and 7 daily home snapshots, enables a monthly Btrfs scrub, adds
-the user to the `gamemode` group, enables the Tailscale daemon and the user's
-Syncthing service, sets Ghostty as
+the user to the `gamemode` group, enables the Tailscale daemon, sets Ghostty as
 KDE's default terminal, and applies the remaining KDE configuration. The Debian/Ubuntu bootstrap
 deliberately owns only the shell environment and repository command runner;
 server-role packages and tooling belong in the separate homelab repo.

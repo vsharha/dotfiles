@@ -79,14 +79,6 @@ enable_tailscaled() {
   sudo systemctl enable --now tailscaled.service
 }
 
-# Syncthing runs as a per-user service, so it needs the user's systemd manager
-# rather than sudo. A bootstrap run outside a login session has none.
-enable_syncthing() {
-  if ! systemctl --user enable --now syncthing.service; then
-    echo "Could not reach the user's systemd manager; run 'systemctl --user enable --now syncthing.service' after logging in."
-  fi
-}
-
 add_user_to_gamemode_group() {
   if getent group gamemode >/dev/null 2>&1 && ! id -nG "$USER" | grep -qw gamemode; then
     sudo usermod -aG gamemode "$USER"
@@ -105,7 +97,6 @@ install_flatpak_apps
 set_login_shell
 add_user_to_gamemode_group
 enable_tailscaled
-enable_syncthing
 configure_snapper
 enable_btrfs_scrub
 

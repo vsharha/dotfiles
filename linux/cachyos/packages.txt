@@ -51,7 +51,6 @@ openai-codex
 # System
 snap-pac
 tailscale
-syncthing
 bazaar
 flatpak
 shelly-flatpak-backend  # Flatpak support in Shelly, the CachyOS package manager
