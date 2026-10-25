@@ -17,6 +17,7 @@ Library/LaunchAgents
 {{ end }}
 {{ if or (ne .chezmoi.os "linux") .headless }}
 .config/MangoHud
+.config/systemd/user/app-com.mitchellh.ghostty.service.d
 .config/fastfetch
 .config/gamemode.ini
 .config/helium-browser-flags.conf
