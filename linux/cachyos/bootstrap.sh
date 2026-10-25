@@ -50,7 +50,29 @@ configure_snapper() {
   fi
 
   sudo snapper -c root create-config / 2>/dev/null || true
+
+  # @home is its own subvolume, so root snapshots never include it. Home
+  # snapshots keep deleted files around, so only a short window is retained.
+  if [ "$(findmnt -n -o FSTYPE /home 2>/dev/null || true)" = "btrfs" ]; then
+    sudo snapper -c home create-config /home 2>/dev/null || true
+    sudo snapper -c home set-config \
+      ALLOW_USERS="$USER" SYNC_ACL=yes \
+      TIMELINE_LIMIT_HOURLY=12 TIMELINE_LIMIT_DAILY=7 TIMELINE_LIMIT_WEEKLY=0 \
+      TIMELINE_LIMIT_MONTHLY=0 TIMELINE_LIMIT_YEARLY=0
+  fi
+
   sudo systemctl enable --now snapper-timeline.timer snapper-cleanup.timer
+}
+
+# Scrub works on the whole filesystem, so the instance for / also covers every
+# other subvolume on the same device.
+enable_btrfs_scrub() {
+  if [ "$(findmnt -n -o FSTYPE / 2>/dev/null || true)" != "btrfs" ]; then
+    echo "Btrfs scrub not enabled; root is not Btrfs."
+    return 0
+  fi
+
+  sudo systemctl enable --now "btrfs-scrub@$(systemd-escape -p /).timer"
 }
 
 enable_tailscaled() {
@@ -85,5 +107,6 @@ add_user_to_gamemode_group
 enable_tailscaled
 enable_syncthing
 configure_snapper
+enable_btrfs_scrub
 
 echo "CachyOS bootstrap complete."

@@ -247,7 +247,8 @@ Both distro paths install `just` and set zsh as the login shell. Debian/Ubuntu
 uses apt when a `just` package is available, or installs the upstream binary
 into `~/.local/bin` otherwise. If that directory is not on the current shell's
 `PATH`, run `export PATH="$HOME/.local/bin:$PATH"` before invoking `just`.
-CachyOS additionally configures Snapper on Btrfs roots, adds
+CachyOS additionally configures Snapper for `/` and `/home` on Btrfs, keeping
+12 hourly and 7 daily home snapshots, enables a monthly Btrfs scrub, adds
 the user to the `gamemode` group, enables the Tailscale daemon and the user's
 Syncthing service, sets Ghostty as
 KDE's default terminal, and applies the remaining KDE configuration. The Debian/Ubuntu bootstrap
