@@ -21,6 +21,7 @@ paru
 go
 uv
 pnpm
+wrangler
 typst
 pandoc-cli
 gamemode
