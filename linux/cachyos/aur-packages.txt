@@ -1,6 +1,7 @@
 chatgpt-desktop
 aur/claude-desktop  # the cachyos repo copy of the same name lags upstream
 blipnet
+lmstudio-bin
 localsend-bin
 visual-studio-code-bin
 vulkan-low-latency-layer
