@@ -1,0 +1,8 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* Own only the permission defaults; preserve all other configuration values. */ -}}
+{{- $config := fromToml .chezmoi.stdin -}}
+{{- if and (deepEqual (get $config "approval_policy") "on-request") (deepEqual (get $config "approvals_reviewer") "auto_review") (deepEqual (get $config "sandbox_mode") "workspace-write") -}}
+{{- .chezmoi.stdin -}}
+{{- else -}}
+{{- $config | setValueAtPath "approval_policy" "on-request" | setValueAtPath "approvals_reviewer" "auto_review" | setValueAtPath "sandbox_mode" "workspace-write" | toToml -}}
+{{- end -}}
