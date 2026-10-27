@@ -1,6 +1,5 @@
 {
   "mcpServers": {
-    "svelte": "@sveltejs/mcp",
     "playwright": "@playwright/mcp@latest"
   }
 }
