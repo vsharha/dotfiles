@@ -32,6 +32,7 @@ printf '%s' "$input" | jq '
   | .workflowKeywordTriggerEnabled = false
   | .switchModelsOnFlag = false
   | .remoteControlAtStartup = false
+  | .disableClaudeAiConnectors = true
   | .agentPushNotifEnabled = true
   | .hooks.Stop = [{"hooks": [{"type": "command", "command": "\"$HOME/.claude/notify-turn-end.sh\""}]}]
   | .hooks.StopFailure = [{"hooks": [{"type": "command", "command": "\"$HOME/.claude/notify-turn-end.sh\""}]}]
