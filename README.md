@@ -94,7 +94,7 @@ Reinitializing installs only the hooks a repository is missing; its branch,
 worktree, and history are untouched. A repository that sets its own
 `core.hooksPath` — husky, lefthook — bypasses the hook entirely.
 
-### Agent skills, MCP servers, and plugins
+### Agent skills and MCP servers
 
 `just skills` installs every skill listed in `agents/skills.json`, and `just mcp`
 every server in `agents/mcp.json`. Skills go to Claude Code and MCP servers to
@@ -108,33 +108,14 @@ just mcp opencode    # and opencode
 ```
 
 Both scripts install through `npx`, running the installer version pinned at the
-top of each script. They read their JSON with `jq`, and `just mcp` additionally
-needs `uvx` for the servers that run through uv. On macOS the
-Brewfile provides uv, Node arrives as a dependency of the formulae it installs,
-and jq comes with the system at `/usr/bin/jq`. CachyOS installs jq and uv from
-its package list. Debian/Ubuntu installs jq because chezmoi needs it to apply
-the dev-role configuration, but it installs neither Node nor uv because it owns
-only the shell environment and this repository's command runner. A Debian
-machine applied with `--dev` therefore needs Node before either command works,
-and additionally needs uv before `just mcp` works. Both scripts stop with a
-message naming the missing dependency.
-
-Claude Code plugins have no `just` recipe. They are declared in
-`home/private_dot_claude/modify_settings.json` as `extraKnownMarketplaces` and
-`enabledPlugins` entries, so `just apply` enables them on every dev machine.
-Claude Code registers the marketplaces on its next start, but whether it also
-installs the plugins depends on their source, so install each once per machine
-if `/plugin` doesn't list it. Plugins installed by hand with `/plugin` are left
-alone. For the Codex plugin:
-
-```bash
-claude plugin install codex@openai-codex
-```
-
-then run `/codex:setup` inside Claude Code to check that the `codex` CLI is
-installed and signed in. The plugin calls that CLI, which the Brewfile and the
-CachyOS package list install. Elsewhere, `/codex:setup` offers to install it
-through npm. Sign in with `codex login`.
+top of each script, and read their JSON with `jq`. On macOS Node arrives as a
+dependency of the formulae the Brewfile installs, and jq comes with the system
+at `/usr/bin/jq`. CachyOS installs jq from its package list. Debian/Ubuntu
+installs jq because chezmoi needs it to apply the dev-role configuration, but it
+does not install Node because it owns only the shell environment and this
+repository's command runner. A Debian machine applied with `--dev` therefore
+needs Node before either command works. Both scripts stop with a message naming
+the missing dependency.
 
 ### Linting
 
