@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # Pinned so an install runs reviewed code; bump it deliberately.
 INSTALLER="add-mcp@2.4.1"
 
-for cmd in npx jq uvx; do
+for cmd in npx jq; do
   if ! command -v "$cmd" >/dev/null 2>&1; then
     echo "$cmd not found. Install it, then rerun this script." >&2
     exit 1
