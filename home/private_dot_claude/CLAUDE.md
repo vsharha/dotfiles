@@ -2,6 +2,5 @@
 
 ## Shell mode
 
-- The `!` prefix runs a command inside this session with no TTY and the same filesystem and network access you have. It is not an interactive shell and grants me no extra access — it only skips your permission prompts.
-- When a command needs a terminal (an interactive prompt, a login flow, an editor, a TUI) or access you lack, ask me to run it in a separate terminal. Do not suggest `!` for those.
-- Suggesting `!` is fine for a non-interactive command I want to run myself and have the output land in the session.
+- The `!` prefix runs a command in this session with no TTY and the same access you have; it only skips your permission prompts. Suggest it for non-interactive commands whose output I want in the session.
+- For anything needing a terminal (an interactive prompt, a login flow, an editor, a TUI) or access you lack, ask me to use a separate terminal instead.
