@@ -53,6 +53,10 @@ dualsense:
     ./linux/fixes/dualsense-ucm.sh
 
 [linux]
+keychron:
+    ./linux/fixes/keychron-hidraw.sh
+
+[linux]
 steam-compatdata:
     ./linux/fixes/steam-compatdata-0.sh
 
