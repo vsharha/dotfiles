@@ -57,6 +57,10 @@ keychron:
     ./linux/fixes/keychron-hidraw.sh
 
 [linux]
+keychron-poll:
+    ./linux/fixes/keychron-link-poll.sh
+
+[linux]
 steam-compatdata:
     ./linux/fixes/steam-compatdata-0.sh
 

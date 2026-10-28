@@ -241,9 +241,10 @@ From then on, use `just setup` to rerun the complete flow, or
 Optional system configuration:
 
 ```bash
-just rtw89-wifi   # Disable rtw89 Wi-Fi power saving
-just dualsense    # DualSense UCM workaround
-just refind-theme # rEFInd Regular theme
+just rtw89-wifi    # Disable rtw89 Wi-Fi power saving
+just dualsense     # DualSense UCM workaround
+just keychron-poll # Keychron Link dongle polling quirk for K4 HE profile switches
+just refind-theme  # rEFInd Regular theme
 ```
 
 Set `REFIND_DIR` before `just refind-theme` if rEFInd is not installed under
