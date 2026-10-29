@@ -73,12 +73,10 @@ cask "libreoffice"
 cask "maccy"
 cask "netnewswire"
 cask "obsidian"
-cask "raycast"
 cask "readest"
 cask "shottr"
 
 # === Casks: Media ===
-cask "handbrake-app"
 cask "iina"
 cask "jdownloader"
 cask "stremio"
@@ -92,7 +90,6 @@ cask "syntax-highlight"
 
 # === Casks: System / window management ===
 cask "betterdisplay"
-cask "keka"
 cask "linearmouse"
 cask "middleclick"
 cask "monitorcontrol"
@@ -102,7 +99,6 @@ cask "thaw"
 
 # === Casks: Cloud / sync ===
 cask "proton-drive"
-cask "localsend"
 cask "blip"
 cask "ente-auth"
 
@@ -111,12 +107,10 @@ cask "protonvpn"
 
 # === Casks: Creative ===
 cask "canva"
-cask "inkscape"
 cask "paintbrush"
 
 # === Casks: Gaming ===
 cask "prismlauncher"
-cask "steam"
 
 # === Mac App Store (requires `mas`; sign into the App Store first) ===
 # Either App Store-only (no cask), or where the App Store build differs from the cask.
