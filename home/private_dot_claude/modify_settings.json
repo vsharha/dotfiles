@@ -10,6 +10,10 @@
 # permissions.deny is merged rather than replaced. It lists .env variants one by
 # one because deny rules take precedence over allow rules: a broad `.env.*`
 # pattern would also block `.env.example`, and no allow rule could restore it.
+#
+# The PreToolUse hook covers the tools that can reach the network: Bash,
+# WebFetch, WebSearch and every MCP tool. File edits stay local and are not
+# checked.
 input=$(cat)
 [ -z "$input" ] && input='{}'
 
@@ -34,6 +38,7 @@ printf '%s' "$input" | jq '
   | .remoteControlAtStartup = false
   | .disableClaudeAiConnectors = true
   | .agentPushNotifEnabled = true
-  | .hooks.Stop = [{"hooks": [{"type": "command", "command": "\"$HOME/.claude/notify-turn-end.sh\""}]}]
+  | .hooks.PreToolUse = [{"matcher": "Bash|WebFetch|WebSearch|mcp__.*", "hooks": [{"type": "command", "command": "\"$HOME/.claude/block-email-leak.sh\""}]}]
+  | .hooks.Stop =[{"hooks": [{"type": "command", "command": "\"$HOME/.claude/notify-turn-end.sh\""}]}]
   | .hooks.StopFailure = [{"hooks": [{"type": "command", "command": "\"$HOME/.claude/notify-turn-end.sh\""}]}]
 '
