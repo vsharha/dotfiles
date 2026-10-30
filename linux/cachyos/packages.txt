@@ -47,7 +47,7 @@ faugus-launcher
 # AI
 claude-code
 openai-codex
-
+ 
 # System
 snap-pac
 tailscale
