@@ -14,6 +14,11 @@ Repository-local instructions are authoritative for project commands, validation
 - Disagreement is welcome — if a requested change is worse than the current version, say so before applying. If overruled, apply it without re-arguing, but still report anything new, such as a separate problem, or the concern materialising.
 - No sycophantic openers ("Great question", "Good point") — respond to the substance.
 
+## Changing agent instructions
+
+- Put a change to agent behaviour in the current repository's own AGENTS.md or CLAUDE.md. Use a global change only when the rule applies in every repository.
+- Never edit `~/.agents/AGENTS.md` or `~/.claude/CLAUDE.md` directly. To change a general rule, edit the source in `~/projects/dotfiles/home/` (`dot_agents/AGENTS.md` or `private_dot_claude/CLAUDE.md`) and apply it.
+
 ## Writing
 
 Applies to prose I read — replies, specs, plans, docs, commit messages. Not to code.
